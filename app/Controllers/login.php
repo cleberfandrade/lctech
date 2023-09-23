@@ -42,10 +42,10 @@ class login extends View
                 $dados['email_usuario'] = $Check->checarString($dados['email_usuario']);
                 $dados['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
                 if($Check->checarEmail($dados['email_usuario'])){
-                    $Usuarios->setEmailUsuario($dados['email_usuario']);
+                    $Users->setEmailUsuario($dados['email_usuario']);
                     //$senha = $Check->codificarSenha($dados['senha_usuario']);
-                    $Usuarios->setSenhaUsuario($dados['senha_usuario']);
-                    $user = $Usuarios->Acessar(0);
+                    $Users->setSenhaUsuario($dados['senha_usuario']);
+                    $user = $Users->Acessar(0);
                     if(!empty($user) && $user != 0){
                         if(Sessao::criarSessao($user)){
                             Sessao::alert('OK',' Acesso efetuado com sucesso!','m-0 fs-4 alert alert-success');
@@ -70,7 +70,7 @@ class login extends View
     public function sair()
     {
         
-        $Usuarios = new usuariosModel;
+        $Usuarios = new usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $dados = array(
             'USU_DT_ULT_ACESSO' => date('Y-m-d H:i:s')
@@ -88,11 +88,11 @@ class login extends View
     public function lembrar()
     {
       
-        $info = New informacoesModel;
-        $informacoes = $info->listar();
-        foreach ($informacoes as $key => $value) {
-            $this->dados[$key] = $value;
-        }
+        //$info = New informacoesModel;
+        //$informacoes = $info->listar();
+        //foreach ($informacoes as $key => $value) {
+          //  $this->dados[$key] = $value;
+       // }
         $this->dados['title'] = 'Recuperar minha senha | Acesso Administrativo';
         Sessao::logado();
         
@@ -100,16 +100,17 @@ class login extends View
        
         $this->render('site/lembrar', $this->dados);
     }
+    /*
     public function recover()
     {
         $this->dados['title'] = 'Solicitar nova senha | IPBSA';
         $Check = new Check();
-        $mail = new PHPMailer();
-        $Emails = new emailsModel();
-        $info = New informacoesModel;
-        $Usuarios = new usuariosModel;
-        $Recuperacoes = New recuperacoesModel;
-        $informacoes = $info->listar();
+       // $mail = new PHPMailer();
+        //$Emails = new emailsModel();
+        //$info = New informacoesModel;
+        $Usuarios = new usuarios;
+        //$Recuperacoes = New recuperacoesModel;
+        //$informacoes = $info->listar();
 
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
@@ -133,7 +134,7 @@ class login extends View
                     ];
 
                     $destinatario = $dados['EML_EMAIL'];
-                    $remetente = $informacoes['INF_EMAIL_2'];
+                    //$remetente = $informacoes['INF_EMAIL_2'];
                     
                     $mail->IsSMTP();
                     $mail->SMTPSecure = 'ssl';
@@ -141,7 +142,7 @@ class login extends View
                     $mail->Port = 465;
                     $mail->IsHTML(true); 
                     $mail->SMTPAuth = true; 
-                    $mail->Username = $informacoes['INF_EMAIL_2']; 
+                    //$mail->Username = $informacoes['INF_EMAIL_2']; 
                     $mail->Password = 'IPBsa2020@';
 
                     //$mail->setFrom($remetente, "Igreja Presbiteriana do Brasil Em Santo Anastácio/SP");
@@ -207,11 +208,11 @@ class login extends View
     }
     public function cadastro()
     {
-        $info = New informacoesModel;
-        $informacoes = $info->listar();
-        foreach ($informacoes as $key => $value) {
-            $this->dados[$key] = $value;
-        }
+        //$info = New informacoesModel;
+        //$informacoes = $info->listar();
+        //foreach ($informacoes as $key => $value) {
+          //  $this->dados[$key] = $value;
+        //}
         $this->dados['title'] = 'Cadastre-se | IPB/Santo Anastácio-SP';
         Sessao::logado();
         $this->render('site/cadastro', $this->dados);
@@ -296,4 +297,5 @@ class login extends View
             $this->render('site/lembrar', $this->dados);
         }
     }
+    */
 }
