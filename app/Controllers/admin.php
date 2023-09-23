@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use Libraries\Util;
 use Core\View;
-use App\Models\Usuarios;
+use App\Models\usuarios;
 use Libraries\Sessao;
 
 class admin extends View
@@ -15,7 +15,7 @@ class admin extends View
     }
     public function index()
     {
-        $Usuarios = new Usuarios;
+        $Usuarios = new usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $this->render('admin/painel', $this->dados);

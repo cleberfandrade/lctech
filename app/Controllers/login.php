@@ -27,14 +27,15 @@ class login extends View
     { 
         $this->render('site/login', $this->dados);
     }
-    public function logar()
+    public function auth()
     {
-        
         $Users = new usuarios();
+       
         $Check = new Check();
         $Url = new Url();
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-
+        var_dump($Users);
+        var_dump($dados);
         if (isset($_POST) && isset($dados['acesso'])) {
             
             if (!empty($dados['email_usuario']) && !empty($dados['senha_usuario'])) {
@@ -99,6 +100,77 @@ class login extends View
         session_destroy();
        
         $this->render('site/lembrar', $this->dados);
+    }
+    public function cadastro()
+    {
+        $this->dados['title'] = 'LC-TECH | Cadastre-se';
+        Sessao::logado();
+        $this->render('site/cadastro', $this->dados);
+    }
+    public function novo_cadasto()
+    {
+        $this->dados['title'] = 'LC-TECH | Cadastre-se';
+        Sessao::logado();
+        $Users = new usuarios();
+       
+        $Check = new Check();
+        $Url = new Url();
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['acesso'])) {
+            
+            if (!empty($dados['nome_usuario']) 
+            && !empty($dados['sobrenome_usuario']) 
+            && !empty($dados['email_usuario']) 
+            && !empty($dados['senha_usuario'])
+            && !empty($dados['conf_senha_usuario'])
+            && !empty($dados['logradouro_usuario']) 
+            && !empty($dados['numero_usuario']) 
+            && !empty($dados['bairro_usuario']) 
+            && !empty($dados['cidade_usuario']) 
+            && !empty($dados['sexo_usuario']))
+            {
+                //Validar Dados
+                $dados['nome_usuario'] = $Check->checarString($dados['nome_usuario']);
+                $dados['sobrenome_usuario'] = $Check->checarString($dados['sobrenome_usuario']);
+                $dados['email_usuario'] = $Check->checarString($dados['email_usuario']);
+                $dados['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
+                $dados['conf_senha_usuario'] = $Check->checarString($dados['conf_senha_usuario']);
+                $dados['logradouro_usuario'] = $Check->checarString($dados['senha_usuario']);
+                $dados['numero_usuario'] = $Check->checarString($dados['numero_usuario']);
+                $dados['bairro_usuario'] = $Check->checarString($dados['bairro_usuario']);
+                $dados['cidade_usuario'] = $Check->checarString($dados['cidade_usuario']);
+                $dados['sexo_usuario'] = $Check->checarString($dados['sexo_usuario']);
+                if(!$Check->checarEmail($dados['email_usuario'])){
+                    
+                    $Users->setEmailUsuario($dados['email_usuario']);
+                    if($dados['senha_usuario'] == $dados['conf_senha_usuario']){
+                        $dados = array(
+                            'USU_NOME' => $dados['nome_usuario'],
+                            'USU_SOBRENOME' => $dados['sobrenome_usuario'],
+                            'USU_EMAIL' => $dados['email_usuario'],
+                            'USU_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                            'EMP_COD' => 0,
+                            'USU_STATUS' => 'DESATIVADO'
+                        );
+                        $dados['USU_SENHA'] = $Check->codificarSenha($dados['senha_usuario']);
+                        if($Users->cadastrar($dados,0)){
+                                Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                        }else{
+                            Sessao::alert('ERRO',' 6- Erro ao cadastrar novo usuário, contate a manutenção!','fs-4 alert alert-danger');
+                        }
+                    }else {
+                        # code...
+                    }
+                }else{
+                    Sessao::alert('ERRO',' 3- Email já cadastrado, tente recuperar a senha, ou entre em contato conosco!','alert alert-danger');
+                }
+            }else{
+                Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
+            } 
+        }else{
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','alert alert-danger');
+        } 
+        $this->render('site/cadastro', $this->dados);
     }
     /*
     public function recover()
@@ -206,28 +278,8 @@ class login extends View
 
         $this->render('site/lembrar',$this->dados);
     }
-    public function cadastro()
-    {
-        //$info = New informacoesModel;
-        //$informacoes = $info->listar();
-        //foreach ($informacoes as $key => $value) {
-          //  $this->dados[$key] = $value;
-        //}
-        $this->dados['title'] = 'Cadastre-se | IPB/Santo Anastácio-SP';
-        Sessao::logado();
-        $this->render('site/cadastro', $this->dados);
-    }
-    public function novo_cadasto()
-    {
-        $info = New informacoesModel;
-        $informacoes = $info->listar();
-        foreach ($informacoes as $key => $value) {
-            $this->dados[$key] = $value;
-        }
-        $this->dados['title'] = 'Cadastre-se | IPB/Santo Anastácio-SP';
-        Sessao::logado();
-        $this->render('site/cadastro', $this->dados);
-    }
+    
+    
     //LINK DO EMAIL PARA CHECAR SOLICITACAO DE MUDANCA DE SENHA
     public function token()
     {

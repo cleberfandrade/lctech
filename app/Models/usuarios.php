@@ -25,6 +25,11 @@ class usuarios extends Model
 
         return $this;
     }
+    public function setSexoUsuario($sexo)
+    {
+        $this->sexo = $sexo;
+        return $this;
+    }
     public function setCodUsuario($codUsuario)
     {
         $this->codigo = $codUsuario;

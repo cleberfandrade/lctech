@@ -25,12 +25,12 @@ include_once 'inc/cabecalho.phtml';
         <div class="container col-xl-10 col-xxl-8 px-2 py-1">
             <div class="row align-items-center g-lg-5">
                 <div class="col-12 col-sm-12 col-md-4 col-lg-7 text-center text-lg-start text-white-50">
-                    <h1 class="display-5 text-center fw-bold mb-0 pb-0">LC-TECH</h1>
+                <h1 class="display-5 text-center fw-bolder text-uppercase text-3 mb-2">LC-<span class="text-success">TECH</span></h1>
                     <p class="col-lg lead text-center fs-6">DESENVOLVENDO SOLUÇÕES <br/>PARA O SEU NEGÓCIO</p>
                 </div>
                 <div class="col-12 col-sm-12 col-md-8 col-lg-5 mx-auto">
                 <?= Sessao::alert('ERRO'); ?>
-                    <form class="p-2 p-md-4" action="<?= DIRPAGE ?>login/logar" method="POST">
+                    <form class="p-2 p-md-4" action="<?= DIRPAGE ?>login/auth" method="POST">
                         <div class="form-floating mb-1">
                             <input type="email" class="form-control" id="email" name="email_usuario" placeholder="Informe seu email" value="<?= isset($_POST['email_usuario']) ? $_POST['email_usuario'] : '' ?>">
                             <label for="email">Seu Email</label>
