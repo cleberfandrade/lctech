@@ -1,0 +1,86 @@
+<?php
+session_start();
+$_SESSION['acesso'] = date('i:s');
+use Libraries\Sessao;
+
+include_once 'inc/cabecalho.phtml'; ?>
+    <main class="flex-shrink-0 bg-dark ">
+        <?php include_once 'inc/nav.phtml'; ?>
+        <!-- Header-->
+        <header class="bg-dark py-3">
+            <section class="container px-5">
+                <div class="row gx-5 align-items-center justify-content-center">
+                    <div class="col-lg-10 col-xl-10 col-xxl-10">
+                        <div class="my-5 text-center text-xl-start">
+                            <h1 class="display-5 text-center fw-bolder text-uppercase text-success mb-2">Cadastre-se <span class="text-success"></span></h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </header>
+        <div class="container-fluid col-xl-10 col-xxl-8 px-4 py-2">
+            <div class="row align-items-center g-lg-5 py-5">
+                <div class="col-lg-6 text-center text-lg-start">
+                    <h1 class="display-5 text-center fw-bolder text-uppercase text-3 mb-2">LC-<span class="text-success">TECH</span></h1>
+                    <p class="col-lg lead text-center fs-6">DESENVOLVENDO SOLUÇÕES <br/>PARA O SEU NEGÓCIO</p>
+                </div>
+                <div class="col-md-10 mx-auto col-lg-6">
+                <?= Sessao::alert('ERRO') ?>
+                    <form class="p-4 p-md-6 border rounded-3 bg-3" action="<?= DIRPAGE ?>usuarios/cadastrar_assinante" method="POST">
+                        <div class="row">    
+                            <div class="col-4 form-floating mb-3">
+                                <input type="text" class="form-control" id="1" name="nome_usuario" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['nome_usuario']) ? $_POST['nome_usuario'] : ''; ?>">
+                                <label class="px-3" for="1">Seu nome</label>
+                            </div>    
+                            <div class="col-8 form-floating mb-3">
+                                <input type="text" class="form-control" id="2" name="sobrenome_usuario" placeholder="Informe seu nome" value="<?= isset($_POST['sobrenome_usuario']) ? $_POST['sobrenome_usuario'] : ''; ?>">
+                                <label class="px-3" for="2">Seu sobrenome</label>
+                            </div> 
+                        </div> 
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="floatingInput" name="endereco_usuario" placeholder="Informe seu endereco" value="<?= isset($_POST['endereco_usuario']) ? $_POST['endereco_usuario'] : ''; ?>">
+                            <label for="floatingInput">Seu Endereco</label>
+                        </div> 
+                        <div class="row">
+                            <div class="row col-4 mx-auto">   
+                                <label for="inputPassword6" class="col-form-label">Seu sexo</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sexo_usuario" id="flexRadioDefault2" value="MASCULINO" checked>
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Masculino
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sexo_usuario" value="FEMININO" id="flexRadioDefault1">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Feminino
+                                    </label>
+                                </div>
+                                
+                            </div>
+                        </div> 
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="floatingInput" name="email_usuario" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['email_usuario']) ? $_POST['email_usuario'] : ''; ?>">
+                            <label for="floatingInput">Email</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 form-floating mb-3">
+                                <input type="password" class="form-control" name="senha_usuario" id="floatingPassword" placeholder="Digite sua senha">
+                                <label for="floatingPassword">Senha</label>
+                            </div>
+                            <div class="col-6 form-floating mb-3">
+                                <input type="password" class="form-control" name="conf_senha_usuario" id="floatingPassword" placeholder="Confirme sua senha">
+                                <label for="floatingPassword">Confirme a Senha</label>
+                            </div>
+                        </div>
+                        <button class="w-100 btn btn-lg text-uppercase btn-success" name="cadastro" value="<?= $_SESSION['cadastro'] ?>" type="submit"><i class="fa fa-register"></i> Cadastrar</button>
+                        <hr class="my-4 text-white">
+                        <div class="form-floating mb-3">
+                            <a href="<?= DIRPAGE ?>login" class="text-white text-center text-decoration-none">Voltar ao acesso</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+<?php include_once 'inc/rodape.phtml'; ?>
