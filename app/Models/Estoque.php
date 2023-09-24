@@ -3,42 +3,40 @@ namespace App\Models;
 
 use Core\Model;
 
-class Empresa extends Model
+class estoque extends Model
 { 
-    private $tabela = 'tb_empresa';
+    private $tabela = 'tb_estoque';
     private $Model = '';
-    private $Informacoes = '';
-    private $codInformacoes = 1;
+    private $codigo,$codEmpresa,$codUsuario,$codProduto,$codServico;
 
     public function __construct()
     {
         $this->Model = new Model();
         $this->Model->setTabela($this->tabela);
     }
-    public function setCodInformacoes($codInformacoes)
+    public function setCodigo($codigo)
     {
-        $this->codInformacoes = $codInformacoes;
+        $this->codigo = $codigo;
         return $this;
     }
-    public static function info()
+    public function setCodUsuario($codUsuario)
     {
-        $Informacoes = [
-            'title' => 'Seja bem-vindo(a) - Igreja Presbiteriana do Brasil de Santo Anastácio-SP',
-            'discription' => 'Uma igreja a serviço do reino de Deus',
-            'name' => 'Igreja Presbiteriana do Brasil de Santo Anastácio-SP',
-            'sigla' => 'IPBSA',
-            'favicon' => DIRIMG.'favicon.ico',
-            'logo' => DIRIMG.'logo1.png',
-            'site' => 'https://ipbsantoanastacio.org.br',
-            'logoWhite' => DIRIMG.'logo2.png',
-            'banner' => DIRIMG.'b2.jpg'
-        ];
-        return $Informacoes;
-        //return self::listar();
-    } 
+        $this->codUsuario = $codUsuario;
+        return $this;
+    }
+    public function setCodEmpresa($codEmpresa)
+    {
+        $this->codEmpresa = $codEmpresa;
+        return $this;
+    }
+    public function setCodProduto($codProduto)
+    {
+        $this->codProduto = $codProduto;
+        return $this;
+    }
     public function listar($ver = 0)
     {
-        $parametros = "";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD={$this->codigo}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -47,11 +45,33 @@ class Empresa extends Model
             return false;
         }
     }
+    public function listarEstoqueProdutos($ver = 0)
+    {
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD={$this->codigo} AND PRO_COD={$this->codProduto}";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            return $resultado[0];
+        } else {
+            return false;
+        }
+    }
+    public function listarTodos($ver = 0)
+    {
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} ORDER BY EST_COD ASC";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
+        if ($resultado) {
+            return $resultado;
+        } else {
+            return false;
+        }
+    }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = " WHERE INF_COD=";
+        $parametros = " WHERE EST_COD=";
         $this->Model->setParametros($parametros);
-        $this->Model->setCodigo($this->codInformacoes);
+        $this->Model->setCodigo($this->codigo);
         $ok = false;
         $ok = $this->Model->alterar($dados, $ver);
         if ($ok) {

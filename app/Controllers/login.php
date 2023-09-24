@@ -34,8 +34,8 @@ class login extends View
         $Check = new Check();
         $Url = new Url();
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-        var_dump($Users);
-        var_dump($dados);
+        //var_dump($Users);
+        //var_dump($dados);
         if (isset($_POST) && isset($dados['acesso'])) {
             
             if (!empty($dados['email_usuario']) && !empty($dados['senha_usuario'])) {
@@ -133,13 +133,16 @@ class login extends View
                 $dados['nome_usuario'] = $Check->checarString($dados['nome_usuario']);
                 $dados['sobrenome_usuario'] = $Check->checarString($dados['sobrenome_usuario']);
                 $dados['email_usuario'] = $Check->checarString($dados['email_usuario']);
+                $dados['sexo_usuario'] = $Check->checarString($dados['sexo_usuario']);
+
                 $dados['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
                 $dados['conf_senha_usuario'] = $Check->checarString($dados['conf_senha_usuario']);
+
                 $dados['logradouro_usuario'] = $Check->checarString($dados['senha_usuario']);
                 $dados['numero_usuario'] = $Check->checarString($dados['numero_usuario']);
                 $dados['bairro_usuario'] = $Check->checarString($dados['bairro_usuario']);
                 $dados['cidade_usuario'] = $Check->checarString($dados['cidade_usuario']);
-                $dados['sexo_usuario'] = $Check->checarString($dados['sexo_usuario']);
+                
                 if(!$Check->checarEmail($dados['email_usuario'])){
                     
                     $Users->setEmailUsuario($dados['email_usuario']);
@@ -156,10 +159,10 @@ class login extends View
                         if($Users->cadastrar($dados,0)){
                                 Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
                         }else{
-                            Sessao::alert('ERRO',' 6- Erro ao cadastrar novo usuário, contate a manutenção!','fs-4 alert alert-danger');
+                            Sessao::alert('ERRO',' 5- Erro ao cadastrar novo usuário, contate a manutenção!','fs-4 alert alert-danger');
                         }
                     }else {
-                        # code...
+                         Sessao::alert('ERRO',' 4- Senha não confere com a confirmação de senha, digite novamente!','fs-4 alert alert-danger');
                     }
                 }else{
                     Sessao::alert('ERRO',' 3- Email já cadastrado, tente recuperar a senha, ou entre em contato conosco!','alert alert-danger');
@@ -172,19 +175,20 @@ class login extends View
         } 
         $this->render('site/cadastro', $this->dados);
     }
-    /*
+   
     public function recover()
     {
         $this->dados['title'] = 'Solicitar nova senha | IPBSA';
         $Check = new Check();
-       // $mail = new PHPMailer();
+        $Users = new usuarios();
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        /* 
+        //$mail = new PHPMailer();
         //$Emails = new emailsModel();
         //$info = New informacoesModel;
-        $Usuarios = new usuarios;
+        
         //$Recuperacoes = New recuperacoesModel;
-        //$informacoes = $info->listar();
-
-        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        //$informacoes = $info->listar();      
 
         if (isset($_POST) && isset($dados['ENVIAR_EMAIL'])) {
 
@@ -275,11 +279,11 @@ class login extends View
         }else{
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
         }
-
+        */
         $this->render('site/lembrar',$this->dados);
     }
     
-    
+    /*
     //LINK DO EMAIL PARA CHECAR SOLICITACAO DE MUDANCA DE SENHA
     public function token()
     {

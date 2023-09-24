@@ -6,10 +6,17 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
+    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'Libraries\\' => array($baseDir . '/libraries'),
     'Core\\' => array($baseDir . '/core'),
-    'App\\Views\\' => array($baseDir . '/app/Views'),
+    'Config\\' => array($baseDir . '/config'),
+    'App\\Views\\Site\\' => array($baseDir . '/app/Views/Site'),
+    'App\\Views\\Admin\\' => array($baseDir . '/app/Views/Admin'),
     'App\\Models\\' => array($baseDir . '/app/Models'),
+    'App\\Controllers\\Site\\' => array($baseDir . '/app/Controllers/Site'),
+    'App\\Controllers\\Admin\\' => array($baseDir . '/app/Controllers/Admin'),
     'App\\Controllers\\' => array($baseDir . '/app/Controllers'),
-    'App\\' => array($baseDir . '/app'),
 );

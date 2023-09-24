@@ -4,9 +4,25 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf704e05ad16833fccd9ee3c4b67e1cac
+class ComposerStaticInit8d5dd1ebe70a3579d3b78e9b5d52295b
 {
+    public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Component\\VarDumper\\' => 28,
+        ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'L' => 
         array (
             'Libraries\\' => 10,
@@ -14,17 +30,36 @@ class ComposerStaticInitf704e05ad16833fccd9ee3c4b67e1cac
         'C' => 
         array (
             'Core\\' => 5,
+            'Config\\' => 7,
         ),
         'A' => 
         array (
-            'App\\Views\\' => 10,
+            'App\\Views\\Site\\' => 15,
+            'App\\Views\\Admin\\' => 16,
             'App\\Models\\' => 11,
+            'App\\Controllers\\Site\\' => 21,
+            'App\\Controllers\\Admin\\' => 22,
             'App\\Controllers\\' => 16,
-            'App\\' => 4,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Component\\VarDumper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/var-dumper',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
         'Libraries\\' => 
         array (
             0 => __DIR__ . '/../..' . '/libraries',
@@ -33,34 +68,50 @@ class ComposerStaticInitf704e05ad16833fccd9ee3c4b67e1cac
         array (
             0 => __DIR__ . '/../..' . '/core',
         ),
-        'App\\Views\\' => 
+        'Config\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/app/Views',
+            0 => __DIR__ . '/../..' . '/config',
+        ),
+        'App\\Views\\Site\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/Views/Site',
+        ),
+        'App\\Views\\Admin\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/Views/Admin',
         ),
         'App\\Models\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app/Models',
         ),
+        'App\\Controllers\\Site\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/Controllers/Site',
+        ),
+        'App\\Controllers\\Admin\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/Controllers/Admin',
+        ),
         'App\\Controllers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app/Controllers',
         ),
-        'App\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/app',
-        ),
     );
 
     public static $classMap = array (
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf704e05ad16833fccd9ee3c4b67e1cac::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf704e05ad16833fccd9ee3c4b67e1cac::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf704e05ad16833fccd9ee3c4b67e1cac::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit8d5dd1ebe70a3579d3b78e9b5d52295b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit8d5dd1ebe70a3579d3b78e9b5d52295b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit8d5dd1ebe70a3579d3b78e9b5d52295b::$classMap;
 
         }, null, ClassLoader::class);
     }
