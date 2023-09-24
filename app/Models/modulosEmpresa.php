@@ -3,12 +3,12 @@ namespace App\Models;
 
 use Core\Model;
 
-class clientes extends Model
+class modulosEmpresa extends Model
 { 
-    private $tabela = 'tb_clientes';
+    private $tabela = 'tb_modulos_empresa';
     private $Model = '';
     private $Informacoes = '';
-    private $codigo = 1;
+    private $codigo,$codUsuario;
 
     public function __construct()
     {
@@ -20,9 +20,14 @@ class clientes extends Model
         $this->codigo = $codigo;
         return $this;
     }
+    public function setCodUsuario($codUsuario)
+    {
+        $this->codUsuario = $codUsuario;
+        return $this;
+    }
     public function listar($ver = 0)
     {
-        $parametros = "WHERE CLI_COD=";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -33,7 +38,7 @@ class clientes extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = " WHERE CLI_COD=";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND MOD_EMP_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;

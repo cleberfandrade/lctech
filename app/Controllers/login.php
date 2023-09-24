@@ -153,9 +153,10 @@ class login extends View
                             'USU_EMAIL' => $dados['email_usuario'],
                             'USU_DT_CADASTRO' => date('Y-m-d H:i:s'),
                             'EMP_COD' => 0,
-                            'USU_STATUS' => 'DESATIVADO'
+                            'USU_STATUS' => 'ATIVADO'
                         );
                         $dados['USU_SENHA'] = $Check->codificarSenha($dados['senha_usuario']);
+
                         if($Users->cadastrar($dados,0)){
                                 Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
                         }else{
@@ -225,12 +226,11 @@ class login extends View
                     $mail->FromName = 'CONTATO DO SITE IPB/Santo Anastácio'; 
                     $mail->Subject = "Solicitação de Nova Senha";
                     $link = DIRPAGE . 'login/token/' . $token;
-                    $mensagem = "Olá, você solicitou o envio de geração de nova senha de usuário";
-                    $mensagem .= "<p>Para trocar sua senha clique no link abaixo</p>";
-                    $mensagem .= "<p><a href=" . $link . " target='_blanck' title='Clique aqui'>Clique aqui</a> para recuperar sua senha</p>";
+                    $mensagem = "Olá, você efetuou cadastro em nosso sistema";
+                    $mensagem .= "<p>Para ativar sua conta clique no link abaixo</p>";
+                    $mensagem .= "<p><a href=" . $link . " target='_blanck' title='Clique aqui'>Clique aqui</a> para ativar sua conta</p>";
                     $mensagem .= "<p><hr><img style='width:90px;' src='" . DIRIMG . "logo.png'></p>";
-                    $mensagem .= "<p style='font-size:10px;'>Tel: (18) 3263-2826<br/> Rua Barão do Rio Branco,n° 374 
-                    <br/>Vila Adorinda - Santo Anastácio/SP - CEP 19360-000</p>";
+                    $mensagem .= "<p style='font-size:10px;'>Tel: (18) 99107-7297</p>";
                     $mail->Body = $mensagem;
                     //$mail->AltBody = 'Use um visualizador de e-mail com suporte a HTML';
                     //$mail->addAttachment('storage/public/images/logo.png');

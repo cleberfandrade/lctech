@@ -3,9 +3,9 @@ namespace App\Models;
 
 use Core\Model;
 
-class Empresa extends Model
+class servicos extends Model
 { 
-    private $tabela = 'tb_empresa';
+    private $tabela = 'tb_servicos';
     private $Model = '';
     private $Informacoes = '';
     private $codInformacoes = 1;

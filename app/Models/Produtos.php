@@ -3,9 +3,9 @@ namespace App\Models;
 
 use Core\Model;
 
-class Empresa extends Model
+class produtos extends Model
 { 
-    private $tabela = 'tb_empresa';
+    private $tabela = 'tb_produtos';
     private $Model = '';
     private $Informacoes = '';
     private $codInformacoes = 1;
@@ -20,22 +20,6 @@ class Empresa extends Model
         $this->codInformacoes = $codInformacoes;
         return $this;
     }
-    public static function info()
-    {
-        $Informacoes = [
-            'title' => 'Seja bem-vindo(a) - Igreja Presbiteriana do Brasil de Santo Anastácio-SP',
-            'discription' => 'Uma igreja a serviço do reino de Deus',
-            'name' => 'Igreja Presbiteriana do Brasil de Santo Anastácio-SP',
-            'sigla' => 'IPBSA',
-            'favicon' => DIRIMG.'favicon.ico',
-            'logo' => DIRIMG.'logo1.png',
-            'site' => 'https://ipbsantoanastacio.org.br',
-            'logoWhite' => DIRIMG.'logo2.png',
-            'banner' => DIRIMG.'b2.jpg'
-        ];
-        return $Informacoes;
-        //return self::listar();
-    } 
     public function listar($ver = 0)
     {
         $parametros = "";

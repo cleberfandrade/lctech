@@ -8,16 +8,31 @@ class financeiro extends Model
     private $tabela = 'tb_financeiro';
     private $Model = '';
     private $Informacoes = '';
-    private $codInformacoes = 1;
+    private $codigo,$codUsuario,$codConta,$codEmpresa;
 
     public function __construct()
     {
         $this->Model = new Model();
         $this->Model->setTabela($this->tabela);
     }
-    public function setCodInformacoes($codInformacoes)
+    public function setCodigo($codigo)
     {
-        $this->codInformacoes = $codInformacoes;
+        $this->codigo = $codigo;
+        return $this;
+    }
+    public function setCodUsuario($codUsuario)
+    {
+        $this->codUsuario = $codUsuario;
+        return $this;
+    }
+    public function setCodConta($codConta)
+    {
+        $this->codConta = $codConta;
+        return $this;
+    }
+    public function setCodEmpresa($codEmpresa)
+    {
+        $this->codEmpresa = $codEmpresa;
         return $this;
     }
     public function listar($ver = 0)
@@ -33,9 +48,9 @@ class financeiro extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = " WHERE INF_COD=";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD={$this->codConta} FIN_COD=";
         $this->Model->setParametros($parametros);
-        $this->Model->setCodigo($this->codInformacoes);
+        $this->Model->setCodigo($this->codigo);
         $ok = false;
         $ok = $this->Model->alterar($dados, $ver);
         if ($ok) {
