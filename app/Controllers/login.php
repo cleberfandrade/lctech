@@ -118,6 +118,7 @@ class login extends View
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
         if (isset($_POST) && isset($dados['acesso'])) {
             
+
             if (!empty($dados['nome_usuario']) 
             && !empty($dados['sobrenome_usuario']) 
             && !empty($dados['email_usuario']) 

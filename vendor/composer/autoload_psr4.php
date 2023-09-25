@@ -12,11 +12,8 @@ return array(
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'Libraries\\' => array($baseDir . '/libraries'),
     'Core\\' => array($baseDir . '/core'),
-    'Config\\' => array($baseDir . '/config'),
-    'App\\Views\\Site\\' => array($baseDir . '/app/Views/Site'),
-    'App\\Views\\Admin\\' => array($baseDir . '/app/Views/Admin'),
+    'App\\Views\\' => array($baseDir . '/app/Views'),
     'App\\Models\\' => array($baseDir . '/app/Models'),
-    'App\\Controllers\\Site\\' => array($baseDir . '/app/Controllers/Site'),
-    'App\\Controllers\\Admin\\' => array($baseDir . '/app/Controllers/Admin'),
     'App\\Controllers\\' => array($baseDir . '/app/Controllers'),
+    'App\\' => array($baseDir . '/app'),
 );

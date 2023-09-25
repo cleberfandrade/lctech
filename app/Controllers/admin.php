@@ -11,7 +11,7 @@ class admin extends View
     private $dados = [];
     public function __construct()
     {
-        Sessao::logado();
+        Sessao::naoLogado();
     }
     public function index()
     {

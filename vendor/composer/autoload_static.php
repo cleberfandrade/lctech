@@ -30,16 +30,13 @@ class ComposerStaticInit8d5dd1ebe70a3579d3b78e9b5d52295b
         'C' => 
         array (
             'Core\\' => 5,
-            'Config\\' => 7,
         ),
         'A' => 
         array (
-            'App\\Views\\Site\\' => 15,
-            'App\\Views\\Admin\\' => 16,
+            'App\\Views\\' => 10,
             'App\\Models\\' => 11,
-            'App\\Controllers\\Site\\' => 21,
-            'App\\Controllers\\Admin\\' => 22,
             'App\\Controllers\\' => 16,
+            'App\\' => 4,
         ),
     );
 
@@ -68,39 +65,28 @@ class ComposerStaticInit8d5dd1ebe70a3579d3b78e9b5d52295b
         array (
             0 => __DIR__ . '/../..' . '/core',
         ),
-        'Config\\' => 
+        'App\\Views\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/config',
-        ),
-        'App\\Views\\Site\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/app/Views/Site',
-        ),
-        'App\\Views\\Admin\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/app/Views/Admin',
+            0 => __DIR__ . '/../..' . '/app/Views',
         ),
         'App\\Models\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app/Models',
         ),
-        'App\\Controllers\\Site\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/app/Controllers/Site',
-        ),
-        'App\\Controllers\\Admin\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/app/Controllers/Admin',
-        ),
         'App\\Controllers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app/Controllers',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
