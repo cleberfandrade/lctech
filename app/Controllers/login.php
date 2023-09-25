@@ -32,10 +32,9 @@ class login extends View
         $Users = new usuarios();
        
         $Check = new Check();
+        $Usuarios = new Usuarios();
         $Url = new Url();
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-        //var_dump($Users);
-        //var_dump($dados);
         if (isset($_POST) && isset($dados['acesso'])) {
             
             if (!empty($dados['email_usuario']) && !empty($dados['senha_usuario'])) {
