@@ -23,7 +23,6 @@ class login extends View
     }
     public function auth()
     {
-        dump('ok');
         $Check = new Check();
         $Usuarios = new Usuarios();
         $Url = new Url();
