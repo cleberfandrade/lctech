@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-use Core\Model;
 use Core\View;
 use Libraries\Check;
 use Libraries\Url;
@@ -152,13 +151,10 @@ class login extends View
                                     'END_NUMERO' =>  $dados_endereco['numero_usuario'],
                                     'END_BAIRRO' =>  $dados_endereco['bairro_usuario'],
                                     'END_CIDADE' =>  $dados_endereco['cidade_usuario'],
-                                    'USU_STATUS' => 1
+                                    'END_STATUS' => 1
                                 );
                                 $Enderecos = new Enderecos;
                                 $Enderecos->setCodUsuario($id);
-                                //dump($id);
-                                //dump($db_endereco);
-                                //exit;
                                 if(!$Enderecos->checarEnderecoUsuario()){
                                     $Enderecos->cadastrar($db_endereco,0);
                                     Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
