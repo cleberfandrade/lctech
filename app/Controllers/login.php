@@ -15,7 +15,7 @@ class login extends View
     public function __construct()
     {
         $this->dados['title'] = 'Login | Acesso Administrativo';
-        //Sessao::logado();
+        Sessao::logado();
     }
     public function index()
     { 
@@ -97,85 +97,94 @@ class login extends View
         $this->dados['title'] = 'LC-TECH | Cadastre-se';
         $this->render('site/cadastro', $this->dados);
     }
-    public function novo_cadasto()
-    {
-        dump('ok');
-        exit;
+   public function novo_cadastro()
+   {
         $this->dados['title'] = 'LC-TECH | Cadastre-se';
         $Users = new Usuarios(); 
         $Check = new Check();
         $Url = new Url();
+        //Recupera os dados enviados
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-        if (isset($_POST) && isset($dados['acesso'])) {
-            
-            if (!empty($dados['nome_usuario']) 
-            && !empty($dados['sobrenome_usuario']) 
-            && !empty($dados['email_usuario']) 
-            && !empty($dados['senha_usuario'])
-            && !empty($dados['conf_senha_usuario'])
-            && !empty($dados['logradouro_usuario']) 
-            && !empty($dados['numero_usuario']) 
-            && !empty($dados['bairro_usuario']) 
-            && !empty($dados['cidade_usuario']) 
-            && !empty($dados['sexo_usuario']))
-            {
-                
-                //Validar Dados
-                $dados_usuario['nome_usuario'] = $Check->checarString($dados['nome_usuario']);
-                $dados_usuario['sobrenome_usuario'] = $Check->checarString($dados['sobrenome_usuario']);
-                $dados_usuario['email_usuario'] = $Check->checarString($dados['email_usuario']);
-                $dados_usuario['sexo_usuario'] = $Check->checarString($dados['sexo_usuario']);
-
-                $dados_usuario['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
-                $dados_usuario['conf_senha_usuario'] = $Check->checarString($dados['conf_senha_usuario']);
-
-                $dados_endereco['logradouro_usuario'] = $Check->checarString($dados['logradouro_usuario']);
-                $dados_endereco['numero_usuario'] = $Check->checarString($dados['numero_usuario']);
-                $dados_endereco['bairro_usuario'] = $Check->checarString($dados['bairro_usuario']);
-                $dados_endereco['cidade_usuario'] = $Check->checarString($dados['cidade_usuario']);
-                
-                if(!$Check->checarEmail($dados_usuario['email_usuario'])){
+        if (isset($_POST) && isset($dados['cadastro'])) {
+            //Verifica se os campos foram todos preenchidos
+            if (!empty($dados['nome_usuario']) && !empty($dados['sobrenome_usuario']) && !empty($dados['email_usuario']) && !empty($dados['senha_usuario']) && !empty($dados['conf_senha_usuario']) && !empty($dados['logradouro_usuario']) && !empty($dados['numero_usuario']) && !empty($dados['bairro_usuario']) && !empty($dados['cidade_usuario']) && !empty($dados['sexo_usuario'])){
+                 //Validar Dados
+                 $dados_usuario['nome_usuario'] = $Check->checarString($dados['nome_usuario']);
+                 $dados_usuario['sobrenome_usuario'] = $Check->checarString($dados['sobrenome_usuario']);
+                 $dados_usuario['email_usuario'] = $Check->checarString($dados['email_usuario']);
+                 $dados_usuario['sexo_usuario'] = $Check->checarString($dados['sexo_usuario']);
+ 
+                 $dados_usuario['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
+                 $dados_usuario['conf_senha_usuario'] = $Check->checarString($dados['conf_senha_usuario']);
+ 
+                 $dados_endereco['logradouro_usuario'] = $Check->checarString($dados['logradouro_usuario']);
+                 $dados_endereco['numero_usuario'] = $Check->checarString($dados['numero_usuario']);
+                 $dados_endereco['bairro_usuario'] = $Check->checarString($dados['bairro_usuario']);
+                 $dados_endereco['cidade_usuario'] = $Check->checarString($dados['cidade_usuario']);
+                 //Verificar se é um email no formato válido
+                 if($Check->checarEmail($dados_usuario['email_usuario'])){
                     
                     $Users->setEmailUsuario($dados_usuario['email_usuario']);
-                    if($dados_usuario['senha_usuario'] == $dados_usuario['conf_senha_usuario']){
-                        $db = array(
-                            'USU_NOME' => $dados_usuario['nome_usuario'],
-                            'USU_SOBRENOME' => $dados_usuario['sobrenome_usuario'],
-                            'USU_EMAIL' => $dados_usuario['email_usuario'],
-                            'USU_DT_CADASTRO' => date('Y-m-d H:i:s'),
-                            'USU_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
-                            'EMP_COD' => 0,
-                            'USU_STATUS' => 1
-                        );
-                        $db['USU_SENHA'] = $Check->codificarSenha($dados_usuario['senha_usuario']);
-                        $id = $Users->cadastrar($db,0);
-                        if($id){
-                            $dados_endereco += array(
-                                'USU_COD' => $id,
-                                'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
-                                'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00')
+                    //Checar se o email já está cadastrado no sistema
+                    if(!$Users->checarEmailUsuario()){
+                        if($dados_usuario['senha_usuario'] == $dados_usuario['conf_senha_usuario']){
+                            $db = array(
+                                'EMP_COD' => 0,
+                                'USU_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                                'USU_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                                'USU_NOME' => $dados_usuario['nome_usuario'],
+                                'USU_SOBRENOME' => $dados_usuario['sobrenome_usuario'],
+                                'USU_SEXO' => $dados_usuario['sexo_usuario'],
+                                'USU_EMAIL' => $dados_usuario['email_usuario'],
+                                'USU_STATUS' => 1
                             );
-                            $Enderecos = new Enderecos;
-                            $Enderecos->cadastrar($dados_endereco,0);
-                            Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
-                        }else{
-                            Sessao::alert('ERRO',' 5- Erro ao cadastrar novo usuário, contate a manutenção!','fs-4 alert alert-danger');
+                            
+                            $db['USU_SENHA'] = $Check->codificarSenha($dados_usuario['senha_usuario']);
+    
+                            $id = $Users->cadastrar($db,0);
+                            if($id){
+                                $db_endereco = array(
+                                    'USU_COD' => $id,
+                                    'EMP_COD' => 0,
+                                    'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                                    'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                                    'END_LOGRADOURO' =>  $dados_endereco['logradouro_usuario'],
+                                    'END_NUMERO' =>  $dados_endereco['numero_usuario'],
+                                    'END_BAIRRO' =>  $dados_endereco['bairro_usuario'],
+                                    'END_CIDADE' =>  $dados_endereco['cidade_usuario'],
+                                    'USU_STATUS' => 1
+                                );
+                                $Enderecos = new Enderecos;
+                                $Enderecos->setCodUsuario($id);
+                                //dump($id);
+                                //dump($db_endereco);
+                                //exit;
+                                if(!$Enderecos->checarEnderecoUsuario()){
+                                    $Enderecos->cadastrar($db_endereco,0);
+                                    Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                                }else {
+                                    Sessao::alert('OK','Cadastro efetuado com sucesso, atualize seu endereco','fs-4 alert alert-success');
+                                }
+                            }else{
+                                Sessao::alert('ERRO',' 6- Erro ao cadastrar novo usuário, contate a manutenção!','fs-4 alert alert-danger');
+                            }
+                        }else {
+                             Sessao::alert('ERRO',' 5- Senha não confere com a confirmação de senha, digite novamente!','fs-4 alert alert-danger');
                         }
                     }else {
-                         Sessao::alert('ERRO',' 4- Senha não confere com a confirmação de senha, digite novamente!','fs-4 alert alert-danger');
+                        Sessao::alert('ERRO',' 4- Email já cadastrado, tente recuperar a senha, ou entre em contato conosco!','alert alert-danger');
                     }
                 }else{
-                    Sessao::alert('ERRO',' 3- Email já cadastrado, tente recuperar a senha, ou entre em contato conosco!','alert alert-danger');
+                    Sessao::alert('ERRO',' 3- Email informado é inválido, informe um email válido!','alert alert-danger');
                 }
             }else{
                 Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
-            } 
+            }  
         }else{
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','alert alert-danger');
         } 
         $this->render('site/cadastro', $this->dados);
-    }
-   
+   }
     public function recover()
     {
         $this->dados['title'] = 'Solicitar nova senha | IPBSA';

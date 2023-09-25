@@ -37,6 +37,19 @@ class Enderecos extends Model
             return false;
         }
     }
+    public function checarEnderecoUsuario()
+    {
+        $parametros = " WHERE USU_COD='{$this->codUsuario}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            //Já existe
+            return $resultado;
+        } else {
+            //Nao existe
+            return false;
+        }
+    }
     public function alterar(array $dados, $ver = 0)
     {
         $parametros = " WHERE USU_COD='{$this->codUsuario}' AND END_COD=";

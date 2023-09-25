@@ -16,13 +16,11 @@ class Usuarios extends Model
     public function setEmailUsuario($email)
     {
         $this->email = $email;
-
         return $this;
     }
     public function setSenhaUsuario($senha)
     {
         $this->senha = $senha;
-
         return $this;
     }
     public function setSexoUsuario($sexo)
@@ -33,7 +31,6 @@ class Usuarios extends Model
     public function setCodUsuario($codUsuario)
     {
         $this->codigo = $codUsuario;
-
         return $this;
     }
     public function cadastrar(array $dados, $ver = 0)
@@ -97,13 +94,15 @@ class Usuarios extends Model
     }
     public function checarEmailUsuario()
     {
-        $parametros = " WHERE USU_EMAIL='{$this->email}'";
+        $parametros = "WHERE USU_EMAIL='{$this->email}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
+            //Nao existe
             return false;
         } else {
-            return true;
+            //Já existe
+            return $resultado;
         }
     }
     private static function checarSenhaAcesso($senhaUsuario, $senhaDB)
