@@ -7,8 +7,7 @@ class clientes extends Model
 { 
     private $tabela = 'tb_clientes';
     private $Model = '';
-    private $Informacoes = '';
-    private $codigo = 1;
+    private $codigo,$codEmpresa;
 
     public function __construct()
     {
@@ -22,7 +21,18 @@ class clientes extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = "WHERE CLI_COD=";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND CLI_COD=";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            return $resultado[0];
+        } else {
+            return false;
+        }
+    }
+    public function listarTodos($ver = 0)
+    {
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} ORDER BY CLI_NOME";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
