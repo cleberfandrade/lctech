@@ -1,27 +1,21 @@
 <?php
 namespace App\Controllers;
 
-
+use Core\Model;
 use Core\View;
 use Libraries\Check;
 use Libraries\Url;
 use Libraries\Sessao;
-use App\Models\usuarios;
-
+use App\Models\Usuarios;
+use App\Models\Enderecos;
 
 class login extends View
 {
     private $dados = [];
     public function __construct()
     {
-       
-        //$info = New informacoesModel;
-       // $informacoes = $info->listar();
-       // foreach ($informacoes as $key => $value) {
-        //    $this->dados[$key] = $value;
-        //}
         $this->dados['title'] = 'Login | Acesso Administrativo';
-        Sessao::logado();
+        //Sessao::logado();
     }
     public function index()
     { 
@@ -29,8 +23,7 @@ class login extends View
     }
     public function auth()
     {
-        $Users = new usuarios();
-       
+        dump('ok');
         $Check = new Check();
         $Usuarios = new Usuarios();
         $Url = new Url();
@@ -42,10 +35,10 @@ class login extends View
                 $dados['email_usuario'] = $Check->checarString($dados['email_usuario']);
                 $dados['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
                 if($Check->checarEmail($dados['email_usuario'])){
-                    $Users->setEmailUsuario($dados['email_usuario']);
+                    $Usuarios->setEmailUsuario($dados['email_usuario']);
                     //$senha = $Check->codificarSenha($dados['senha_usuario']);
-                    $Users->setSenhaUsuario($dados['senha_usuario']);
-                    $user = $Users->Acessar(0);
+                    $Usuarios->setSenhaUsuario($dados['senha_usuario']);
+                    $user = $Usuarios->Acessar(0);
                     if(!empty($user) && $user != 0){
                         if(Sessao::criarSessao($user)){
                             Sessao::alert('OK',' Acesso efetuado com sucesso!','m-0 fs-4 alert alert-success');
@@ -103,21 +96,19 @@ class login extends View
     public function cadastro()
     {
         $this->dados['title'] = 'LC-TECH | Cadastre-se';
-        Sessao::logado();
         $this->render('site/cadastro', $this->dados);
     }
     public function novo_cadasto()
     {
+        dump('ok');
+        exit;
         $this->dados['title'] = 'LC-TECH | Cadastre-se';
-        Sessao::logado();
-        $Users = new usuarios();
-       
+        $Users = new Usuarios(); 
         $Check = new Check();
         $Url = new Url();
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
         if (isset($_POST) && isset($dados['acesso'])) {
             
-
             if (!empty($dados['nome_usuario']) 
             && !empty($dados['sobrenome_usuario']) 
             && !empty($dados['email_usuario']) 
@@ -129,36 +120,45 @@ class login extends View
             && !empty($dados['cidade_usuario']) 
             && !empty($dados['sexo_usuario']))
             {
-                //Validar Dados
-                $dados['nome_usuario'] = $Check->checarString($dados['nome_usuario']);
-                $dados['sobrenome_usuario'] = $Check->checarString($dados['sobrenome_usuario']);
-                $dados['email_usuario'] = $Check->checarString($dados['email_usuario']);
-                $dados['sexo_usuario'] = $Check->checarString($dados['sexo_usuario']);
-
-                $dados['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
-                $dados['conf_senha_usuario'] = $Check->checarString($dados['conf_senha_usuario']);
-
-                $dados['logradouro_usuario'] = $Check->checarString($dados['senha_usuario']);
-                $dados['numero_usuario'] = $Check->checarString($dados['numero_usuario']);
-                $dados['bairro_usuario'] = $Check->checarString($dados['bairro_usuario']);
-                $dados['cidade_usuario'] = $Check->checarString($dados['cidade_usuario']);
                 
-                if(!$Check->checarEmail($dados['email_usuario'])){
-                    
-                    $Users->setEmailUsuario($dados['email_usuario']);
-                    if($dados['senha_usuario'] == $dados['conf_senha_usuario']){
-                        $dados = array(
-                            'USU_NOME' => $dados['nome_usuario'],
-                            'USU_SOBRENOME' => $dados['sobrenome_usuario'],
-                            'USU_EMAIL' => $dados['email_usuario'],
-                            'USU_DT_CADASTRO' => date('Y-m-d H:i:s'),
-                            'EMP_COD' => 0,
-                            'USU_STATUS' => 'ATIVADO'
-                        );
-                        $dados['USU_SENHA'] = $Check->codificarSenha($dados['senha_usuario']);
+                //Validar Dados
+                $dados_usuario['nome_usuario'] = $Check->checarString($dados['nome_usuario']);
+                $dados_usuario['sobrenome_usuario'] = $Check->checarString($dados['sobrenome_usuario']);
+                $dados_usuario['email_usuario'] = $Check->checarString($dados['email_usuario']);
+                $dados_usuario['sexo_usuario'] = $Check->checarString($dados['sexo_usuario']);
 
-                        if($Users->cadastrar($dados,0)){
-                                Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                $dados_usuario['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
+                $dados_usuario['conf_senha_usuario'] = $Check->checarString($dados['conf_senha_usuario']);
+
+                $dados_endereco['logradouro_usuario'] = $Check->checarString($dados['logradouro_usuario']);
+                $dados_endereco['numero_usuario'] = $Check->checarString($dados['numero_usuario']);
+                $dados_endereco['bairro_usuario'] = $Check->checarString($dados['bairro_usuario']);
+                $dados_endereco['cidade_usuario'] = $Check->checarString($dados['cidade_usuario']);
+                
+                if(!$Check->checarEmail($dados_usuario['email_usuario'])){
+                    
+                    $Users->setEmailUsuario($dados_usuario['email_usuario']);
+                    if($dados_usuario['senha_usuario'] == $dados_usuario['conf_senha_usuario']){
+                        $db = array(
+                            'USU_NOME' => $dados_usuario['nome_usuario'],
+                            'USU_SOBRENOME' => $dados_usuario['sobrenome_usuario'],
+                            'USU_EMAIL' => $dados_usuario['email_usuario'],
+                            'USU_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                            'USU_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                            'EMP_COD' => 0,
+                            'USU_STATUS' => 1
+                        );
+                        $db['USU_SENHA'] = $Check->codificarSenha($dados_usuario['senha_usuario']);
+                        $id = $Users->cadastrar($db,0);
+                        if($id){
+                            $dados_endereco += array(
+                                'USU_COD' => $id,
+                                'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                                'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00')
+                            );
+                            $Enderecos = new Enderecos;
+                            $Enderecos->cadastrar($dados_endereco,0);
+                            Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
                         }else{
                             Sessao::alert('ERRO',' 5- Erro ao cadastrar novo usuário, contate a manutenção!','fs-4 alert alert-danger');
                         }

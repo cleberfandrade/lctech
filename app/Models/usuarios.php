@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Core\Model;
 
-class usuarios extends Model
+class Usuarios extends Model
 {
     private $tabela = 'tb_usuarios';
     private $Model = '';
