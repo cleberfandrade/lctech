@@ -30,6 +30,7 @@ class login extends View
             
             if (!empty($dados['email_usuario']) && !empty($dados['senha_usuario'])) {
                 //Validar Dados
+               
                 $dados['email_usuario'] = $Check->checarString($dados['email_usuario']);
                 $dados['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
                 if($Check->checarEmail($dados['email_usuario'])){
@@ -37,10 +38,14 @@ class login extends View
                     //$senha = $Check->codificarSenha($dados['senha_usuario']);
                     $Usuarios->setSenhaUsuario($dados['senha_usuario']);
                     $user = $Usuarios->Acessar(0);
+                    
                     if(!empty($user) && $user != 0){
+                        
                         if(Sessao::criarSessao($user)){
                             Sessao::alert('OK',' Acesso efetuado com sucesso!','m-0 fs-4 alert alert-success');
-                            $Url->redirecionar('admin/index');
+                            //Redirecionando o usuário para a página painel do sistema admin/painel
+                            $Url->redirecionar('admin/painel');
+                            //$this->render('admin/painel', $this->dados);
                         }else{
                             Sessao::alert('ERRO',' 5- O sistema encontroiu um erro interno, contate o administrador','alert alert-danger');
                         }
@@ -73,7 +78,6 @@ class login extends View
         }
         unset($_SESSION['USU_COD']);
         session_destroy();
-
         Url::redirecionar('site/index');
     }
     public function lembrar()
@@ -123,9 +127,10 @@ class login extends View
                  //Verificar se é um email no formato válido
                  if($Check->checarEmail($dados_usuario['email_usuario'])){
                     
+                    //Checar se o email já está cadastrado no sistema 
                     $Users->setEmailUsuario($dados_usuario['email_usuario']);
-                    //Checar se o email já está cadastrado no sistema
                     if(!$Users->checarEmailUsuario()){
+                        exit;
                         if($dados_usuario['senha_usuario'] == $dados_usuario['conf_senha_usuario']){
                             $db = array(
                                 'EMP_COD' => 0,

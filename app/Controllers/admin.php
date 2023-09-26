@@ -21,4 +21,11 @@ class admin extends View
         $this->dados['usuario'] = $Usuarios->listar(0);
         $this->render('admin/painel', $this->dados);
     }
+    public function painel()
+    {
+        $Usuarios = new Usuarios;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $this->render('admin/painel', $this->dados);
+    }
 }

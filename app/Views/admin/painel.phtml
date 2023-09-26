@@ -1,11 +1,32 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAINEL ADMINISTRATIVO</title>
-</head>
-<body>
-    <h1>Olá mundo</h1>
+<?php 
+use Libraries\Sessao;
+include_once 'inc/cabecalho.phtml'; 
+?>
+<body class="" onload="atualizarDataHora();">
+    <div class="d-flex" id="wrapper">
+        <?php include_once 'inc/menu_lateral.phtml'; ?>
+        <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <?php include_once 'inc/menu_topo.phtml'; ?>
+        <div class="container-fluid p-0">
+            <header class="bg-12 py-3">
+                <section class="container px-5">
+                    <div class="row gx-5 align-items-center justify-content-center">
+                        <div class="col-lg-10 col-xl-10 col-xxl-10">
+                            <div class="my-3 text-center text-xl-start">
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>painel"><h1 class="display-5 text-center fw-bolder text-uppercase text-white mb-2"><i class="bi bi-rss"></i> Painel <span class="text-success">Administrativo</span></h1></a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </header>
+            <section class="bg-light py-2">
+            <?= Sessao::alert('OK'); ?>
+            <?= Sessao::alert('ERRO'); ?>
+                <h1>Olá mundo</h1>
+            </section>
+            <?php include_once 'inc/rodape.phtml';?>
+        </div>
+    </div>
 </body>
 </html>

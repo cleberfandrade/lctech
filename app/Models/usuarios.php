@@ -98,11 +98,11 @@ class Usuarios extends Model
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
+            //Já existe
+            return $resultado[0];
+        } else {
             //Nao existe
             return false;
-        } else {
-            //Já existe
-            return $resultado;
         }
     }
     private static function checarSenhaAcesso($senhaUsuario, $senhaDB)
