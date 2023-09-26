@@ -164,7 +164,7 @@ class login extends View
                                     $Enderecos->cadastrar($db_endereco,0);
                                     Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
                                 }else {
-                                    Sessao::alert('OK','Cadastro efetuado com sucesso, atualize seu endereco','fs-4 alert alert-success');
+                                    Sessao::alert('OK','Cadastro efetuado com sucesso, atualize seu endereço','fs-4 alert alert-success');
                                 }
                             }else{
                                 Sessao::alert('ERRO',' 6- Erro ao cadastrar novo usuário, contate a manutenção!','fs-4 alert alert-danger');

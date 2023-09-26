@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Core\Model;
 
-class modlos extends Model
+class Modulos extends Model
 { 
     private $tabela = 'tb_modulos';
     private $Model = '';
