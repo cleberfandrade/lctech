@@ -1,3 +1,4 @@
+/*
 function construirArray(qtdElementos) {
     this.length = qtdElementos
 }
@@ -89,7 +90,7 @@ function atualizarDataHora() {
     setTimeout("atualizarDataHora()", 1000);
     setTimeout("atualizarHora()", 1000);
 }
-
+*/
 
 window.addEventListener('DOMContentLoaded', event => {
 
