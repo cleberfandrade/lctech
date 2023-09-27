@@ -13,7 +13,7 @@ class empresa extends View
     private $dados = [];
     public function __construct()
     {
-        $this->dados['title'] = 'EMPRESA | LC-TECH';
+        $this->dados['title'] = 'MINHA EMPRESA | LC-TECH';
         Sessao::naoLogado();
     }
     public function index()

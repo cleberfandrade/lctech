@@ -67,6 +67,15 @@ class Estoque extends Model
             return false;
         }
     }
+    public function cadastrar(array $dados, $ver = 0)
+    {
+        $ok = $this->Model->cadastrar($dados, $ver);
+        if ($ok) {
+            return $ok;
+        } else {
+            return false;
+        }
+    }
     public function alterar(array $dados, $ver = 0)
     {
         $parametros = " WHERE EST_COD=";
