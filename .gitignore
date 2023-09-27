@@ -1,2 +1,4 @@
-/core
-/libraries
+/core/.env
+/core/Config.php
+/libraries/Sessao.php
+/libraries/guardar.txt
