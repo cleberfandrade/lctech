@@ -13,8 +13,8 @@ class login extends View
     private $dados = [];
     public function __construct()
     {
-        $this->dados['title'] = 'Login | Acesso Administrativo';
         Sessao::logado();
+        $this->dados['title'] = 'Login | Acesso Administrativo';
     }
     public function index()
     { 
@@ -38,16 +38,24 @@ class login extends View
                     //$senha = $Check->codificarSenha($dados['senha_usuario']);
                     $Usuarios->setSenhaUsuario($dados['senha_usuario']);
                     $user = $Usuarios->Acessar(0);
-                    
+                    //checar se retornou algum usuario
                     if(!empty($user) && $user != 0){
-                        
-                        if(Sessao::criarSessao($user)){
-                            Sessao::alert('OK',' Acesso efetuado com sucesso!','m-0 fs-4 alert alert-success');
-                            //Redirecionando o usuário para a página painel do sistema admin/painel
-                            $Url->redirecionar('admin/painel');
-                            //$this->render('admin/painel', $this->dados);
-                        }else{
-                            Sessao::alert('ERRO',' 5- O sistema encontroiu um erro interno, contate o administrador','alert alert-danger');
+                        //Checar se o status do usuario == 1: ativado/desativado
+                        if($user['USU_STATUS'] == 1){
+                           
+                            //Criando sessao para acessar a area administrativa
+                            if(Sessao::criarSessao($user)){
+                                Sessao::alert('OK',' Bem vindo(a) '.$_SESSION['USU_NOME'].'','m-0 fs-4 alert alert-success');
+                                //Sessao::alert('OK',' Acesso efetuado com sucesso!','m-0 fs-4 alert alert-success');
+                                //Redirecionando o usuário para a página painel do sistema admin/painel
+                                header("Location:".DIRPAGE."admin");
+                                //$Url->redirecionar('admin/painel');
+                                //$this->render('admin/painel', $this->dados);
+                            }else{
+                                Sessao::alert('ERRO',' 6- O sistema encontroiu um erro interno, contate o administrador','alert alert-danger');
+                            }
+                        }else {
+                            Sessao::alert('ERRO',' 5- Usuário desativado, contate o administrador','alert alert-danger');
                         }
                     }else{
                         Sessao::alert('ERRO',' 4- Usuário ou senha inválido(s)!','alert alert-danger');
@@ -65,16 +73,16 @@ class login extends View
     }
     public function sair()
     {
-        
+        Sessao::logado();
         $Usuarios = new usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $dados = array(
-            'USU_DT_ULT_ACESSO' => date('Y-m-d H:i:s')
+            'USU_DT_ATUALIZACAO' => date('Y-m-d H:i:s')
         );
         if($Usuarios->alterar($dados,0)){
-            //Sessao::alert('OK','Acesso encerrado com sucesso!','fs-4 alert alert-success');
+            Sessao::alert('OK','Acesso encerrado com sucesso!','fs-4 alert alert-success');
         }else{
-            //Sessao::alert('OK','Acesso encerrado!','fs-4 alert alert-success');
+            Sessao::alert('OK','Acesso encerrado!','fs-4 alert alert-success');
         }
         unset($_SESSION['USU_COD']);
         session_destroy();
