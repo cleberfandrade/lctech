@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Core\Model;
 
-class estoque extends Model
+class Estoque extends Model
 { 
     private $tabela = 'tb_estoque';
     private $Model = '';
