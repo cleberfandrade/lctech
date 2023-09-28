@@ -7,8 +7,7 @@ class vendas extends Model
 { 
     private $tabela = 'tb_vendas';
     private $Model = '';
-    private $Informacoes = '';
-    private $codigo = 1;
+    private $codigo,$codEmpresa,$codProduto;
 
     public function __construct()
     {
@@ -18,6 +17,16 @@ class vendas extends Model
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
+        return $this;
+    }
+    public function setCodEmpresa($codEmpresa)
+    {
+        $this->codEmpresa = $codEmpresa;
+        return $this;
+    }
+    public function setCodProduto($codProduto)
+    {
+        $this->codProduto = $codProduto;
         return $this;
     }
     public function listar($ver = 0)
@@ -31,6 +40,15 @@ class vendas extends Model
             return false;
         }
     }
+    public function cadastrar(array $dados, $ver = 0)
+    {
+        $ok = $this->Model->cadastrar($dados, $ver);
+        if ($ok) {
+            return $ok;
+        } else {
+            return false;
+        }
+    }
     public function alterar(array $dados, $ver = 0)
     {
         $parametros = " WHERE VEN_COD=";
@@ -38,6 +56,19 @@ class vendas extends Model
         $this->Model->setCodigo($this->codigo);
         $ok = false;
         $ok = $this->Model->alterar($dados, $ver);
+        if ($ok) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function excluir(array $dados, $ver = 0)
+    {
+        $parametros = "WHERE VEN_COD=";
+        $this->Model->setParametros($parametros);
+        $this->Model->setCodigo($this->codigo);
+        $ok = false;
+        $ok = $this->Model->deletar($dados, $ver);
         if ($ok) {
             return true;
         } else {

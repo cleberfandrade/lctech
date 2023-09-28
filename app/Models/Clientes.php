@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Core\Model;
 
-class clientes extends Model
+class Clientes extends Model
 { 
     private $tabela = 'tb_clientes';
     private $Model = '';
@@ -37,6 +37,15 @@ class clientes extends Model
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
             return $resultado[0];
+        } else {
+            return false;
+        }
+    }
+    public function cadastrar(array $dados, $ver = 0)
+    {
+        $ok = $this->Model->cadastrar($dados, $ver);
+        if ($ok) {
+            return $ok;
         } else {
             return false;
         }

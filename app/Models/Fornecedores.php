@@ -3,9 +3,9 @@ namespace App\Models;
 
 use Core\Model;
 
-class fornecedores extends Model
+class Fornecedores extends Model
 { 
-    private $tabela = 'tb_empresa';
+    private $tabela = 'tb_fornecedores';
     private $Model = '';
     private $Informacoes = '';
     private $codInformacoes = 1;
@@ -27,6 +27,15 @@ class fornecedores extends Model
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
             return $resultado[0];
+        } else {
+            return false;
+        }
+    }
+    public function cadastrar(array $dados, $ver = 0)
+    {
+        $ok = $this->Model->cadastrar($dados, $ver);
+        if ($ok) {
+            return $ok;
         } else {
             return false;
         }

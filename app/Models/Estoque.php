@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Core\Model;
 
-class estoque extends Model
+class Estoque extends Model
 { 
     private $tabela = 'tb_estoque';
     private $Model = '';
@@ -63,6 +63,15 @@ class estoque extends Model
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
             return $resultado;
+        } else {
+            return false;
+        }
+    }
+    public function cadastrar(array $dados, $ver = 0)
+    {
+        $ok = $this->Model->cadastrar($dados, $ver);
+        if ($ok) {
+            return $ok;
         } else {
             return false;
         }

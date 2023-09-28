@@ -7,7 +7,7 @@ class Modulos extends Model
 { 
     private $tabela = 'tb_modulos';
     private $Model = '';
-    private $codigo,$codUsuario;
+    private $codigo,$codUsuario,$codEmpresa;
     public function __construct()
     {
         $this->Model = new Model();
@@ -21,6 +21,11 @@ class Modulos extends Model
     public function setCodUsuario($codUsuario)
     {
         $this->codUsuario = $codUsuario;
+        return $this;
+    }
+    public function setCodEmpresa($codEmpresa)
+    {
+        $this->codEmpresa = $codEmpresa;
         return $this;
     }
     public function listar($ver = 0)

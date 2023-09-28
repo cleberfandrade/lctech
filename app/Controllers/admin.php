@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-use Libraries\Util;
 use Core\View;
 use App\Models\Usuarios;
 use Libraries\Sessao;
@@ -11,8 +10,9 @@ class admin extends View
     private $dados = [];
     public function __construct()
     {
-        $this->dados['title'] = 'PAINEL | LC-TECH';
         Sessao::naoLogado();
+        $this->dados['title'] = 'PAINEL | LC-TECH';
+        
     }
     public function index()
     {
