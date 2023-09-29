@@ -19,7 +19,7 @@ class site extends View
     }
     public function quem_somos()
     {
-        //$this->dados['title'] = 'Quem Somos | IPB de Santo Anastácio-SP';
+        $this->dados['title'] = 'LC-TECH | Quem Somos';
         //$Documentos = new documentosModel();  
         //$Documentos->setDiretorio('docs/ipb');
         //$this->dados['diretorio'] = 'ipb/';

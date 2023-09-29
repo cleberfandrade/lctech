@@ -26,12 +26,12 @@ class modulos extends View
     }
     public function alterar()
     {
-        $Usuarios = new usuarios;
+        $Usuarios = new Usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0)
         
-        $Modulos = new Modulos();
-        $Modulos->setCodigo(0);
+        $modlos = new modlos;
+        $modlos->setCodigo(0);
         $post = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         if (isset($_POST) && isset($post['ALTERAR_NIVEL'])) {
