@@ -12,7 +12,7 @@ include_once 'inc/cabecalho.phtml'; ?>
                 <div class="row gx-5 align-items-center justify-content-center">
                     <div class="col-lg-10 col-xl-10 col-xxl-10">
                         <div class="my-2 text-center text-xl-start">
-                            <h1 class="display-5 text-center fw-bolder text-uppercase text-success mb-2">Cadastre-se <span class="text-success"></span></h1>
+                        <a class="text-decoration-none" href="<?= DIRPAGE; ?>site/cadastro"><h3 class="display-5 text-center fw-bolder text-uppercase text-success mb-2">Cadastre-se <span class="text-success"></span></h3></a>
                         </div>
                     </div>
                 </div>
@@ -40,8 +40,8 @@ include_once 'inc/cabecalho.phtml'; ?>
                         </div> 
                         <div class="row text-center mb-3">
                             <div class="form-floating col-8 mb-3">
-                                <input type="text" class="form-control maiusculo" id="floatingInput" name="logradouro_usuario" placeholder="Informe seu endereco" value="<?= isset($_POST['logradouro_usuario']) ? $_POST['logradouro_usuario'] : ''; ?>">
-                                <label for="floatingInput">Seu Endereco</label>
+                                <input type="text" class="form-control maiusculo" id="logradouro" name="logradouro_usuario" placeholder="Informe seu endereço" value="<?= isset($_POST['logradouro_usuario']) ? $_POST['logradouro_usuario'] : ''; ?>">
+                                <label for="logradouro">Seu Endereço</label>
                             </div>
                             <div class="form-floating col-4 mb-3">
                                 <input type="number" class="form-control" id="floatingInput" name="numero_usuario" placeholder="n°" value="<?= isset($_POST['numero_usuario']) ? $_POST['numero_usuario'] : ''; ?>">
@@ -56,27 +56,33 @@ include_once 'inc/cabecalho.phtml'; ?>
                                 <label for="floatingInput">Cidade</label>
                             </div> 
                         </div> 
-                        <div class="row col-12 text-center mb-3">
-                            <label for="inputPassword6" class="col-form-label">Seu sexo</label>
-                            <div class="mx-auto text-center">   
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="sexo_usuario" id="flexRadioDefault2" value="1" checked>
-                                    <label class="form-check-label" for="flexRadioDefault2">
-                                        Masculino
-                                    </label>
+                        <div class="row">
+                            <hr>
+                            <div class="col-5 text-center mb-3">
+                                <label for="inputPassword6" class="col-form-label">Seu Sexo</label>
+                                <div class="mx-auto text-center">   
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="sexo_usuario" id="flexRadioDefault2" value="1" checked>
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Masculino
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="sexo_usuario" value="2" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Feminino
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="sexo_usuario" value="0" id="flexRadioDefault1">
-                                    <label class="form-check-label" for="flexRadioDefault1">
-                                        Feminino
-                                    </label>
+                            </div> 
+                            <div class="col-7 text-center mb-3">
+                                <label for="inputPassword6" class="col-form-label">Email</label>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="email" name="email_usuario" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['email_usuario']) ? $_POST['email_usuario'] : ''; ?>">
+                                    <label for="email">Seu Email</label>
                                 </div>
                             </div>
                         </div> 
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="floatingInput" name="email_usuario" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['email_usuario']) ? $_POST['email_usuario'] : ''; ?>">
-                            <label for="floatingInput">Seu Email</label>
-                        </div>
                         <div class="row">
                             <div class="col-6 form-floating mb-3">
                                 <input type="password" class="form-control" name="senha_usuario" id="floatingPassword" placeholder="Digite sua senha">
@@ -87,7 +93,7 @@ include_once 'inc/cabecalho.phtml'; ?>
                                 <label for="floatingPassword">Confirme a Senha</label>
                             </div>
                         </div>
-                        <button class="w-100 btn btn-lg text-uppercase btn-success" name="cadastro" value="<?= $_SESSION['cadastro'] ?>" type="submit"><i class="fa fa-users"></i> Cadastrar</button>
+                        <button class="w-100 btn btn-lg text-uppercase btn-success" name="cadastro" value="<?= $_SESSION['cadastro'] ?>" type="submit"><i class="fa fa-save"></i> Cadastrar</button>
                         <hr class="my-4 text-white">
                         <div class="form-floating mb-3 text-center">
                             <a href="<?= DIRPAGE ?>login" class="text-white text-uppercase  text-decoration-none">Voltar ao acesso</a>

@@ -1,0 +1,72 @@
+<?php 
+use Libraries\Sessao;
+session_start();
+include_once 'app/Views/admin/inc/cabecalho.phtml'; 
+?>
+<body class="">
+    <div class="d-flex" id="wrapper">
+        <?php include_once 'app/Views/admin/inc/menu_lateral.phtml'; ?>
+        <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <?php include_once 'app/Views/admin/inc/menu_topo.phtml'; ?>
+        <div class="container-fluid bg-light p-0">
+            <header class="py-3">
+                <section class="container px-3">
+                    <div class="row gx-3 align-items-center justify-content-center">
+                        <div class="col-lg-10 col-xl-10 col-xxl-10">
+                            <div class="my-3 text-center text-xl-start">
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastro"><h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Cadastros</span></h3></a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </header>
+            <section class="container py-2">
+              <hr>
+              <?= Sessao::alert('OK'); ?>
+              <?= Sessao::alert('ERRO'); ?>
+            </section>
+            <section class="container text-center col-12 py-2">
+                <div class="row align-items-center col-12">
+                    <div class="card text-center m-3" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">CLIENTES</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="card text-center m-3" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">FORNECEDORES</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="card text-center m-3" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">USUÁRIOS</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="card text-center m-3" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">PRODUTOS</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="opacity-25 card text-center m-3" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">SERVIÇOS</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
+    </div>
+</body>
+</html>

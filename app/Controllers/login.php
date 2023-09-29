@@ -30,7 +30,6 @@ class login extends View
             
             if (!empty($dados['email_usuario']) && !empty($dados['senha_usuario'])) {
                 //Validar Dados
-               
                 $dados['email_usuario'] = $Check->checarString($dados['email_usuario']);
                 $dados['senha_usuario'] = $Check->checarString($dados['senha_usuario']);
                 if($Check->checarEmail($dados['email_usuario'])){
@@ -103,11 +102,6 @@ class login extends View
        
         $this->render('site/lembrar', $this->dados);
     }
-    public function cadastro()
-    {
-        $this->dados['title'] = 'LC-TECH | Cadastre-se';
-        $this->render('site/cadastro', $this->dados);
-    }
    public function novo_cadastro()
    {
         $this->dados['title'] = 'LC-TECH | Cadastre-se';
@@ -118,7 +112,8 @@ class login extends View
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
         if (isset($_POST) && isset($dados['cadastro'])) {
             //Verifica se os campos foram todos preenchidos
-            if (!empty($dados['nome_usuario']) && !empty($dados['sobrenome_usuario']) && !empty($dados['email_usuario']) && !empty($dados['senha_usuario']) && !empty($dados['conf_senha_usuario']) && !empty($dados['logradouro_usuario']) && !empty($dados['numero_usuario']) && !empty($dados['bairro_usuario']) && !empty($dados['cidade_usuario']) && !empty($dados['sexo_usuario'])){
+            unset($dados['cadastro']);
+            if (!empty($dados['nome_usuario']) && !empty($dados['sobrenome_usuario']) && !empty($dados['logradouro_usuario']) && !empty($dados['numero_usuario']) && !empty($dados['bairro_usuario']) && !empty($dados['cidade_usuario']) && !empty($dados['sexo_usuario']) && !empty($dados['email_usuario']) && !empty($dados['senha_usuario']) && !empty($dados['conf_senha_usuario'])){
                  //Validar Dados
                  $dados_usuario['nome_usuario'] = $Check->checarString($dados['nome_usuario']);
                  $dados_usuario['sobrenome_usuario'] = $Check->checarString($dados['sobrenome_usuario']);
@@ -138,7 +133,7 @@ class login extends View
                     //Checar se o email já está cadastrado no sistema 
                     $Users->setEmailUsuario($dados_usuario['email_usuario']);
                     if(!$Users->checarEmailUsuario()){
-                        exit;
+        
                         if($dados_usuario['senha_usuario'] == $dados_usuario['conf_senha_usuario']){
                             $db = array(
                                 'EMP_COD' => 0,
@@ -192,6 +187,7 @@ class login extends View
         }else{
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','alert alert-danger');
         } 
+
         $this->render('site/cadastro', $this->dados);
    }
     public function recover()

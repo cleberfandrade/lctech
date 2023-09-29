@@ -33,6 +33,11 @@ class site extends View
         //$this->dados['termos'] = $Termos->listar(0);
         $this->render('site/termos', $this->dados);
     }
+    public function cadastro()
+    {
+        $this->dados['title'] = 'LC-TECH | Cadastre-se';
+        $this->render('site/cadastro', $this->dados);
+    }
     public function sair()
     {
         unset($_SESSION['USU_COD']);

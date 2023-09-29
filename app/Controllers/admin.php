@@ -1,8 +1,10 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\Empresa;
 use Core\View;
 use App\Models\Usuarios;
+use App\Models\UsuariosEmpresa;
 use Libraries\Sessao;
 
 class admin extends View
@@ -12,20 +14,28 @@ class admin extends View
     {
         Sessao::naoLogado();
         $this->dados['title'] = 'PAINEL | LC-TECH';
+        $Usuarios = new Usuarios;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
         
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarEmpresaUsuario();
+        if ($this->dados['usuarios_empresa'][0]['UMP_COD']) {
+            $Empresa = new Empresa;
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa'][0]['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listarEmpresas(0);
+        }
     }
     public function index()
     {
-        $Usuarios = new Usuarios;
-        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuario'] = $Usuarios->listar(0);
+       
         $this->render('admin/painel', $this->dados);
+
     }
     public function painel()
     {
-        $Usuarios = new Usuarios;
-        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuario'] = $Usuarios->listar(0);
         $this->render('admin/painel', $this->dados);
     }
 }

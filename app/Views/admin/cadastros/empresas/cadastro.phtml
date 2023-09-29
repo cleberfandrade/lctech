@@ -1,0 +1,181 @@
+<?php 
+use Libraries\Sessao;
+session_start();
+include_once 'app/Views/admin/inc/cabecalho.phtml'; 
+?>
+<body class="">
+    <div class="d-flex" id="wrapper">
+        <?php include_once 'app/Views/admin/inc/menu_lateral.phtml'; ?>
+        <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <?php include_once 'app/Views/admin/inc/menu_topo.phtml'; ?>
+        <div class="container-fluid bg-light p-0">
+            <header class="py-3">
+                <section class="container px-3">
+                    <div class="row gx-3 align-items-center justify-content-center">
+                        <div class="col-lg-10 col-xl-10 col-xxl-10">
+                            <div class="my-3 text-center text-xl-start">
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_empresas"><h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-bank"></i> Cadastrar Minha<span class="text-success"> Empresa/Negócio</span></h3></a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </header>
+            <section class="container py-2">
+              <hr>
+              <?= Sessao::alert('OK'); ?>
+              <?= Sessao::alert('ERRO'); ?>
+            </section>
+            <section class="bg-light py-2">
+                <div class="container px-2 py-2 mx-auto row">
+                    <form class="col-12 mx-auto py-4"  action="<?= DIRPAGE; ?>cadastros/cadastrar_empresa" accept-charset="utf-8" method="post">
+                        <h4 class="mb-0 text-uppercase text-center text-orange"></h4>
+                        <div class="row">
+                            <div class="col-2 mb-2">
+                                <label class="form-label">TIPO</label>
+                                <select class="form-select" name="EMP_TIPO">
+                                    <option value="0">---</option>
+                                    <option value="PF">PESSOA FÍSICA</option>
+                                    <option value="PJ">PESSOA JURÍDICA</option>
+                                </select>
+                            </div>
+                            <div class="col-5 mb-2">
+                                <label class="form-label">NOME FANTASIA</label>
+                                <input type="text" name="EMP_NOME_FANTASIA" class="form-control maiusculo" value="<?= isset($_POST['EMP_NOME_FANTASIA']) ? $_POST['EMP_NOME_FANTASIA'] : '' ?>">
+                            </div>
+                            <div class="col-5 mb-2">
+                                <label class="form-label">RAZÃO SOCIAL</label>
+                                <input type="text" name="EMP_RAZAO_SOCIAL" class="form-control maiusculo" value="<?= isset($_POST['EMP_RAZAO_SOCIAL']) ? $_POST['EMP_RAZAO_SOCIAL'] : '' ?>">
+                            </div>
+                            <div class="col-2 mb-2">
+                                <label class="form-label">REGULAMENTAÇÃO</label>
+                                <select class="form-select" name="EMP_REGULAMENTACAO">
+                                    <option value="0">---</option>
+                                    <option value="PF">MATRIZ</option>
+                                    <option value="PJ">FILIAL</option>
+                                </select>
+                            </div>
+                            <div class="col-2 mb-2">
+                                <label class="form-label">PORTE</label>
+                                <select class="form-select" name="EMP_PORTE">
+                                    <option value="0">---</option>
+                                    <option value="EI">EI</option>
+                                    <option value="MEI">MEI</option>
+                                    <option value="SLU">SLU</option>
+                                    <option value="SA">SA</option>
+                                    <option value="SS">SS</option>
+                                    <option value="EPP">EPP</option>
+                                    <option value="LTDA">LTDA</option>
+                                </select>
+                            </div>
+                            <div class="col-4 mb-2">
+                                <label class="form-label">CPF/CNPJ</label>
+                                <input type="text" name="EMP_DOCUMENTO" class="form-control" value="<?= isset($_POST['EMP_DOCUMENTO']) ? $_POST['EMP_DOCUMENTO'] : '' ?>">
+                            </div>
+                            <div class="col-4 mb-2">
+                                <label class="form-label">INSCRIÇÃO ESTADUAL</label>
+                                <input type="text" name="EMP_INSCRICAO_ESTADUAL" class="form-control" value="<?= isset($_POST['EMP_INSCRICAO_ESTADUAL']) ? $_POST['EMP_INSCRICAO_ESTADUAL'] : '' ?>">
+                            </div>
+                            <div class="col-2 mb-2">
+                                <label class="form-label">DATA DE ABERTURA</label>
+                                <input type="date" name="EMP_DT_FUNDACAO" class="form-control" value="<?= isset($_POST['EMP_DT_FUNDACAO']) ? $_POST['EMP_DT_FUNDACAO'] : '' ?>">
+                            </div>
+                            <div class="col-2 mb-2">
+                                <label class="form-label">CEP</label>
+                                <input type="text" id="EMP_CEP" name="EMP_CEP" class="form-control" value="<?= isset($_POST['EMP_CEP']) ? $_POST['EMP_CEP'] : '' ?>">
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label class="form-label">LOGRADOURO</label>
+                                <input type="text" id="EMP_LOGRADOURO" name="EMP_LOGRADOURO" class="form-control maiusculo" value="<?= isset($_POST['EMP_LOGRADOURO']) ? $_POST['EMP_LOGRADOURO'] : '' ?>">
+                            </div>
+                            <div class="col-2 mb-2">
+                                <label class="form-label">NÚMERO</label>
+                                <input type="number" id="EMP_NUMERO" name="EMP_NUMERO" class="form-control" value="<?= isset($_POST['EMP_NUMERO']) ? $_POST['EMP_NUMERO'] : '' ?>">
+                            </div>
+                            <div class="col-4 mb-2">
+                                <label class="form-label">BAIRRO</label>
+                                <input type="text" id="EMP_BAIRRO" name="EMP_BAIRRO" class="form-control maiusculo" value="<?= isset($_POST['EMP_BAIRRO']) ? $_POST['EMP_BAIRRO'] : '' ?>">
+                            </div>
+                            <div class="col-5 mb-2">
+                                <label class="form-label">CIDADE</label>
+                                <input type="text" id="EMP_CIDADE" name="EMP_CIDADE" class="form-control maiusculo" value="<?= isset($_POST['EMP_CIDADE']) ? $_POST['EMP_CIDADE'] : '' ?>">
+                            </div>
+                            <div class="col-3 mb-2">
+                                <label class="form-label">ESTADO</label>
+                                <select id="UF" class="form-select" name="EMP_UF">
+                                    <option value="">---</option>
+                                    <option value="AC">Acre</option>
+                                    <option value="AL">Alagoas</option>
+                                    <option value="AP">Amapá</option>
+                                    <option value="AM">Amazonas</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espirito Santo</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="MA">Maranhão</option>
+                                    <option value="MS">Mato Grosso do Sul</option>
+                                    <option value="MT">Mato Grosso</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="PA">Pará</option>
+                                    <option value="PB">Paraíba</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="PI">Piauí</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="RN">Rio Grande do Norte</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="RO">Rondônia</option>
+                                    <option value="RR">Roraima</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="SE">Sergipe</option>
+                                    <option value="TO">Tocantins</option>
+                                </select>
+                            </div>
+                            <div class="col-3 mb-2">
+                                <label class="form-label">TELEFONE 1</label>
+                                <input type="text" id="EMP_TEL_1" name="EMP_TEL_1" class="form-control" value="<?= isset($_POST['EMP_TEL_1']) ? $_POST['EMP_TEL_1'] : '' ?>">
+                            </div>
+                            <div class="col-3 mb-2">
+                                <label class="form-label">TELEFONE 2</label>
+                                <input type="text" id="EMP_TEL_2" name="EMP_TEL_2" class="form-control" value="<?= isset($_POST['EMP_TEL_2']) ? $_POST['EMP_TEL_2'] : '' ?>">
+                            </div>
+                            <div class="col-3 mb-2">
+                                <label class="form-label">CELULAR 1 (WHATSAPP)</label>
+                                <input type="text" id="EMP_CEL_1" name="EMP_CEL_1" class="form-control" value="<?= isset($_POST['EMP_CEL_1']) ? $_POST['EMP_CEL_1'] : '' ?>">
+                            </div>
+                            <div class="col-3 mb-2">
+                                <label class="form-label">CELULAR 2</label>
+                                <input type="text" id="EMP_CEL_1" name="EMP_CEL_2" class="form-control" value="<?= isset($_POST['EMP_CEL_2']) ? $_POST['EMP_CEL_2'] : '' ?>">
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label class="form-label">EMAIL PRINCIPAL</label>
+                                <input type="email" name="EMP_EMAIL_1" class="form-control" value="<?= isset($_POST['EMP_EMAIL_1']) ? $_POST['EMP_EMAIL_1'] : '' ?>">
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label class="form-label">EMAIL SECUNDÁRIO</label>
+                                <input type="email" name="EMP_EMAIL_2" class="form-control" value="<?= isset($_POST['EMP_EMAIL_2']) ? $_POST['EMP_EMAIL_2'] : '' ?>">
+                            </div>
+                            <div class="col-4 mb-2">
+                                <label class="form-label">RESPONSÁVEL PELA EMPRESA</label>
+                                <select id="UF" class="form-select" disabled name="EMP_RESPONSAVEL">
+                                    <option value="<?= $_SESSION['USU_COD'] ?>"><?= $_SESSION['USU_NOME'] ?></option>
+                                </select>
+                            </div>
+                            <div class="col-8 mb-2">
+                                <label for="address2" class="form-label">DESCRIÇÃO</label>
+                                <textarea type="text" class="form-control h-100 maiusculo" name="EMP_DESCRICAO"><?= isset($_POST['REV_DESCRICAO'])? $_POST['REV_DESCRICAO']  : '' ?></textarea>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <input type="hidden" class="form-control" name="USU_COD" value="<?= $usuarios['USU_COD']?>">
+                        <button class="w-100 btn btn-success" type="submit" name="CADASTRAR_EMPRESA"><i class="fa fa-save"></i> CADASTRAR</button>
+                    </form>
+                </div>
+            </section>
+            <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
+        </div>
+    </div>
+</body>
+</html>
