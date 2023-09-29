@@ -115,3 +115,47 @@ $(document).on('blur', ".maiusculo", function () {
         return val.toUpperCase();
     });
 });
+//MASCARA PARA CEP
+$(document).ready(function(){
+	$("#cep").mask("99.999-999");
+});
+
+//MASCARA PARA CPF/CNPJ
+$("#cpfcnpj").keydown(function(){
+    try {
+        $("#cpfcnpj").unmask();
+    } catch (e) {}
+
+    var tamanho = $("#cpfcnpj").val().length;
+
+    if(tamanho < 11){
+        $("#cpfcnpj").mask("999.999.999-99");
+    } else {
+        $("#cpfcnpj").mask("99.999.999/9999-99");
+    }
+
+    // ajustando foco
+    var elem = this;
+    setTimeout(function(){
+        // mudo a posição do seletor
+        elem.selectionStart = elem.selectionEnd = 10000;
+    }, 0);
+    // reaplico o valor para mudar o foco
+    var currentValue = $(this).val();
+    $(this).val('');
+    $(this).val(currentValue);
+});
+
+//MASCARA PARA TELEFONE/CELULAR <input type="tel" maxlength="15" onkeyup="handlePhone(event)" />
+const handlePhone = (event) => {
+    let input = event.target
+    input.value = phoneMask(input.value)
+  }
+  
+  const phoneMask = (value) => {
+    if (!value) return ""
+    value = value.replace(/\D/g,'')
+    value = value.replace(/(\d{2})(\d)/,"($1) $2")
+    value = value.replace(/(\d)(\d{4})$/,"$1-$2")
+    return value
+  }
