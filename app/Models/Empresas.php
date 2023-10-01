@@ -3,12 +3,12 @@ namespace App\Models;
 
 use Core\Model;
 
-class Empresa extends Model
+class Empresas extends Model
 { 
     private $tabela = 'tb_empresa';
     private $Model = '';
     private $Informacoes = '';
-    private $codigo,$codUsuario;
+    private $codigo,$codUsuario,$codRegistro;
 
     public function __construct()
     {
@@ -23,6 +23,11 @@ class Empresa extends Model
     public function setCodUsuario($usuario)
     {
         $this->codUsuario = $usuario;
+        return $this;
+    }
+    public function setcodRegistro($codRegistro)
+    {
+        $this->codRegistro = $codRegistro;
         return $this;
     }
     public function cadastrar(array $dados, $ver = 0)
@@ -78,6 +83,19 @@ class Empresa extends Model
         if ($ok) {
             return true;
         } else {
+            return false;
+        }
+    }
+    public function checarRegistroEmpresa()
+    {
+        $parametros = "WHERE EMP_REGISTRO='{$this->codRegistro}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            //Já existe
+            return $resultado[0];
+        } else {
+            //Nao existe
             return false;
         }
     }

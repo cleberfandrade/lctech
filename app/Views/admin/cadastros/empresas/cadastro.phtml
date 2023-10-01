@@ -15,7 +15,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                     <div class="row gx-3 align-items-center justify-content-center">
                         <div class="col-lg-10 col-xl-10 col-xxl-10">
                             <div class="my-3 text-center text-xl-start">
-                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_empresas"><h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-bank"></i> Cadastrar Minha<span class="text-success"> Empresa/Negócio</span></h3></a>
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_empresas"><h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-bank"></i> Cadastrar Minha<span class="text-success"> Empresa/Negócio</span></h5></a>
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
             </section>
             <section class="bg-light py-2">
                 <div class="container px-2 py-2 mx-auto row">
-                    <form class="col-12 mx-auto py-4"  action="<?= DIRPAGE; ?>cadastros/cadastrar_empresa" accept-charset="utf-8" method="post">
+                    <form class="col-12 col-sm-11 col-md-11 col-lg-10 mx-auto py-4"  action="<?= DIRPAGE; ?>cadastros/cadastrar_empresas" accept-charset="utf-8" method="post">
                         <h4 class="mb-0 text-uppercase text-center text-orange"></h4>
                         <div class="row">
                             <div class="col-2 mb-2">
@@ -70,7 +70,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             </div>
                             <div class="col-4 mb-2">
                                 <label class="form-label">CPF/CNPJ</label>
-                                <input type="text" name="EMP_DOCUMENTO" class="form-control" value="<?= isset($_POST['EMP_DOCUMENTO']) ? $_POST['EMP_DOCUMENTO'] : '' ?>">
+                                <input type="text" name="EMP_REGISTRO" class="form-control" value="<?= isset($_POST['EMP_REGISTRO']) ? $_POST['EMP_REGISTRO'] : '' ?>">
                             </div>
                             <div class="col-4 mb-2">
                                 <label class="form-label">INSCRIÇÃO ESTADUAL</label>

@@ -137,13 +137,15 @@ class login extends View
                         if($dados_usuario['senha_usuario'] == $dados_usuario['conf_senha_usuario']){
                             $db = array(
                                 'EMP_COD' => 0,
-                                'USU_DT_CADASTRO' => date('Y-m-d H:i:s'),
-                                'USU_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
-                                'USU_NOME' => $dados_usuario['nome_usuario'],
+                                'CRG_COD' => 0,
+                                'USU_DT_CADASTRO'   => date('Y-m-d H:i:s'),
+                                'USU_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),
+                                'USU_NOME'      => $dados_usuario['nome_usuario'],
                                 'USU_SOBRENOME' => $dados_usuario['sobrenome_usuario'],
-                                'USU_SEXO' => $dados_usuario['sexo_usuario'],
+                                'USU_SEXO'  => $dados_usuario['sexo_usuario'],
                                 'USU_EMAIL' => $dados_usuario['email_usuario'],
-                                'USU_STATUS' => 1
+                                'USU_NIVEL' => 4,
+                                'USU_STATUS'=> 1
                             );
                             
                             $db['USU_SENHA'] = $Check->codificarSenha($dados_usuario['senha_usuario']);
