@@ -90,14 +90,7 @@ class cadastros extends View
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
        
-        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarEmpresaUsuario();
-        if ($this->dados['usuarios_empresa'][0]['UMP_COD']) {
-            
-            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa'][0]['EMP_COD'];
-            $Empresa->setCodigo($_SESSION['EMP_COD']);
-            $this->dados['empresa'] = $Empresa->listarEmpresas(0);
-        }
+        
         //Recupera os dados enviados
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
         
@@ -112,8 +105,8 @@ class cadastros extends View
                 //Iniciar o cadastro da nova empresa
                 $db_empresa = array(
                     'EMP_TIPO' => $dados['EMP_TIPO'],
-                    'USU_DT_CADASTRO'=> date('Y-m-d H:i:s'),
-                    'USU_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),
+                    'EMP_DT_CADASTRO'=> date('Y-m-d H:i:s'),
+                    'EMP_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),
                     'EMP_NOME_FANTASIA'   => $dados['EMP_NOME_FANTASIA'],
                     'EMP_RAZAO_SOCIAL'    => $dados['EMP_RAZAO_SOCIAL'],
                     'EMP_REGULAMENTACAO'  => $dados['EMP_REGULAMENTACAO'],
@@ -141,7 +134,7 @@ class cadastros extends View
                 }
             }else {
                 $ok = true;
-                $id = $emp[0]['EMP_COD'];
+                $id = $emp['EMP_COD'];
             }
             $Enderecos->setCodEmpresa($id);
             $endr = $Enderecos->checarEnderecoEmpresa();
@@ -171,14 +164,29 @@ class cadastros extends View
                 }
             }
             if ($ok) {
-                $db_usuario_empresa = array(
-                    'EMP_COD' => $id,
-                    'USU_COD' => $dados['USU_COD'],
-                    'UMP_DT_CADASTRO' => date('Y-m-d H:i:s'),
-                    'UMP_STATUS' => 1
-                );
-                //CADASTRAR O USUARIO NA EMPRESA
-                if($UsuariosEmpresa->cadastrar($db_usuario_empresa,0)){
+                $ok2 = true;
+                $UsuariosEmpresa->setCodUsuario($dados['USU_COD']);
+                $UsuariosEmpresa->setCodEmpresa($id);
+                $usu_emp = $UsuariosEmpresa->checarUsuarioEmpresa();
+                if(!$usu_emp){
+
+                    $db_usuario_empresa = array(
+                        'EMP_COD' => $id,
+                        'USU_COD' => $dados['USU_COD'],
+                        'UMP_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                        'UMP_STATUS' => 1
+                    );
+                    //CADASTRAR O USUARIO NA EMPRESA
+                    if($UsuariosEmpresa->cadastrar($db_usuario_empresa,0)){
+                        $ok2 = true;
+                    }else {
+                        $ok2 = false;
+                        Sessao::alert('ERRO',' 2- Erro ao vincular nova empresa ao usuário, contate o suporte!','fs-4 alert alert-danger');
+                    }
+                }else {
+                    $ok2 = true;
+                }
+                if ($ok2) {
                     for ($i=1; $i <=2; $i+1) { 
                         $db_modulos_empresa = array(
                             'EMP_COD' => $id,
@@ -214,13 +222,20 @@ class cadastros extends View
                     }else {
                         Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
                     }
-                }else {
-                    Sessao::alert('ERRO',' 2- Erro ao vincular nova empresa ao usuário, contate o suporte!','fs-4 alert alert-danger');
                 }
             }
         }else{
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','alert alert-danger');
         }
+
+        //$UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        //$this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuarioEmpresa();
+        //if ($this->dados['usuarios_empresa'][0]['UMP_COD']) {
+            //$_SESSION['EMP_COD'] = $this->dados['usuarios_empresa'][0]['EMP_COD'];
+            //$Empresa->setCodigo($_SESSION['EMP_COD']);
+            //$this->dados['empresa'] = $Empresa->listarEmpresas(0);
+        //}
+
         $this->render('admin/cadastros/empresas/cadastro', $this->dados);
     }
     public function alterar_dados_usuarios()

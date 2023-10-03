@@ -7,15 +7,20 @@ class UsuariosEmpresa extends Model
 {
     private $tabela = 'tb_usuarios_empresa';
     private $Model = '';
-    private $email, $codigo,$codEmpresa;
+    private $email, $codigo,$codUsuario,$codEmpresa;
     public function __construct()
     {
         $this->Model = new Model();
         $this->Model->setTabela($this->tabela);
     }
-    public function setCodUsuario($codigo)
+    public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
+        return $this;
+    }
+    public function setCodUsuario($codUsuario)
+    {
+        $this->codUsuario = $codUsuario;
         return $this;
     }
     public function setCodEmpresa($empresa)
@@ -67,9 +72,9 @@ class UsuariosEmpresa extends Model
             return false;
         }
     }
-    public function checarEmpresaUsuario()
+    public function checarUsuarioEmpresa()
     {
-        $parametros = "WHERE USU_COD='{$this->codigo}'";
+        $parametros = "WHERE USU_COD='{$this->codigo}' AND EMP_COD='{$this->codEmpresa}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
