@@ -172,7 +172,7 @@ class login extends View
                                     Sessao::alert('OK','Cadastro efetuado com sucesso, atualize seu endereço','fs-4 alert alert-success');
                                 }
                             }else{
-                                Sessao::alert('ERRO',' 6- Erro ao cadastrar novo usuário, contate a manutenção!','fs-4 alert alert-danger');
+                                Sessao::alert('ERRO',' 6- Erro ao cadastrar novo usuário, contate o suporte!','fs-4 alert alert-danger');
                             }
                         }else {
                              Sessao::alert('ERRO',' 5- Senha não confere com a confirmação de senha, digite novamente!','fs-4 alert alert-danger');

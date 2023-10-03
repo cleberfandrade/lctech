@@ -116,9 +116,11 @@ $(document).on('blur', ".maiusculo", function () {
     });
 });
 //MASCARA PARA CEP
-$(document).ready(function(){
-	$("#END_CEP").mask("99.999-999");
-});
+function cepMascara(cep) {
+    if (cep.value.length == 5) {
+        cep.value = cep.value + '-' 
+    }
+}
 
 //MASCARA PARA CPF/CNPJ
 $("#EMP_REGISTRO").keydown(function(){

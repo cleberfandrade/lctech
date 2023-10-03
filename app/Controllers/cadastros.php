@@ -4,6 +4,7 @@ namespace App\Controllers;
 use Core\View;
 use App\Models\Empresas;
 use App\Models\Enderecos;
+use App\Models\modulosEmpresa;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
 use Libraries\Check;
@@ -82,6 +83,7 @@ class cadastros extends View
         $Empresa = new Empresas;
         $Enderecos = new Enderecos;
         $UsuariosEmpresa = new UsuariosEmpresa();
+        $ModulosEmpresa = new modulosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
        
@@ -101,45 +103,102 @@ class cadastros extends View
             unset($dados['CADASTRAR_EMPRESA']);
             // Remove todas as tags HTML Remove os espaços em branco do valor
             $ok = true;
-            dump($dados);
-            exit;
+            
             //$dados = array_map('trim',$dados);
-            foreach ($dados as $key => $value) {
+            //foreach ($dados as $key => $value) {
                 //Verifica se tem algum valor em branco
-               $value = $Check->checarString($value);
-                if(empty($dados[$value])){
-                    Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
-                    $ok = false;
-                    break;
-                }
-            }
-            if ($ok) {
-
+              // $value = $Check->checarString($value);
+                //if(empty($dados[$value])){
+                    //Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
+                    //$ok = false;
+                    //break;
+                //}
+            //}
+            if($ok) {
+                
                 $Empresa->setcodRegistro($dados['EMP_REGISTRO']);
                 //Verificar se já existe cadastro da empresa pelo REGISTRO: CPF ou CNPJ informado
                 if(!$Empresa->checarRegistroEmpresa()){
                     //Iniciar o cadastro da nova empresa
-
-                    $id = 0;
-                    $dados_endereco['END_LOGRADOURO'] = $Check->checarString($dados['END_LOGRADOURO']);
-                    $dados_endereco['END_NUMERO'] = $Check->checarString($dados['END_NUMERO']);
-                    $dados_endereco['END_BAIRRO'] = $Check->checarString($dados['END_BAIRRO']);
-                    $dados_endereco['END_CIDADE'] = $Check->checarString($dados['END_CIDADE']);
-                    $dados_endereco['END_ESTADO'] = $Check->checarString($dados['END_ESTADO']);
-                    $db_endereco = array(
-                        'USU_COD' => 0,
-                        'EMP_COD' => $id,
-                        'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
-                        'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
-                        'END_LOGRADOURO' =>  $dados_endereco['END_LOGRADOURO'],
-                        'END_NUMERO' =>  $dados_endereco['END_NUMERO'],
-                        'END_BAIRRO' =>  $dados_endereco['END_BAIRRO'],
-                        'END_CIDADE' =>  $dados_endereco['END_CIDADE'],
-                        'END_ESTADO' =>  $dados_endereco['END_ESTADO'],
-                        'END_STATUS' => 1
+                    $db_empresa = array(
+                        'USU_COD'=> $dados['USU_COD'],
+                        'EMP_TIPO' => $dados['EMP_TIPO'],
+                        'USU_DT_CADASTRO'=> date('Y-m-d H:i:s'),
+                        'USU_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),
+                        'EMP_NOME_FANTASIA'   => $dados['EMP_NOME_FANTASIA'],
+                        'EMP_RAZAO_SOCIAL'    => $dados['EMP_RAZAO_SOCIAL'],
+                        'EMP_REGULAMENTACAO'  => $dados['EMP_REGULAMENTACAO'],
+                        'EMP_PORTE' => $dados['EMP_PORTE'],
+                        'EMP_REGISTRO' => $dados['EMP_REGISTRO'],
+                        'EMP_INSCRICAO_ESTADUAL' => $dados['EMP_INSCRICAO_ESTADUAL'],
+                        'EMP_DT_FUNDACAO'=> $dados['EMP_DT_FUNDACAO'],
+                        'EMP_DESCRICAO'=> $dados['EMP_DESCRICAO'],
+                        'EMP_TEL_1'=> $dados['EMP_TEL_1'],
+                        'EMP_TEL_2'=> $dados['EMP_TEL_2'],
+                        'EMP_CEL_1'=> $dados['EMP_CEL_1'],
+                        'EMP_CEL_2'=> $dados['EMP_CEL_2'],
+                        'EMP_EMAIL_1'=> $dados['EMP_EMAIL_1'],
+                        'EMP_EMAIL_2'=> $dados['EMP_EMAIL_2'],
+                        'EMP_DESCRICAO'=> $dados['EMP_DESCRICAO'],                        
+                        'EMP_STATUS'=> 1
                     );
+                    //CADASTRAR NOVA EMPRESA
+                    $id = $Empresa->cadastrar($db_empresa,0);
+                    if($id){
+                        $Enderecos->setCodEmpresa($id);
+                        if(!$Enderecos->checarEnderecoEmpresa()){
+                            $dados_endereco['END_LOGRADOURO'] = $Check->checarString($dados['END_LOGRADOURO']);
+                            $dados_endereco['END_NUMERO'] = $Check->checarString($dados['END_NUMERO']);
+                            $dados_endereco['END_BAIRRO'] = $Check->checarString($dados['END_BAIRRO']);
+                            $dados_endereco['END_CIDADE'] = $Check->checarString($dados['END_CIDADE']);
+                            $dados_endereco['END_ESTADO'] = $Check->checarString($dados['END_ESTADO']);
+                            $db_endereco = array(
+                                'USU_COD' => 0,
+                                'EMP_COD' => $id,
+                                'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                                'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                                'END_LOGRADOURO' =>  $dados_endereco['END_LOGRADOURO'],
+                                'END_NUMERO' =>  $dados_endereco['END_NUMERO'],
+                                'END_BAIRRO' =>  $dados_endereco['END_BAIRRO'],
+                                'END_CIDADE' =>  $dados_endereco['END_CIDADE'],
+                                'END_ESTADO' =>  $dados_endereco['END_ESTADO'],
+                                'END_STATUS' => 1
+                            );
+                            //CADASTRAR O ENDERECO DA EMPRESA
+                            $Enderecos->cadastrar($db_endereco,0);
+
+                            $db_usuario_empresa = array(
+                                'EMP_COD' => $id,
+                                'USU_COD' => $dados['USU_COD'],
+                                'UMP_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                                'UMP_STATUS' => 1
+                            );
+                            //CADASTRAR O USUARIO NA EMPRESA
+                            if($UsuariosEmpresa->cadastrar($db_usuario_empresa,0)){
+                                for ($i=1; $i <=2; $i+1) { 
+                                    $db_modulos_empresa = array(
+                                        'EMP_COD' => $id,
+                                        'MOD_COD' => $i,
+                                        'MOD_EMP_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                                        'MOD_EMP_STATUS' => 1
+                                    );
+
+                                    //CADASTRAR O MODULO NA EMPRESA
+                                    $ModulosEmpresa->cadastrar($db_modulos_empresa,0);
+                                }
+                                Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+
+                            }else {
+                                Sessao::alert('ERRO',' 4- Erro ao vincular nova empresa ao usuário, contate o suporte!','fs-4 alert alert-danger');
+                            }
+                        }else {
+                            Sessao::alert('OK','Cadastro efetuado com sucesso, atualize seu endereço','fs-4 alert alert-success');
+                        }
+                    }else{
+                        Sessao::alert('ERRO',' 3- Erro ao cadastrar nova empresa, contate o suporte!','fs-4 alert alert-danger');
+                    }
                 }else {
-                    Sessao::alert('ERRO',' 4- Empresa já cadastrada, qualquer dúvida, entre em contato conosco!','alert alert-danger');
+                    Sessao::alert('ERRO',' 2- Empresa já cadastrada, qualquer dúvida, entre em contato conosco!','alert alert-danger');
                 }
             }
         }else{
