@@ -13,9 +13,9 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
             <header class="py-3">
                 <section class="container px-3">
                     <div class="row gx-3 align-items-center justify-content-center">
-                        <div class="col-lg-10 col-xl-10 col-xxl-10">
-                            <div class="my-3 text-center text-xl-start">
-                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastro"><h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Cadastros</span></h3></a>
+                        <div class="col-lg-10 col-xl-11 col-xxl-11">
+                            <div class="my-2 text-center text-xl-start">
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastro"><h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Cadastros</span></h5></a>
                             </div>
                         </div>
                     </div>
@@ -26,29 +26,37 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
               <?= Sessao::alert('OK'); ?>
               <?= Sessao::alert('ERRO'); ?>
             </section>
-            <section class="container text-center col-12 py-2">
-                <div class="row align-items-center col-12">
+            <section class="bg-light py-2">
+                <div class="container px-2 py-2 mx-auto row">
                     <div class="card text-center m-3" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">CLIENTES</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <p class="card-text">Cadastre seus clientes</p>
                             <a href="#" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
                     <div class="card text-center m-3" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">FORNECEDORES</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <p class="card-text">Cadastre seus fornecedores</p>
                             <a href="#" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
                     <div class="card text-center m-3" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">USUÁRIOS</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <p class="card-text">Cadastre seus usuários do sistema</p>
                             <a href="#" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
+                    <div class="card text-center m-3" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">EMPRESAS</h5>
+                            <p class="card-text">Acesse sua empresa</p>
+                            <a href="<?= DIRPAGE ?>cadastros/empresas/empresa" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <!--
                     <div class="card text-center m-3" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">PRODUTOS</h5>
@@ -62,7 +70,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                             <a href="#" class="btn btn-dark">ACESSAR</a>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </section>
         </div>

@@ -162,11 +162,13 @@ class cadastros extends View
                     $ok = true;
                 }
             }
+           
             if ($ok) {
                 $ok2 = true;
                 $UsuariosEmpresa->setCodUsuario($dados['USU_COD']);
                 $UsuariosEmpresa->setCodEmpresa($id);
                 $usu_emp = $UsuariosEmpresa->checarUsuarioEmpresa();
+                
                 if(!$usu_emp){
 
                     $db_usuario_empresa = array(
@@ -183,17 +185,28 @@ class cadastros extends View
                         Sessao::alert('ERRO',' 2- Erro ao vincular nova empresa ao usuário, contate o suporte!','fs-4 alert alert-danger');
                     }
                 }else {
+                   
+                    $db_usuario_empresa = array(
+                        'EMP_COD' => $id,
+                        'USU_COD' => $dados['USU_COD'],
+                        'UMP_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                        'UMP_STATUS' => 1
+                    );
+                    //$UsuariosEmpresa->setCodUsuario($dados['USU_COD']);
+                    //$UsuariosEmpresa->setCodEmpresa($id);
+                    //$UsuariosEmpresa->alterar($db_usuario_empresa,0);
                     $ok2 = true;
                 }
+                
                 if ($ok2) {
-                    for ($i=1; $i <=2; $i+1) { 
+                    for ($i = 1; $i < 2; $i+1) { 
                         $db_modulos_empresa = array(
                             'EMP_COD' => $id,
                             'MOD_COD' => $i,
-                            'MOD_EMP_DT_CADASTRO' => date('Y-m-d H:i:s'),
-                            'MOD_EMP_STATUS' => 1
+                            'MLE_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                            'MLE_STATUS' => 1
                         );
-    
+                        
                         //LIBERAR MODULOS PARA EMPRESA
                         $ModulosEmpresa->setCodEmpresa($id);
                         $ModulosEmpresa->setCodigo($i);
@@ -201,6 +214,7 @@ class cadastros extends View
                             $ModulosEmpresa->cadastrar($db_modulos_empresa,0);
                         }
                     }
+
                     $db_conta_empresa = array(
                         'EMP_COD'  => $id,
                         'CTA_TIPO' => 1,
@@ -211,6 +225,7 @@ class cadastros extends View
                         'CTA_SALDO'  => 0,
                         'CTA_STATUS' => 1
                     );
+                   
                     $Financeiro->setCodEmpresa($id);
                     if(!$Financeiro->checarRegistroContaEmpresa()){
                         if ($Financeiro->cadastrar($db_conta_empresa,0)) {

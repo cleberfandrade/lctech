@@ -41,7 +41,7 @@ class UsuariosEmpresa extends Model
     {
         $parametros = " WHERE EMP_COD='{$this->codEmpresa}' AND USU_COD=";
         $this->Model->setParametros($parametros);
-        $this->Model->setCodigo($this->codigo);
+        $this->Model->setCodigo($this->codUsuario);
         $ok = false;
         $ok = $this->Model->alterar($dados, $ver);
         if ($ok) {
