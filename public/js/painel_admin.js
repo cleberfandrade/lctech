@@ -117,21 +117,21 @@ $(document).on('blur', ".maiusculo", function () {
 });
 //MASCARA PARA CEP
 $(document).ready(function(){
-	$("#cep").mask("99.999-999");
+	$("#END_CEP").mask("99.999-999");
 });
 
 //MASCARA PARA CPF/CNPJ
-$("#cpfcnpj").keydown(function(){
+$("#EMP_REGISTRO").keydown(function(){
     try {
-        $("#cpfcnpj").unmask();
+        $("#EMP_REGISTRO").unmask();
     } catch (e) {}
 
-    var tamanho = $("#cpfcnpj").val().length;
+    var tamanho = $("#EMP_REGISTRO").val().length;
 
     if(tamanho < 11){
-        $("#cpfcnpj").mask("999.999.999-99");
+        $("#EMP_REGISTRO").mask("999.999.999-99");
     } else {
-        $("#cpfcnpj").mask("99.999.999/9999-99");
+        $("#EMP_REGISTRO").mask("99.999.999/9999-99");
     }
 
     // ajustando foco

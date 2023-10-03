@@ -57,7 +57,7 @@ class Usuarios extends Model
     }
     public function Acessar($ver = 0)
     {
-        $parametros = " WHERE USU_EMAIL='{$this->email}'";
+        $parametros = " U INNER JOIN tb_enderecos E ON E.USU_COD=U.USU_COD WHERE U.USU_EMAIL='{$this->email}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
@@ -72,7 +72,7 @@ class Usuarios extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = " ORDER BY USU_NOME ASC";
+        $parametros = "  U INNER JOIN tb_enderecos E ON E.USU_COD=U.USU_COD ORDER BY U.USU_NOME ASC";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
@@ -83,7 +83,7 @@ class Usuarios extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = " WHERE USU_COD='{$this->codigo}' ORDER BY USU_NOME ASC";
+        $parametros = " U INNER JOIN tb_enderecos E ON E.USU_COD=U.USU_COD WHERE U.USU_COD='{$this->codigo}'  ORDER BY U.USU_NOME ASC";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

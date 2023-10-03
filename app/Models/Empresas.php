@@ -5,7 +5,7 @@ use Core\Model;
 
 class Empresas extends Model
 { 
-    private $tabela = 'tb_empresa';
+    private $tabela = 'tb_empresas';
     private $Model = '';
     private $Informacoes = '';
     private $codigo,$codUsuario,$codRegistro;
@@ -52,7 +52,7 @@ class Empresas extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codigo} AND USU_COD={$this->codUsuario}";
+        $parametros = "WHERE EMP_COD={$this->codigo}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

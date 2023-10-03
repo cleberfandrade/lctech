@@ -13,8 +13,8 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
             <header class="py-3">
                 <section class="container px-3">
                     <div class="row gx-3 align-items-center justify-content-center">
-                        <div class="col-lg-10 col-xl-10 col-xxl-10">
-                            <div class="my-3 text-center text-xl-start">
+                        <div class="col-lg-11 col-xl-11 col-xxl-11">
+                            <div class="my-2 text-center text-xl-start">
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_empresas"><h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-bank"></i> Cadastrar Minha<span class="text-success"> Empresa/Negócio</span></h5></a>
                             </div>
                         </div>
@@ -28,7 +28,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
             </section>
             <section class="bg-light py-2">
                 <div class="container px-2 py-2 mx-auto row">
-                    <form class="col-12 col-sm-11 col-md-11 col-lg-10 mx-auto py-4"  action="<?= DIRPAGE; ?>cadastros/cadastrar_empresas" accept-charset="utf-8" method="post">
+                    <form class="col-12 col-sm-11 col-md-11 col-lg-11 mx-auto py-3"  action="<?= DIRPAGE; ?>cadastros/cadastrar_empresas" accept-charset="utf-8" method="post">
                         <h4 class="mb-0 text-uppercase text-center text-orange"></h4>
                         <div class="row">
                             <div class="col-2 mb-2">
@@ -68,11 +68,11 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                     <option value="LTDA">LTDA</option>
                                 </select>
                             </div>
-                            <div class="col-4 mb-2">
+                            <div class="col-3 mb-2">
                                 <label class="form-label">CPF/CNPJ</label>
                                 <input type="text" name="EMP_REGISTRO" class="form-control" value="<?= isset($_POST['EMP_REGISTRO']) ? $_POST['EMP_REGISTRO'] : '' ?>">
                             </div>
-                            <div class="col-4 mb-2">
+                            <div class="col-3 mb-2">
                                 <label class="form-label">INSCRIÇÃO ESTADUAL</label>
                                 <input type="text" name="EMP_INSCRICAO_ESTADUAL" class="form-control" value="<?= isset($_POST['EMP_INSCRICAO_ESTADUAL']) ? $_POST['EMP_INSCRICAO_ESTADUAL'] : '' ?>">
                             </div>
@@ -80,29 +80,30 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                 <label class="form-label">DATA DE ABERTURA</label>
                                 <input type="date" name="EMP_DT_FUNDACAO" class="form-control" value="<?= isset($_POST['EMP_DT_FUNDACAO']) ? $_POST['EMP_DT_FUNDACAO'] : '' ?>">
                             </div>
+                            <hr class="my-4">
                             <div class="col-2 mb-2">
                                 <label class="form-label">CEP</label>
-                                <input type="text" id="EMP_CEP" name="EMP_CEP" class="form-control" value="<?= isset($_POST['EMP_CEP']) ? $_POST['EMP_CEP'] : '' ?>">
+                                <input type="text" id="END_CEP" name="END_CEP" class="form-control" value="<?= isset($_POST['END_CEP']) ? $_POST['END_CEP'] : '' ?>">
                             </div>
-                            <div class="col-6 mb-2">
+                            <div class="col-8 mb-2">
                                 <label class="form-label">LOGRADOURO</label>
-                                <input type="text" id="EMP_LOGRADOURO" name="EMP_LOGRADOURO" class="form-control maiusculo" value="<?= isset($_POST['EMP_LOGRADOURO']) ? $_POST['EMP_LOGRADOURO'] : '' ?>">
+                                <input type="text" id="END_LOGRADOURO" name="END_LOGRADOURO" class="form-control maiusculo" value="<?= isset($_POST['END_LOGRADOURO']) ? $_POST['END_LOGRADOURO'] : '' ?>">
                             </div>
                             <div class="col-2 mb-2">
                                 <label class="form-label">NÚMERO</label>
-                                <input type="number" id="EMP_NUMERO" name="EMP_NUMERO" class="form-control" value="<?= isset($_POST['EMP_NUMERO']) ? $_POST['EMP_NUMERO'] : '' ?>">
+                                <input type="text" id="END_NUMERO" name="END_NUMERO" class="form-control" value="<?= isset($_POST['END_NUMERO']) ? $_POST['END_NUMERO'] : '' ?>">
                             </div>
                             <div class="col-4 mb-2">
                                 <label class="form-label">BAIRRO</label>
-                                <input type="text" id="EMP_BAIRRO" name="EMP_BAIRRO" class="form-control maiusculo" value="<?= isset($_POST['EMP_BAIRRO']) ? $_POST['EMP_BAIRRO'] : '' ?>">
+                                <input type="text" id="END_BAIRRO" name="END_BAIRRO" class="form-control maiusculo" value="<?= isset($_POST['END_BAIRRO']) ? $_POST['END_BAIRRO'] : '' ?>">
                             </div>
                             <div class="col-5 mb-2">
                                 <label class="form-label">CIDADE</label>
-                                <input type="text" id="EMP_CIDADE" name="EMP_CIDADE" class="form-control maiusculo" value="<?= isset($_POST['EMP_CIDADE']) ? $_POST['EMP_CIDADE'] : '' ?>">
+                                <input type="text" id="END_CIDADE" name="END_CIDADE" class="form-control maiusculo" value="<?= isset($_POST['END_CIDADE']) ? $_POST['END_CIDADE'] : '' ?>">
                             </div>
                             <div class="col-3 mb-2">
                                 <label class="form-label">ESTADO</label>
-                                <select id="UF" class="form-select" name="EMP_UF">
+                                <select id="UF" class="form-select text-uppercase" name="END_ESTADO">
                                     <option value="">---</option>
                                     <option value="AC">Acre</option>
                                     <option value="AL">Alagoas</option>
@@ -133,28 +134,29 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                     <option value="TO">Tocantins</option>
                                 </select>
                             </div>
+                            <hr class="my-4">
                             <div class="col-3 mb-2">
-                                <label class="form-label">TELEFONE 1</label>
-                                <input type="text" id="EMP_TEL_1" name="EMP_TEL_1" class="form-control" value="<?= isset($_POST['EMP_TEL_1']) ? $_POST['EMP_TEL_1'] : '' ?>">
+                                <label class="form-label">TELEFONE 1 (opcional)</label>
+                                <input type="text" id="EMP_TEL_1" name="EMP_TEL_1" onkeyup="handlePhone(event)" class="form-control" value="<?= isset($_POST['EMP_TEL_1']) ? $_POST['EMP_TEL_1'] : '' ?>">
                             </div>
                             <div class="col-3 mb-2">
-                                <label class="form-label">TELEFONE 2</label>
-                                <input type="text" id="EMP_TEL_2" name="EMP_TEL_2" class="form-control" value="<?= isset($_POST['EMP_TEL_2']) ? $_POST['EMP_TEL_2'] : '' ?>">
+                                <label class="form-label">TELEFONE 2 (opcional)</label>
+                                <input type="text" id="EMP_TEL_2" name="EMP_TEL_2" onkeyup="handlePhone(event)"  class="form-control" value="<?= isset($_POST['EMP_TEL_2']) ? $_POST['EMP_TEL_2'] : '' ?>">
                             </div>
                             <div class="col-3 mb-2">
                                 <label class="form-label">CELULAR 1 (WHATSAPP)</label>
-                                <input type="text" id="EMP_CEL_1" name="EMP_CEL_1" class="form-control" value="<?= isset($_POST['EMP_CEL_1']) ? $_POST['EMP_CEL_1'] : '' ?>">
+                                <input type="text" id="EMP_CEL_1" name="EMP_CEL_1" onkeyup="handlePhone(event)"  class="form-control" value="<?= isset($_POST['EMP_CEL_1']) ? $_POST['EMP_CEL_1'] : '' ?>">
                             </div>
                             <div class="col-3 mb-2">
-                                <label class="form-label">CELULAR 2</label>
-                                <input type="text" id="EMP_CEL_1" name="EMP_CEL_2" class="form-control" value="<?= isset($_POST['EMP_CEL_2']) ? $_POST['EMP_CEL_2'] : '' ?>">
+                                <label class="form-label">CELULAR 2 (opcional)</label>
+                                <input type="text" id="EMP_CEL_1" name="EMP_CEL_2" onkeyup="handlePhone(event)"  class="form-control" value="<?= isset($_POST['EMP_CEL_2']) ? $_POST['EMP_CEL_2'] : '' ?>">
                             </div>
                             <div class="col-6 mb-2">
                                 <label class="form-label">EMAIL PRINCIPAL</label>
                                 <input type="email" name="EMP_EMAIL_1" class="form-control" value="<?= isset($_POST['EMP_EMAIL_1']) ? $_POST['EMP_EMAIL_1'] : '' ?>">
                             </div>
                             <div class="col-6 mb-2">
-                                <label class="form-label">EMAIL SECUNDÁRIO</label>
+                                <label class="form-label">EMAIL SECUNDÁRIO (opcional)</label>
                                 <input type="email" name="EMP_EMAIL_2" class="form-control" value="<?= isset($_POST['EMP_EMAIL_2']) ? $_POST['EMP_EMAIL_2'] : '' ?>">
                             </div>
                             <div class="col-4 mb-2">
@@ -164,13 +166,13 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                 </select>
                             </div>
                             <div class="col-8 mb-2">
-                                <label for="address2" class="form-label">DESCRIÇÃO</label>
+                                <label for="address2" class="form-label">DESCRIÇÃO (opcional)</label>
                                 <textarea type="text" class="form-control h-100 maiusculo" name="EMP_DESCRICAO"><?= isset($_POST['REV_DESCRICAO'])? $_POST['REV_DESCRICAO']  : '' ?></textarea>
                             </div>
                         </div>
                         <hr class="my-4">
                         <input type="hidden" class="form-control" name="USU_COD" value="<?= $usuarios['USU_COD']?>">
-                        <button class="w-100 btn btn-success" type="submit" name="CADASTRAR_EMPRESA"><i class="fa fa-save"></i> CADASTRAR</button>
+                        <button class="w-100 btn btn-lg btn-success" type="submit" name="CADASTRAR_EMPRESA"><i class="fa fa-save"></i> CADASTRAR</button>
                     </form>
                 </div>
             </section>
