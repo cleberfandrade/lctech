@@ -5,21 +5,19 @@ use Core\View;
 
 use Libraries\Util;
 use Libraries\Sessao;
-
 use App\Models\Usuarios;
 use App\Models\Modulos;
 
-class modulos extends View
+class modulo extends View
 {
     private $dados = [];
-    private $modlos;
     public function __construct()
     {
         Sessao::naoLogado();
     }
     public function index()
     {
-        $Usuarios = new usuarios;
+        $Usuarios = new Usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $this->render('admin/configuracoes/modulos', $this->dados);
@@ -28,10 +26,11 @@ class modulos extends View
     {
         $Usuarios = new Usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuario'] = $Usuarios->listar(0)
+        $this->dados['usuario'] = $Usuarios->listar(0);
         
-        $modlos = new modlos;
-        $modlos->setCodigo(0);
+        $Modulos = new Modulos;
+
+        $Modulos->setCodigo(0);
         $post = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         if (isset($_POST) && isset($post['ALTERAR_NIVEL'])) {

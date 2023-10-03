@@ -32,7 +32,7 @@ class modulosEmpresa extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa}";
+        $parametros = " ME INNER JOIN tb_modulos M ON M.MOD_COD=ME.MOD_COD WHERE ME.EMP_COD={$this->codEmpresa}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -51,6 +51,19 @@ class modulosEmpresa extends Model
         if ($ok) {
             return true;
         } else {
+            return false;
+        }
+    }
+    public function checarRegistroModuloEmpresa()
+    {
+        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND MOD_COD='{$this->codigo}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            //Já existe
+            return $resultado[0];
+        } else {
+            //Nao existe
             return false;
         }
     }

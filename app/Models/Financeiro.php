@@ -7,7 +7,6 @@ class Financeiro extends Model
 { 
     private $tabela = 'tb_financeiro';
     private $Model = '';
-    private $Informacoes = '';
     private $codigo,$codUsuario,$codConta,$codEmpresa;
 
     public function __construct()
@@ -65,6 +64,19 @@ class Financeiro extends Model
         if ($ok) {
             return true;
         } else {
+            return false;
+        }
+    }
+    public function checarRegistroContaEmpresa()
+    {
+        $parametros = "WHERE EMP_COD='{$this->codEmpresa}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            //Já existe
+            return $resultado[0];
+        } else {
+            //Nao existe
             return false;
         }
     }
