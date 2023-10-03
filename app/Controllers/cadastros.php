@@ -228,7 +228,7 @@ class cadastros extends View
         }
 
         //$UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
-        //$this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuarioEmpresa();
+        //$this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
         //if ($this->dados['usuarios_empresa'][0]['UMP_COD']) {
             //$_SESSION['EMP_COD'] = $this->dados['usuarios_empresa'][0]['EMP_COD'];
             //$Empresa->setCodigo($_SESSION['EMP_COD']);

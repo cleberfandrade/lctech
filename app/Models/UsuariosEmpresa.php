@@ -85,4 +85,17 @@ class UsuariosEmpresa extends Model
             return false;
         }
     }
+    public function checarUsuario()
+    {
+        $parametros = "WHERE USU_COD='{$this->codigo}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            //Já existe
+            return $resultado[0];
+        } else {
+            //Nao existe
+            return false;
+        }
+    }
 }

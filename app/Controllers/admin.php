@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Empresa;
+use App\Models\Empresas;
 use Core\View;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
@@ -20,9 +20,9 @@ class admin extends View
         
         $UsuariosEmpresa = new UsuariosEmpresa;
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarEmpresaUsuario();
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
         if ($this->dados['usuarios_empresa'][0]['UMP_COD']) {
-            $Empresa = new Empresa;
+            $Empresa = new Empresas;
             $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa'][0]['EMP_COD'];
             $Empresa->setCodigo($_SESSION['EMP_COD']);
             $this->dados['empresa'] = $Empresa->listarEmpresas(0);
