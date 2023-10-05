@@ -2,6 +2,7 @@
 use Libraries\Sessao;
 session_start();
 include_once 'inc/cabecalho.phtml'; 
+$qtdME = (is_array($modulos_empresa) ? count($modulos_empresa) : 0);
 ?>
 <body class="" onload="atualizarDataHora();">
     <div class="d-flex" id="wrapper">
@@ -46,25 +47,19 @@ include_once 'inc/cabecalho.phtml';
                         </div>
                     </div>
                 <?php }else { ?>
-                      <div class="row col-10 mx-auto m-4 col-12">
-                        <div class="card text-bg-primary m-1 py-3" style="max-width: 18rem;">
-                        <a href="<?= DIRPAGE ?>cadastros" class="col-auto link-light text-decoration-none">
-                            <div class="card-header"><i class="bi bi-plus-square"></i> CADASTROS</div>
-                            <div class="card-body">
-                                <h5 class="card-title">Módulo de Cadastro</h5>
-                                <p class="card-text">Cadastre seus clientes, fornecedores e usuários da sua empresa</p>
-                            </div>
+                    <div class="row col-10 mx-auto m-4 col-12">
+                    <?php if ($qtdME != 0) { 
+                        for ($i=0; $i < $qtdME; $i++) { ?>
+                        <div class="card text-<?= $modulos_empresa[$i]['MOD_COR']; ?> m-1 py-3" style="max-width: 18rem;">
+                            <a href="<?= DIRPAGE.$modulos_empresa[$i]['MOD_LINK']?>" class="col-auto link-light text-decoration-none">
+                                <div class="card-header"><i class="bi bi-plus-square"></i> <?= $modulos_empresa[$i]['MOD_NOME']; ?></div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Módulo de <?= $modulos_empresa[$i]['MOD_NOME']; ?></h5>
+                                    <p class="card-text"><?= $modulos_empresa[$i]['MOD_DESCRICAO']; ?></p>
+                                </div>
                             </a>
                         </div>
-                        <div disabled class="opacity-25 card text-bg-success mb-3" style="max-width: 18rem;">
-                            <a href="<?= isset($empresa['EMP_COD'])? DIRPAGE.'estoque' : '#' ?>" class="col-auto link-light text-decoration-none">
-                            <div class="card-header">ESTOQUE</div>
-                            <div class="card-body">
-                                <h5 class="card-title">Módulo de Estoque</h5>
-                                <p class="card-text"></p>
-                            </div>
-                            </a>
-                        </div>
+                        <?php } } ?>
                         
                         <div class="opacity-25 card text-bg-secondary mb-3" style="max-width: 18rem;">
                         <div class="card-header"><i class="bi bi-sliders"></i> CONFIGURAÇÕES</div>
@@ -95,7 +90,8 @@ include_once 'inc/cabecalho.phtml';
                         </div>
                         </div>
 
-                </div>
+                        
+                    </div>
                 <?php } ?>
               
             </section>

@@ -164,13 +164,14 @@ class cadastros extends View
             }
            
             if ($ok) {
+               
                 $ok2 = true;
                 $UsuariosEmpresa->setCodUsuario($dados['USU_COD']);
                 $UsuariosEmpresa->setCodEmpresa($id);
                 $usu_emp = $UsuariosEmpresa->checarUsuarioEmpresa();
-                
+                //VERIFICAR SE O USUARIO ESTA VINCULADO A NOVA EMPRESA
                 if(!$usu_emp){
-
+                  
                     $db_usuario_empresa = array(
                         'EMP_COD' => $id,
                         'USU_COD' => $dados['USU_COD'],
@@ -197,58 +198,83 @@ class cadastros extends View
                     //$UsuariosEmpresa->alterar($db_usuario_empresa,0);
                     $ok2 = true;
                 }
-                
+
+                //VERIFICAR SE USUARIO FOI VINCULADO OU NAO HA NOVA EMPRESA
                 if ($ok2) {
-                    for ($i = 1; $i < 2; $i+1) { 
-                        $db_modulos_empresa = array(
-                            'EMP_COD' => $id,
-                            'MOD_COD' => $i,
-                            'MLE_DT_CADASTRO' => date('Y-m-d H:i:s'),
-                            'MLE_STATUS' => 1
+                    $db_modulos_empresa = [];
+                    $m = 0;
+                    //LIBERAR MODULOS PARA EMPRESA
+                    for ($i = 1; $i <= 3; $i++) {           
+                       
+                        $ModulosEmpresa->setCodModulo($i);
+                        $ModulosEmpresa->setCodEmpresa($id);
+                        if(!$ModulosEmpresa->checarRegistroModuloEmpresa()){
+                            $db_modulos_empresa = array(
+                                'EMP_COD' => $id,
+                                'MOD_COD' => $i,
+                                'MLE_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                                'MLE_STATUS' => 1
+                            );
+                            if($ModulosEmpresa->cadastrar($db_modulos_empresa,0)){
+                                $m++;
+                                unset($db_modulos_empresa);
+                            }
+                        }else {
+                            $m++;
+                        }
+                       
+                    }
+                    //dump($i);           
+                    //exit;  
+                    //VERIFICAR SE FOI LIBERADO NO MINIMO 2 MÓDULOS A EMPRESA DO USUARIO
+                    if ($m >= 2) {
+
+                        $db_conta_empresa = array(
+                            'EMP_COD'  => $id,
+                            'CTA_TIPO' => 1,
+                            'CTA_DT_CADASTRO'    => date('Y-m-d H:i:s'),
+                            'CTA_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                            'CTA_NOME'     => 'PRINCIPAL',
+                            'CTA_DESCRICAO'=> 'CONTA PRINCIPAL DA EMPRESA',   
+                            'CTA_SALDO'  => 0,
+                            'CTA_STATUS' => 1
                         );
                         
-                        //LIBERAR MODULOS PARA EMPRESA
-                        $ModulosEmpresa->setCodEmpresa($id);
-                        $ModulosEmpresa->setCodigo($i);
-                        if(!$ModulosEmpresa->checarRegistroModuloEmpresa()){
-                            $ModulosEmpresa->cadastrar($db_modulos_empresa,0);
-                        }
-                    }
+                        $Financeiro->setCodEmpresa($id);
+                        if(!$Financeiro->checarRegistroContaEmpresa()){
+                            if ($Financeiro->cadastrar($db_conta_empresa,0)) {
+                                Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
 
-                    $db_conta_empresa = array(
-                        'EMP_COD'  => $id,
-                        'CTA_TIPO' => 1,
-                        'CTA_DT_CADASTRO'    => date('Y-m-d H:i:s'),
-                        'CTA_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
-                        'CTA_NOME'     => 'PRINCIPAL',
-                        'CTA_DESCRICAO'=> '',   
-                        'CTA_SALDO'  => 0,
-                        'CTA_STATUS' => 1
-                    );
-                   
-                    $Financeiro->setCodEmpresa($id);
-                    if(!$Financeiro->checarRegistroContaEmpresa()){
-                        if ($Financeiro->cadastrar($db_conta_empresa,0)) {
-                            Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                            }else {
+                                Sessao::alert('OK','Cadastro efetuado com sucesso, crie uma conta para gerenciar sua movimentação','fs-4 alert alert-success');
+                            }
                         }else {
-                            Sessao::alert('OK','Cadastro efetuado com sucesso, crie uma conta para gerenciar sua movimentação','fs-4 alert alert-success');
+                            Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
                         }
+                        $db_usuario = array(
+                            'EMP_COD'  => $id,
+                            'USU_DT_ATUALIZACAO' => date('Y-m-d H:i:s')
+                        );
+                        $Usuarios->setCodigo($dados['USU_COD']);
+                        $Usuarios->alterar($db_usuario,0);
+
                     }else {
-                        Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                        Sessao::alert('ERRO',' 2- Módulos não foram liberados, contate o suporte!','alert alert-danger');
                     }
+                    
                 }
             }
         }else{
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','alert alert-danger');
         }
 
-        //$UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
-        //$this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
-        //if ($this->dados['usuarios_empresa'][0]['UMP_COD']) {
-            //$_SESSION['EMP_COD'] = $this->dados['usuarios_empresa'][0]['EMP_COD'];
-            //$Empresa->setCodigo($_SESSION['EMP_COD']);
-            //$this->dados['empresa'] = $Empresa->listarEmpresas(0);
-        //}
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+        }
 
         $this->render('admin/cadastros/empresas/cadastro', $this->dados);
     }

@@ -74,7 +74,7 @@ class UsuariosEmpresa extends Model
     }
     public function checarUsuarioEmpresa()
     {
-        $parametros = "WHERE USU_COD='{$this->codigo}' AND EMP_COD='{$this->codEmpresa}'";
+        $parametros = "WHERE USU_COD='{$this->codUsuario}' AND EMP_COD='{$this->codEmpresa}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -87,7 +87,7 @@ class UsuariosEmpresa extends Model
     }
     public function checarUsuario()
     {
-        $parametros = "WHERE USU_COD='{$this->codigo}'";
+        $parametros = "WHERE USU_COD='{$this->codUsuario}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

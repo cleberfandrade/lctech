@@ -39,9 +39,9 @@ class Empresas extends Model
             return false;
         }
     }
-    public function listarEmpresas($ver = 0)
+    public function listarEmpresaUsuario($ver = 0)
     {
-        $parametros = "WHERE USU_COD={$this->codUsuario}";
+        $parametros = " WHERE EMP_COD={$this->codigo} AND USU_COD={$this->codUsuario}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

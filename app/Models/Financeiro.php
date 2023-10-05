@@ -5,7 +5,7 @@ use Core\Model;
 
 class Financeiro extends Model
 { 
-    private $tabela = 'tb_financeiro';
+    private $tabela = 'tb_contas';
     private $Model = '';
     private $codigo,$codUsuario,$codConta,$codEmpresa;
 
@@ -56,7 +56,7 @@ class Financeiro extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD={$this->codConta} FIN_COD=";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD={$this->codConta} CTA_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;

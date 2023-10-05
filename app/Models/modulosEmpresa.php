@@ -3,12 +3,12 @@ namespace App\Models;
 
 use Core\Model;
 
-class modulosEmpresa extends Model
+class ModulosEmpresa extends Model
 { 
     private $tabela = 'tb_modulos_empresa';
     private $Model = '';
     private $Informacoes = '';
-    private $codigo,$codUsuario,$codEmpresa;
+    private $codigo,$codModulo, $codUsuario, $codEmpresa;
 
     public function __construct()
     {
@@ -18,6 +18,11 @@ class modulosEmpresa extends Model
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
+        return $this;
+    }
+    public function setCodModulo($codModulo)
+    {
+        $this->codModulo = $codModulo;
         return $this;
     }
     public function setCodUsuario($codUsuario)
@@ -36,7 +41,7 @@ class modulosEmpresa extends Model
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
-            return $resultado[0];
+            return $resultado;
         } else {
             return false;
         }
@@ -65,7 +70,7 @@ class modulosEmpresa extends Model
     }
     public function checarRegistroModuloEmpresa()
     {
-        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND MOD_COD='{$this->codigo}'";
+        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND MOD_COD='{$this->codModulo}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

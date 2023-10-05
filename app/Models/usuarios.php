@@ -13,6 +13,11 @@ class Usuarios extends Model
         $this->Model = new Model();
         $this->Model->setTabela($this->tabela);
     }
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+        return $this;
+    }
     public function setEmailUsuario($email)
     {
         $this->email = $email;

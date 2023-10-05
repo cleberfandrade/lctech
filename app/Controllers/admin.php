@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\Empresas;
+use App\Models\ModulosEmpresa;
 use Core\View;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
@@ -15,17 +16,24 @@ class admin extends View
         Sessao::naoLogado();
         $this->dados['title'] = 'PAINEL | LC-TECH';
         $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $ModulosEmpresa = new ModulosEmpresa;
+        
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         
-        $UsuariosEmpresa = new UsuariosEmpresa;
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
-        if ($this->dados['usuarios_empresa'][0]['UMP_COD']) {
-            $Empresa = new Empresas;
-            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa'][0]['EMP_COD'];
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
             $Empresa->setCodigo($_SESSION['EMP_COD']);
-            $this->dados['empresa'] = $Empresa->listarEmpresas(0);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $ModulosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['modulos_empresa'] = $ModulosEmpresa->listar();
+        }else {
+            $this->dados['modulos_empresa'] = false;
+            $this->dados['empresa'] = false;
         }
     }
     public function index()
