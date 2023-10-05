@@ -5,7 +5,7 @@ use Core\View;
 use App\Models\Empresas;
 use App\Models\Enderecos;
 use App\Models\Financeiro;
-use App\Models\modulosEmpresa;
+use App\Models\ModulosEmpresa;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
 use Libraries\Check;
@@ -84,7 +84,7 @@ class cadastros extends View
         $Empresa = new Empresas;
         $Enderecos = new Enderecos;
         $UsuariosEmpresa = new UsuariosEmpresa();
-        $ModulosEmpresa = new modulosEmpresa;
+        $ModulosEmpresa = new ModulosEmpresa;
         $Financeiro = new Financeiro;
 
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
@@ -223,9 +223,7 @@ class cadastros extends View
                             $m++;
                         }
                        
-                    }
-                    //dump($i);           
-                    //exit;  
+                    } 
                     //VERIFICAR SE FOI LIBERADO NO MINIMO 2 MÓDULOS A EMPRESA DO USUARIO
                     if ($m >= 2) {
 
@@ -274,6 +272,11 @@ class cadastros extends View
             $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
             $Empresa->setCodigo($_SESSION['EMP_COD']);
             $this->dados['empresa'] = $Empresa->listar(0);
+            $ModulosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['modulos_empresa'] = $ModulosEmpresa->listar();
+        }else {
+            $this->dados['modulos_empresa'] = false;
+            $this->dados['empresa'] = false;
         }
 
         $this->render('admin/cadastros/empresas/cadastro', $this->dados);
