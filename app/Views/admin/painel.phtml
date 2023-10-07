@@ -2,14 +2,16 @@
 use Libraries\Sessao;
 session_start();
 include_once 'inc/cabecalho.phtml'; 
+
 $qtdME = (is_array($modulos_empresa) ? count($modulos_empresa) : 0);
 ?>
-<body class="" onload="atualizarDataHora();">
+<body>
     <div class="d-flex" id="wrapper">
         <?php include_once 'inc/menu_lateral.phtml'; ?>
         <div id="page-content-wrapper">
         <!-- Top navigation-->
         <?php include_once 'inc/menu_topo.phtml'; ?>
+        
         <div class="container-fluid bg-light p-0">
             <header class="py-3">
                 <section class="container px-5">
@@ -19,7 +21,7 @@ $qtdME = (is_array($modulos_empresa) ? count($modulos_empresa) : 0);
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>admin/painel"><h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-house"></i> Painel <span class="text-success">Administrativo</span></h3></a>
                             </div>
                         </div>
-                        
+                        <?php include_once 'inc/hora.phtml'; ?>
                     </div>
                 </section>
             </header>

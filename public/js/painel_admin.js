@@ -67,6 +67,7 @@ function atualizarHora() {
     mostrarHora(horaImprimivel);
    
 }
+
 function atualizarDataHora() {
     dataAtual = new Date();
     dia = dataAtual.getDate();
@@ -90,8 +91,9 @@ function atualizarDataHora() {
     setTimeout("atualizarDataHora()", 1000);
     setTimeout("atualizarHora()", 1000);
 }
-*/
 
+atualizarDataHora();
+*/
 window.addEventListener('DOMContentLoaded', event => {
 
     // Toggle the side navigation
@@ -161,3 +163,15 @@ const handlePhone = (event) => {
     value = value.replace(/(\d)(\d{4})$/,"$1-$2")
     return value
   }
+
+
+  var timeDisplay = document.getElementById("time");
+
+
+function refreshTime() {
+  var dateString = new Date().toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"});
+  var formattedString = dateString.replace(", ", " - ");
+  timeDisplay.innerHTML = formattedString;
+}
+
+setInterval(refreshTime, 1000);

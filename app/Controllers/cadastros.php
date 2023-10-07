@@ -36,37 +36,47 @@ class cadastros extends View
         $Usuarios = new Usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
-        $this->render('admin/cadastros/clientes', $this->dados);
+        $this->render('admin/cadastros/clientes/listar', $this->dados);
     }
     public function fornecedores()
     {
         $Usuarios = new Usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
-        $this->render('admin/cadastros/fornecedores', $this->dados);
+        $this->render('admin/cadastros/fornecedores/listar', $this->dados);
     }
+    //CADASTRO - USUÁRIOS
     public function usuarios()
     {
         $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
-        $this->render('admin/cadastros/usuarios', $this->dados);
+        $this->render('admin/cadastros/usuarios/listar', $this->dados);
     }
     public function meus_dados()
     {
         $this->dados['title'] .= 'MEUS DADOS DE USUÁRIO';
         $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
+        
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+        }
+
+      
+
         $this->render('admin/cadastros/usuarios/meus_dados', $this->dados);
     }
-    public function empresas()
-    {
-        $Usuarios = new Usuarios;
-        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuario'] = $Usuarios->listar(0);
-        $this->render('admin/cadastros/empresas/listar', $this->dados);
-    }
+    //CADASTRO - CATEGORIAS
     public function categorias()
     {
         $Usuarios = new Usuarios;
@@ -84,6 +94,7 @@ class cadastros extends View
         }
         $this->render('admin/cadastros/categorias/listar', $this->dados);
     }
+    //CADASTRO - ESTOQUES
     public function estoques()
     {
         $Usuarios = new Usuarios;
@@ -112,12 +123,39 @@ class cadastros extends View
 
         $this->render('admin/cadastros/estoques/cadastrar', $this->dados);
     }
-    public function cadastro_empresas()
+    //CADASTRO - EMPRESAS
+    public function empresas()
     {
-        $this->dados['title'] .= 'EMPRESA/NEGÓCIO';
         $Usuarios = new Usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
+        $this->render('admin/cadastros/empresas/listar', $this->dados);
+    }
+    public function cadastro_empresas()
+    {
+        $this->dados['title'] .= 'EMPRESA/NEGÓCIO';
+        $Usuarios = new Usuarios();
+        $Check = new Check();
+        $Url = new Url();
+        $Empresa = new Empresas;
+        $Enderecos = new Enderecos;
+        $UsuariosEmpresa = new UsuariosEmpresa();
+        $ModulosEmpresa = new ModulosEmpresa;
+        $Financeiro = new Financeiro;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $ModulosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['modulos_empresa'] = $ModulosEmpresa->listar();
+        }else {
+            $this->dados['modulos_empresa'] = false;
+            $this->dados['empresa'] = false;
+        }
         $this->render('admin/cadastros/empresas/cadastrar', $this->dados);
     }
     public function cadastrar_empresas()
@@ -326,6 +364,7 @@ class cadastros extends View
 
         $this->render('admin/cadastros/empresas/cadastrar', $this->dados);
     }
+
     public function alterar_dados_usuarios()
     {
         $this->dados['title'] .= 'MEUS DADOS DE USUÁRIO';
