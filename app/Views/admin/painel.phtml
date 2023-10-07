@@ -27,8 +27,9 @@ $qtdME = (is_array($modulos_empresa) ? count($modulos_empresa) : 0);
                 <h4>BEM VINDO(A) <?= $usuario['USU_NOME'].' '.$usuario['USU_SOBRENOME'] ?></h4>
                 <?= Sessao::alert('OK'); ?>
                 <?= Sessao::alert('ERRO'); ?>
+                <hr>
             </section>
-            <hr>
+           
             <section class="container mx-auto col-12 py-2">
                 <?php if ($_SESSION['EMP_COD'] == 0) { ?>
                     <div class="row mx-auto m-4 ">

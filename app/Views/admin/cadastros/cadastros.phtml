@@ -15,7 +15,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                     <div class="row gx-3 align-items-center justify-content-center">
                         <div class="col-lg-10 col-xl-11 col-xxl-11">
                             <div class="my-2 text-center text-xl-start">
-                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastro"><h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Cadastros</span></h5></a>
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros"><h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Cadastros</span></h5></a>
                             </div>
                         </div>
                     </div>
@@ -26,34 +26,48 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
               <?= Sessao::alert('OK'); ?>
               <?= Sessao::alert('ERRO'); ?>
             </section>
-            <section class="bg-light py-2">
-                <div class="container px-2 py-2 mx-auto row">
-                    <div class="card text-center m-3" style="width: 18rem;">
+            <section class="container bg-light col-12 py-2 mb-5">
+                <div class=" px-2 py-2 mx-auto row">
+                    <div class="card text-center m-2" style="width: 20rem;">
                         <div class="card-body">
                             <h5 class="card-title">CLIENTES</h5>
-                            <p class="card-text">Cadastre seus clientes</p>
-                            <a href="#" class="btn btn-dark">ACESSAR</a>
+                            <p class="card-text">Cadastre/Altere os dados dos seus clientes</p>
+                            <a href="<?= DIRPAGE ?>cadastros/clientes" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
-                    <div class="card text-center m-3" style="width: 18rem;">
+                    <div class="card text-bg-success text-center m-2" style="width: 20rem;">
                         <div class="card-body">
                             <h5 class="card-title">FORNECEDORES</h5>
-                            <p class="card-text">Cadastre seus fornecedores</p>
-                            <a href="#" class="btn btn-dark">ACESSAR</a>
+                            <p class="card-text">Cadastre/Altere os dados dos seus fornecedores</p>
+                            <a href="<?= DIRPAGE ?>cadastros/fornecedores" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
-                    <div class="card text-center m-3" style="width: 18rem;">
+                    <div class="card text-center m-2" style="width: 20rem;">
                         <div class="card-body">
                             <h5 class="card-title">USUÁRIOS</h5>
-                            <p class="card-text">Cadastre seus usuários do sistema</p>
-                            <a href="#" class="btn btn-dark">ACESSAR</a>
+                            <p class="card-text">Cadastre/Altere os dados dos seus usuários do sistema</p>
+                            <a href="<?= DIRPAGE ?>cadastros/usuarios" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
-                    <div class="card text-center m-3" style="width: 18rem;">
+                    <div class="card text-bg-success text-center m-2" style="width: 20rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">ESTOQUES</h5>
+                            <p class="card-text">Cadastre/Altere os dados do seu estoque</p>
+                            <a href="<?= DIRPAGE ?>cadastros/estoques" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="card text-center m-2" style="width: 20rem;">
                         <div class="card-body">
                             <h5 class="card-title">EMPRESAS</h5>
-                            <p class="card-text">Acesse sua empresa</p>
-                            <a href="<?= DIRPAGE ?>cadastros/empresas/empresa" class="btn btn-dark">ACESSAR</a>
+                            <p class="card-text">Cadastre/Altere os dados da sua Empresa/Negócio</p>
+                            <a href="<?= DIRPAGE ?>cadastros/empresas" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="card text-bg-success text-center m-2" style="width: 20rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">CATEGORIAS</h5>
+                            <p class="card-text">Cadastre/Altere os dados das suas categorias para o estoque</p>
+                            <a href="<?= DIRPAGE ?>cadastros/categorias" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
                     <!--
