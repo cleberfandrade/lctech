@@ -52,7 +52,7 @@ class UsuariosEmpresa extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = " WHERE EMP_COD='{$this->codEmpresa}' ORDER BY USU_NOME ASC";
+        $parametros = " UE INNER JOIN tb_usuarios U ON U.USU_COD=UE.USU_COD WHERE UE.EMP_COD='{$this->codEmpresa}' ORDER BY U.USU_NOME ASC";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {

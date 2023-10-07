@@ -1,6 +1,8 @@
 <?php 
 namespace App\Controllers;
 
+use App\Models\Empresas;
+use App\Models\Financas;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
 use Core\View;
@@ -17,13 +19,32 @@ class financeiro extends View
     public function index()
     {
         $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Financas = new Financas;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
-
-        $UsuariosEmpresa = new UsuariosEmpresa;
-        $UsuariosEmpresa->setCodUsuario($this->dados['usuario'][0]['USU_COD']);
-        $this->dados['empresa'] = $UsuariosEmpresa->checarEmpresaUsuario();
+        
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+            $Financas->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['contas'] = $Financas->listarTodas();
+        }
 
         $this->render('admin/financeiro/financeiro', $this->dados);
+    }
+    public function contas()
+    {
+
+    }
+    public function pdv()
+    {
+        
     }
 }

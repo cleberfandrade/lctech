@@ -4,7 +4,7 @@ namespace App\Controllers;
 use Core\View;
 use App\Models\Empresas;
 use App\Models\Enderecos;
-use App\Models\Financeiro;
+use App\Models\Financas;
 use App\Models\ModulosEmpresa;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
@@ -20,9 +20,23 @@ class cadastros extends View
         Sessao::naoLogado();
         $this->dados['title'] = 'MÓDULO | CADASTROS >>';
         $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $ModulosEmpresa = new ModulosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
-
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $ModulosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['modulos_empresa'] = $ModulosEmpresa->listar();
+        }else {
+            $this->dados['modulos_empresa'] = false;
+            $this->dados['empresa'] = false;
+        }
     }
     public function index()
     {
@@ -53,8 +67,41 @@ class cadastros extends View
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
+
+       
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
         $this->render('admin/cadastros/usuarios/listar', $this->dados);
     }
+    public function cadastro_usuarios()
+    {
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+
+       
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        $this->render('admin/cadastros/usuarios/cadastrar', $this->dados);
+    }
+
+
     public function meus_dados()
     {
         $this->dados['title'] .= 'MEUS DADOS DE USUÁRIO';
@@ -63,7 +110,7 @@ class cadastros extends View
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
-        
+
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
         if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
@@ -141,7 +188,7 @@ class cadastros extends View
         $Enderecos = new Enderecos;
         $UsuariosEmpresa = new UsuariosEmpresa();
         $ModulosEmpresa = new ModulosEmpresa;
-        $Financeiro = new Financeiro;
+        $Financas = new Financas;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
@@ -168,7 +215,7 @@ class cadastros extends View
         $Enderecos = new Enderecos;
         $UsuariosEmpresa = new UsuariosEmpresa();
         $ModulosEmpresa = new ModulosEmpresa;
-        $Financeiro = new Financeiro;
+        $Financas = new Financas;
 
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
@@ -321,9 +368,9 @@ class cadastros extends View
                             'CTA_STATUS' => 1
                         );
                         
-                        $Financeiro->setCodEmpresa($id);
-                        if(!$Financeiro->checarRegistroContaEmpresa()){
-                            if ($Financeiro->cadastrar($db_conta_empresa,0)) {
+                        $Financas->setCodEmpresa($id);
+                        if(!$Financas->checarRegistroContaEmpresa()){
+                            if ($Financas->cadastrar($db_conta_empresa,0)) {
                                 Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
 
                             }else {

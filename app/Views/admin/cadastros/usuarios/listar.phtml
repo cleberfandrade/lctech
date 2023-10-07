@@ -1,0 +1,94 @@
+<?php
+use Libraries\Sessao;
+session_start();
+
+include_once 'app/Views/admin/inc/cabecalho.phtml'; 
+
+$qtd = (is_array($usuarios) ? count($usuarios) : 0);
+
+?>
+<body>
+    <div class="d-flex" id="wrapper">
+        <?php include_once 'app/Views/admin/inc/menu_lateral.phtml'; ?>
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <?php include_once 'app/Views/admin/inc/menu_topo.phtml'; ?>
+            <div class="container-fluid bg-light p-0">
+                    <header class="py-3">
+                        <section class="container px-3">
+                            <div class="row gx-5 align-items-center justify-content-center">
+                                <div class="col-lg-10 col-xl-10 col-xxl-10">
+                                    <div class="my-3 text-center text-xl-start">
+                                        <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/usuarios">
+                                            <h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2">
+                                                <i class="bi bi-person-circle"></i>Lista de <span class="text-success">Usuários</span>
+                                            </h5>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </header>
+                    <section class="container py-2">
+                    <hr>
+                    <?= Sessao::alert('OK'); ?>
+                    <?= Sessao::alert('ERRO'); ?>
+                    </section>
+                    <section class="bg-light  text-dark  py-2">
+                        <div class="container mx-auto col-12 px-2 py-2 mx-auto row">
+                        <?php if ($qtd == 0) { ?>
+                            <div class="card bg-success text-center py-2 mb-4" style="width: 100rem;">
+                                <div class="card-body  text-white">
+                                    <h5 class="card-title">USUÁRIOS</h5>
+                                    <p class="card-text">Cadastre/Altere os dados dos seus usuários do sistema</p>
+                                    <a href="<?= DIRPAGE ?>cadastros/cadastro_usuarios" class="btn btn-dark">ACESSAR</a>
+                                </div>
+                            </div>
+                        <?php }else { ?>
+                            <div class="card bg-success text-center py-2 mb-4" style="width: 100rem;">
+                                <div class="card-body text-white">
+                                    <h5 class="card-title">USUÁRIOS</h5>
+                                    <p class="card-text">Cadastre/Altere os dados dos seus usuários do sistema</p>
+                                    <a href="<?= DIRPAGE ?>cadastros/cadastro_usuarios" class="btn btn-dark">ACESSAR</a>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-bordered">
+                                <thead class="text-center text-uppercase">
+                                    <th class="text-dark">#</th>
+                                    <th class="text-dark">cod</th>
+                                    <th class="text-dark">Nome</th>
+                                    <th class="text-dark">Email</th>
+                                    <th class="text-dark">Nível</th>
+                                    <th class="text-dark">Status</th>
+                                    <th class="text-dark">Ações</th>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    $b = 1;
+                                    for ($i= 0; $i < $qtd; $i++) { ?>
+                                    <tr class="">
+                                        <td class="text-center align-middle"><?= $b; ?></td>
+                                        <td class="text-center align-middle"><?= $usuarios[$i]['USU_COD'] ?></td>
+                                        <td class="text-center align-middle"><?= $usuarios[$i]['USU_NOME'].' '.$usuarios[$i]['USU_SOBRENOME']; ?></td>
+                                        <td class="text-center align-middle"><?= $usuarios[$i]['USU_EMAIL']; ?></td>
+                                        <td class="text-center align-middle"><?= $usuarios[$i]['USU_NIVEL']; ?></td>
+                                        <td class="text-center align-middle"><?= $usuarios[$i]['USU_STATUS']; ?></td>
+                                        <td class="text-center align-middle">
+                                            <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_usuarios/'.$usuarios[$i]['EMP_COD'].'/'.$usuarios[$i]['USU_COD']; ?>" title="Alterar usuário"><i class="fa fa-edit"></i></button>
+                                            <a type="button" class="btn btn-danger btn-sm d-print-none" data-toggle='modal' title="Excluir usuário" href="#"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php $b++; } ?>
+                                </tbody>
+                            </table>
+                        <?php } ?>
+                        </div>
+                    </section>
+                </div>
+                <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
+            </div>
+           
+        </div>
+    </div>
+</body>
+</html>

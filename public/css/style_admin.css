@@ -128,3 +128,15 @@ html[data-bs-theme="dark"] .theme-toggle .fa-moon {
 html[data-bs-theme="light"] .theme-toggle .fa-sun {
     display: none;
 }
+.bg-teal{
+    color: #FFF;
+    background:#20c997;
+}
+.bg-orange{
+    color: #000;
+    background:#fd7e14;
+}
+.bg-indigo{
+    color: #fff;
+    background:#6610f2;
+}

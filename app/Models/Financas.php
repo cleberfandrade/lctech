@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Core\Model;
 
-class Financeiro extends Model
+class Financas extends Model
 { 
     private $tabela = 'tb_contas';
     private $Model = '';
@@ -36,7 +36,18 @@ class Financeiro extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = "";
+        $parametros = "F INNER JOIN tb_empresas E ON E.EMP_COD=F.EMP_COD WHERE F.CTA_COD={$this->codigo} AND F.EMP_COD={$this->codEmpresa} ";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            return $resultado[0];
+        } else {
+            return false;
+        }
+    }
+    public function listarTodas($ver = 0)
+    {
+        $parametros = "F INNER JOIN tb_empresas E ON E.EMP_COD=F.EMP_COD WHERE F.EMP_COD={$this->codEmpresa}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
