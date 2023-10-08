@@ -67,6 +67,10 @@ class financeiro extends View
         }
         $this->render('admin/financeiro/contas/listar', $this->dados);
     }
+    public function cadastro_conta()
+    {
+        $this->render('admin/financeiro/contas/cadastrar', $this->dados);
+    }
     public function frente_caixa()
     {
         
