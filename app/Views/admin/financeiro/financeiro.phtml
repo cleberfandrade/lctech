@@ -2,6 +2,7 @@
 use Libraries\Sessao;
 session_start();
 include_once 'app/Views/admin/inc/cabecalho.phtml'; 
+$qtd = (is_array($contas) ? count($contas) : 0);
 ?>
 <body class="">
     <div class="d-flex" id="wrapper">
@@ -17,7 +18,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             <div class="my-3 text-center text-xl-start">
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>financeiro">
                                 <h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2">
-                                    <i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Finanças da Empresa/Negócio</span></h5></a>
+                                    <i class="bi bi-plus-square"></i> Gerenciar Finanças <span class="text-success"> da Sua Empresa/Negócio</span></h5></a>
                             </div>
                         </div>
                     </div>
