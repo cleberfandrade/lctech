@@ -55,7 +55,6 @@ $qtd = (is_array($usuarios) ? count($usuarios) : 0);
                             <table class="table table-striped table-bordered">
                                 <thead class="text-center text-uppercase">
                                     <th class="text-dark">#</th>
-                                    <th class="text-dark">cod</th>
                                     <th class="text-dark">Nome</th>
                                     <th class="text-dark">Email</th>
                                     <th class="text-dark">Nível</th>
@@ -68,7 +67,6 @@ $qtd = (is_array($usuarios) ? count($usuarios) : 0);
                                     for ($i= 0; $i < $qtd; $i++) { ?>
                                     <tr class="">
                                         <td class="text-center align-middle"><?= $b; ?></td>
-                                        <td class="text-center align-middle"><?= $usuarios[$i]['USU_COD'] ?></td>
                                         <td class="text-center align-middle"><?= $usuarios[$i]['USU_NOME'].' '.$usuarios[$i]['USU_SOBRENOME']; ?></td>
                                         <td class="text-center align-middle"><?= $usuarios[$i]['USU_EMAIL']; ?></td>
                                         <td class="text-center align-middle"><?= $usuarios[$i]['USU_NIVEL']; ?></td>
