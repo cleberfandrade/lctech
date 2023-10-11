@@ -7,20 +7,51 @@ class Fornecedores extends Model
 { 
     private $tabela = 'tb_fornecedores';
     private $Model = '';
-    private $Informacoes = '';
-    private $codInformacoes = 1;
+    private $codigo,$codUsuario,$codEmpresa;
 
     public function __construct()
     {
         $this->Model = new Model();
         $this->Model->setTabela($this->tabela);
     }
-    public function setCodInformacoes($codInformacoes)
+    public function setCodigo($codigo)
     {
-        $this->codInformacoes = $codInformacoes;
+        $this->codigo = $codigo;
+        return $this;
+    }
+    public function setCodUsuario($codUsuario)
+    {
+        $this->codUsuario = $codUsuario;
+        return $this;
+    }
+    public function setCodEmpresa($empresa)
+    {
+        $this->codEmpresa = $empresa;
         return $this;
     }
     public function listar($ver = 0)
+    {
+        $parametros = "WHERE FOR_COD='{$this->codigo}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            return $resultado[0];
+        } else {
+            return false;
+        }
+    }
+    public function listarTodosEmpresa($ver = 0)
+    {
+        $parametros = " WHERE EMP_COD='{$this->codEmpresa}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            return $resultado[0];
+        } else {
+            return false;
+        }
+    }
+    public function listarTodos($ver = 0)
     {
         $parametros = "";
         $campos = "*";
@@ -42,9 +73,9 @@ class Fornecedores extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = " WHERE INF_COD=";
+        $parametros = " WHERE FOR_COD=";
         $this->Model->setParametros($parametros);
-        $this->Model->setCodigo($this->codInformacoes);
+        $this->Model->setCodigo($this->codigo);
         $ok = false;
         $ok = $this->Model->alterar($dados, $ver);
         if ($ok) {

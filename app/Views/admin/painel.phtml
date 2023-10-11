@@ -57,7 +57,7 @@ $qtdME = (is_array($modulos_empresa) ? count($modulos_empresa) : 0);
                     <div class="row col-12 mx-auto m-4">
                     <?php if ($qtdME != 0) { 
                         for ($i=0; $i < $qtdME; $i++) { ?>
-                        <div class="card text-<?= $modulos_empresa[$i]['MOD_COR']; ?> m-1 py-3" style="max-width: 18rem;">
+                        <div class="card  mx-auto text-<?= $modulos_empresa[$i]['MOD_COR']; ?> m-1 py-3" style="max-width: 18rem;">
                             <a href="<?= DIRPAGE.$modulos_empresa[$i]['MOD_LINK']?>" class="col-auto link-light text-decoration-none">
                                 <div class="card-header"><i class="bi bi-plus-square"></i> <?= $modulos_empresa[$i]['MOD_NOME']; ?></div>
                                 <div class="card-body">
@@ -68,7 +68,7 @@ $qtdME = (is_array($modulos_empresa) ? count($modulos_empresa) : 0);
                         </div>
                         <?php } } ?>
                       
-                        <div class="card opacity-25 bg-orange m-1 py-3" style="max-width: 18rem;">
+                        <div class="card  mx-auto opacity-25 bg-orange m-1 py-3" style="max-width: 18rem;">
                             <a href="<?= DIRPAGE?>configuracoes" class="col-auto link-light text-decoration-none">
                                 <div class="card-header"><i class="bi bi-sliders"></i> CONFIGURAÇÕES</div>
                                 <div class="card-body">
