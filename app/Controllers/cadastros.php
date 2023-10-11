@@ -98,7 +98,7 @@ class cadastros extends View
         $Usuarios = new Usuarios;
         $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
         $dados = explode("/",$dados['url']);
-        $Usuarios->setCodUsuario($dados[3]);
+        $Usuarios->setCodigo($dados[3]);
         if (isset($dados[1]) && $dados[1] == 'alterar_usuarios') {
             $this->dados['usuario'] = $Usuarios->listar(0);
         }
