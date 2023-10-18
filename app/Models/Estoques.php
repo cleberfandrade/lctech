@@ -3,9 +3,9 @@ namespace App\Models;
 
 use Core\Model;
 
-class Estoque extends Model
+class Estoques extends Model
 { 
-    private $tabela = 'tb_estoque';
+    private $tabela = 'tb_estoques';
     private $Model = '';
     private $codigo,$codEmpresa,$codUsuario,$codProduto,$codServico;
 
@@ -36,7 +36,7 @@ class Estoque extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD={$this->codigo}";
+        $parametros = "ET INNER JOIN tb_empresas E ON E.EMP_COD=ET.EMP_COD WHERE ET.EMP_COD={$this->codEmpresa} AND ET.EST_COD={$this->codigo}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -58,7 +58,7 @@ class Estoque extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} ORDER BY EST_COD ASC";
+        $parametros = "ET INNER JOIN tb_empresas E ON E.EMP_COD=ET.EMP_COD WHERE ET.EMP_COD={$this->codEmpresa} ORDER BY ET.EST_COD ASC";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
@@ -78,7 +78,7 @@ class Estoque extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = " WHERE EST_COD=";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;

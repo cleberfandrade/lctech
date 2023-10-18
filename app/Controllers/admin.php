@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\Empresas;
+use App\Models\Estoques;
 use App\Models\ModulosEmpresa;
 use Core\View;
 use App\Models\Usuarios;
@@ -17,6 +18,7 @@ class admin extends View
         $this->dados['title'] = 'PAINEL | LC-TECH';
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
+        $Estoques = new Estoques;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $ModulosEmpresa = new ModulosEmpresa;
         
@@ -31,9 +33,12 @@ class admin extends View
             $this->dados['empresa'] = $Empresa->listar(0);
             $ModulosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['modulos_empresa'] = $ModulosEmpresa->listar();
+            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['estoques'] = $Estoques->listarTodos(0);
         }else {
             $this->dados['modulos_empresa'] = false;
             $this->dados['empresa'] = false;
+            $this->dados['estoques'] = false;
         }
     }
     public function index()

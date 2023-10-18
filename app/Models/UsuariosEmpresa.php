@@ -79,9 +79,9 @@ class UsuariosEmpresa extends Model
     {
         $parametros = "UE 
         INNER JOIN tb_usuarios U ON U.USU_COD=UE.USU_COD 
-        INNER JOIN tb_empresas EMP ON UMP.EMP_COD=EMP.EMP_COD 
+        INNER JOIN tb_empresas EMP ON UE.EMP_COD=EMP.EMP_COD 
         INNER JOIN tb_enderecos EN ON EMP.EMP_COD=EN.EMP_COD 
-        WHERE EMP.EMP_COD='{$this->codEmpresa}' AND U.USU_COD='{$this->codigo}'";
+        WHERE UE.EMP_COD='{$this->codEmpresa}' AND UE.USU_COD='{$this->codigo}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

@@ -41,11 +41,11 @@ class Empresas extends Model
     }
     public function listarEmpresaUsuario($ver = 0)
     {
-        $parametros = " WHERE EMP_COD={$this->codigo} AND USU_COD={$this->codUsuario}";
+        $parametros = " E INNER JOIN tb_usuarios_empresa UE ON UE.EMP_COD=E.EMP_COD INNER JOIN tb_usuarios U ON U.USU_COD=UE.USU_COD WHERE UE.EMP_COD={$this->codigo} AND UE.USU_COD={$this->codUsuario}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
-            return $resultado[0];
+            return $resultado;
         } else {
             return false;
         }

@@ -4,6 +4,7 @@ namespace App\Controllers;
 use Core\View;
 use App\Models\Empresas;
 use App\Models\Enderecos;
+use App\Models\Estoques;
 use App\Models\Financas;
 use App\Models\Fornecedores;
 use App\Models\ModulosEmpresa;
@@ -55,6 +56,15 @@ class cadastros extends View
         $this->dados['usuario'] = $Usuarios->listar(0);
         $this->render('admin/cadastros/clientes/listar', $this->dados);
     }
+    public function cadastro_clientes()
+    {
+        $this->dados['title'] .= 'CLIENTES';
+        $Usuarios = new Usuarios;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
+    }
+
     //CADASTRO - FORNECEDORES
     public function fornecedores()
     {
@@ -64,6 +74,17 @@ class cadastros extends View
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
         $this->dados['fornecedores'] = $Fornecedores->listarTodosEmpresa(0);
         $this->render('admin/cadastros/fornecedores/listar', $this->dados);
+    }
+    public function cadastro_fornecedores()
+    {
+        $this->dados['title'] .= 'FORNECEDORES';
+        $Usuarios = new Usuarios;
+        $Fornecedores = new Fornecedores;
+
+        $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
+        $this->dados['fornecedores'] = $Fornecedores->listarTodosEmpresa(0);
+
+        $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
     }
     //CADASTRO - USUÁRIOS
     public function usuarios()
@@ -144,31 +165,222 @@ class cadastros extends View
     //CADASTRO - ESTOQUES
     public function estoques()
     {
+        $this->dados['title'] .= 'ESTOQUES';
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
+        $Estoques = new Estoques;
         $UsuariosEmpresa = new UsuariosEmpresa;
+        //buscar dados do usuário
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
+        //verificar se o usuario tem uma empresa, e retornar os dados
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        //checar se existe cadastro da empresa, estoque e retornar os dados
         if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
-            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
-            $Empresa->setCodigo($_SESSION['EMP_COD']);
-            $this->dados['empresa'] = $Empresa->listar(0);
+            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
+            if($qtd == 1) {
+                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $this->dados['empresa'] = $Empresa->listar(0);
+            }
+            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['estoques'] = $Estoques->listarTodos(0);
         }
 
         $this->render('admin/cadastros/estoques/listar', $this->dados);
     }
     public function cadastro_estoques()
     {
+        $this->dados['title'] .= 'ESTOQUES';
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
         $Enderecos = new Enderecos;
+        $Estoques = new Estoques;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        //verificar se o usuario tem uma empresa, e retornar os dados
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        //checar se existe cadastro da empresa, estoque e retornar os dados
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
+            if($qtd == 1) {
+                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $this->dados['empresas'] = $Empresa->listar(0);
+            }else {
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $Empresa->setCodUsuario($_SESSION['USU_COD']);
+                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
+            }
+
+            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['estoques'] = $Estoques->listarTodos(0);
+        }
+
+        $this->render('admin/cadastros/estoques/cadastrar', $this->dados);
+    }
+    public function alterar_estoques()
+    {
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Enderecos = new Enderecos;
+        $Estoques = new Estoques;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
 
+        $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
+        $dados = explode("/",$dados['url']);
+
+        if (isset($dados[1]) && $dados[1] == 'alterar_estoques') {
+            //verificar se o usuario tem uma empresa, e retornar os dados
+            $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+            $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+            if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+                $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
+                if($qtd == 1) {
+                    $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+                    $Empresa->setCodigo($_SESSION['EMP_COD']);
+                    $this->dados['empresas'] = $Empresa->listar(0);
+                }else {
+                    $Empresa->setCodigo($_SESSION['EMP_COD']);
+                    $Empresa->setCodUsuario($_SESSION['USU_COD']);
+                    $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
+                }
+    
+                $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+                $this->dados['estoques'] = $Estoques->listarTodos(0);
+            }
+            $Estoques->setCodigo($dados[3]);
+            $Estoques->setCodEmpresa($dados[2]);
+            $this->dados['estoque'] = $Estoques->listar(0);
+        }
+      
+        $this->render('admin/cadastros/estoques/alterar', $this->dados);
+    }
+    public function cadastrar_estoques()
+    {
+        $this->dados['title'] .= 'ESTOQUES';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Estoques = new Estoques;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        
+        
+        //Recupera os dados enviados
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+                
+        if (isset($_POST) && isset($dados['CRIAR_NOVO_ESTOQUE'])) {
+            //Verifica se os campos foram todos preenchidos
+            unset($dados['CRIAR_NOVO_ESTOQUE']);
+
+            $dados += array(
+                'EST_DT_CADASTRO'=> date('Y-m-d H:i:s'),
+                'EST_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),             
+                'EST_STATUS'=> 1
+            );
+
+            if($Estoques->cadastrar($dados,0)){
+                Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+            }else{
+                Sessao::alert('ERRO',' 3- Erro ao cadastrar novo estoque, entre em contato com o suporte!','fs-4 alert alert-danger');
+            }
+
+        }else{
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','alert alert-danger');
+        }
+        //verificar se o usuario tem uma empresa, e retornar os dados
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);  
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        //checar se existe cadastro da empresa, estoque e retornar os dados
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
+            if($qtd == 1) {
+                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $this->dados['empresas'] = $Empresa->listar(0);
+            }else {
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $Empresa->setCodUsuario($_SESSION['USU_COD']);
+                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
+            }
+
+            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['estoques'] = $Estoques->listarTodos(0);
+        }
+
         $this->render('admin/cadastros/estoques/cadastrar', $this->dados);
+    }
+    public function alterar_estoques_empresa()
+    {
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Enderecos = new Enderecos;
+        $Estoques = new Estoques;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        //verificar se o usuario tem uma empresa, e retornar os dados
+        
+
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+        if (isset($_POST) && isset($dados['ALTERAR_ESTOQUE'])) {
+            unset($dados['ALTERAR_ESTOQUE']);
+           
+            if($_SESSION['USU_COD'] == $dados['USU_COD']){
+
+                $Estoques->setCodigo($dados['EST_COD']);
+                $Estoques->setCodEmpresa($dados['EMP_COD']);
+                unset($dados['EST_COD']);
+                unset($dados['EMP_COD']);
+                $dados += array(
+                    'EST_DT_ATUALIZACAO'=> date('Y-m-d H:i:s')             
+                );
+
+                if($Estoques->alterar($dados,0)){
+                    Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
+                }else{
+                    Sessao::alert('ERRO',' 3- Erro ao alterar o estoque da empresa, entre em contato com o suporte!','fs-4 alert alert-danger');
+                }
+
+            }else{
+                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+            }
+
+        }else {
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
+        }
+
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
+            if($qtd == 1) {
+                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $this->dados['empresas'] = $Empresa->listar(0);
+            }else {
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $Empresa->setCodUsuario($_SESSION['USU_COD']);
+                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
+            }
+
+            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['estoques'] = $Estoques->listarTodos(0);
+        }
+
+        $Estoques->setCodigo($dados['EST_COD']);
+        $Estoques->setCodEmpresa($dados['EMP_COD']);
+        $this->dados['estoque'] = $Estoques->listar(0);
+
+        $this->render('admin/cadastros/estoques/alterar', $this->dados);
+
     }
     //CADASTRO - EMPRESAS
     public function empresas()
@@ -282,6 +494,7 @@ class cadastros extends View
                 $dados_endereco['END_BAIRRO'] = $Check->checarString($dados['END_BAIRRO']);
                 $dados_endereco['END_CIDADE'] = $Check->checarString($dados['END_CIDADE']);
                 $dados_endereco['END_ESTADO'] = $Check->checarString($dados['END_ESTADO']);
+                $dados_endereco['END_CEP'] = $Check->checarString($dados['END_CEP']);
                 $db_endereco = array(
                     'USU_COD' => 0,
                     'EMP_COD' => $id,
@@ -292,6 +505,7 @@ class cadastros extends View
                     'END_BAIRRO' =>  $dados_endereco['END_BAIRRO'],
                     'END_CIDADE' =>  $dados_endereco['END_CIDADE'],
                     'END_ESTADO' =>  $dados_endereco['END_ESTADO'],
+                    'END_CEP'    =>  $dados_endereco['END_CEP'],
                     'END_STATUS' => 1
                 );
                 //CADASTRAR O ENDERECO DA EMPRESA
@@ -433,12 +647,107 @@ class cadastros extends View
         $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
         $dados = explode("/",$dados['url']);
         if (isset($dados[1]) && $dados[1] == 'alterar_empresas') {
-            $UsuariosEmpresa->setCodUsuario($dados[3]);
+       
+            if(isset($dados[3]) && isset($dados[2])){
+            $UsuariosEmpresa->setCodigo($dados[3]);
             $UsuariosEmpresa->setCodEmpresa($dados[2]);
             $this->dados['empresa'] = $UsuariosEmpresa->listar(0);
+            $this->render('admin/cadastros/empresas/alterar', $this->dados);
+            }else{
+                Sessao::alert('ERRO',' 1- Dados inválido(s)!','alert alert-danger');
+                $this->render('admin/cadastros/empresas/listar', $this->dados);
+            }
         }
+        
+    }
+    public function alterar_dados_empresa()
+    {
+        $this->dados['title'] .= 'EMPRESA/NEGÓCIO';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Enderecos = new Enderecos;
+        $Check = new Check();
+        $UsuariosEmpresa = new UsuariosEmpresa();
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['ALTERAR_EMPRESA'])) {
+            unset($dados['ALTERAR_EMPRESA']);
+            
+            if($_SESSION['USU_COD'] == $dados['USU_COD']){
+                
+                $UsuariosEmpresa->setCodigo($dados['USU_COD']);
+                $UsuariosEmpresa->setCodEmpresa($dados['EMP_COD']);
+                dump($dados);
+                exit;
+                $dados += array(
+                    'USU_DT_ATUALIZACAO'=> date('Y-m-d H:i:s'),
+                );
+
+                unset($dados['USU_COD']);
+                
+                $ok = true;
+                foreach ($dados as $key => $value) {
+
+                   
+                    //Verifica se tem algum valor em branco
+                    $value = $Check->checarString($value);
+                    //if(empty($dados["$key"])){
+                        //Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
+                        //$ok = false;
+                        //break;
+                    //}
+                }
+                //VERIFICAR SE TODOS OS CAMPOS FORAM PREENCHIDOS
+                if ($ok) {
+                    $Empresa->setCodigo($dados['EMP_COD']);
+                    $db_endereco = array(
+                        'USU_COD' => 0,
+                        'EMP_COD' => $dados['EMP_COD'],
+                        'END_DT_ATUALIZACAO' => date('Y-m-d H:i:s'),
+                        'END_LOGRADOURO' =>  $dados['END_LOGRADOURO'],
+                        'END_NUMERO' =>  $dados['END_NUMERO'],
+                        'END_BAIRRO' =>  $dados['END_BAIRRO'],
+                        'END_CEP'    =>  $dados['END_CEP'],
+                        'END_CIDADE' =>  $dados['END_CIDADE'],
+                        'END_ESTADO' =>  $dados['END_ESTADO']
+                    );
+
+                    $ends = array_keys($dados, "END_");
+                    unset($dados[$ends]);
+
+                    if($Empresa->alterar($dados,0)){
+                        $Enderecos->setCodEmpresa($dados['EMP_COD']);
+                        $id = $Enderecos->checarEnderecoEmpresa();
+                       
+                        unset($dados['EMP_COD']);
+
+                        $Enderecos->setCodigo($id);
+                        
+                        if($Enderecos->alterarEmpresa($db_endereco,0)){
+                           
+                            Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
+                        }else {
+                            Sessao::alert('OK','Cadastro alterado, houve um erro ao alterar o endereco!','fs-4 alert alert-success');
+                        }
+                    }else{
+                        Sessao::alert('ERRO',' 3- Erro ao alterar sua empresa, entre em contato com o suporte!','fs-4 alert alert-danger');
+                    }
+                }
+            }else{
+                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+            }
+        }else{
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
+        }
+
+        $this->dados['empresa'] = $UsuariosEmpresa->listar(0);
+
         $this->render('admin/cadastros/empresas/alterar', $this->dados);
     }
+    //Controller - ALTERAR DADOS DO USUARIO NO DB
     public function alterar_dados_usuarios()
     {
         $this->dados['title'] .= 'MEUS DADOS DE USUÁRIO';

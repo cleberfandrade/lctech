@@ -1,0 +1,76 @@
+<?php 
+use Libraries\Sessao;
+session_start();
+include_once 'app/Views/admin/inc/cabecalho.phtml'; 
+$qtd = (is_array($estoques) ? count($estoques) : 0);
+?>
+<body class="">
+    <div class="d-flex" id="wrapper">
+        <?php include_once 'app/Views/admin/inc/menu_lateral.phtml'; ?>
+        <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <?php include_once 'app/Views/admin/inc/menu_topo.phtml'; ?>
+        <div class="container-fluid bg-light p-0">
+            <header class="py-3">
+                <section class="container px-3">
+                    <div class="row gx-3 align-items-center justify-content-center">
+                        <div class="col-lg-10 col-xl-10 col-xxl-10">
+                            <div class="my-3 text-center text-xl-start">
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/clientes"><h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Seus Clientes</span></h3></a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </header>
+            <section class="container py-2">
+              <hr>
+              <?= Sessao::alert('OK'); ?>
+              <?= Sessao::alert('ERRO'); ?>
+            </section>
+            <section class="bg-light text-dark">
+                <div class="container mx-auto col-12 px-2 py-2 row ">
+                    <div class="card bg-success mx-auto text-center col-6 py-2 mb-4">
+                        <div class="card-body text-white">
+                            <h5 class="card-title">CLIENTES</h5>
+                            <p class="card-text">Cadastre/Altere os dados dos seus clientes</p>
+                            <a href="<?= DIRPAGE ?>cadastros/cadastro_clientes" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <?php
+                    if($qtd != 0) { ?>
+                    <table class="table table-striped table-bordered">
+                        <thead class="text-center text-uppercase">
+                            <th class="text-dark">#</th>
+                            <th class="text-dark">Nome</th>
+                            <th class="text-dark">Cadastro</th>
+                            <th class="text-dark">Tipo</th>
+                            <th class="text-dark">Status</th>
+                            <th class="text-dark">Ações</th>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $b = 1;
+                            for ($i= 0; $i < $qtd; $i++) { ?>
+                            <tr class="">
+                                <td class="text-center align-middle"><?= $b; ?></td>
+                                <td class="text-center align-middle"><?= $estoques[$i]['EST_COD']; ?></td>
+                                <td class="text-center align-middle"><?= $estoques[$i]['EST_COD']; ?></td>
+                                <td class="text-center align-middle"><?= $estoques[$i]['EST_COD']; ?></td>
+                                <td class="text-center align-middle"><?= $estoques[$i]['EST_STATUS']; ?></td>
+                                <td class="text-center align-middle">
+                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_estoques_empresas/'.$empresas[0]['EMP_COD'].'/'.$_SESSION['USU_COD']; ?>" title="Alterar empresa"><i class="fa fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        <?php $b++; } ?>
+                        </tbody>
+                    </table>
+                    <?php }else { ?>
+                        <h4 class="text-center text-warning fs-4">EMPRESA SEM NENHUM CLIENTE CADASTRADO</h4>
+                    <?php } ?>
+                </div>
+            </section>
+            <?php include_once 'inc/rodape.phtml';?>
+        </div>
+    </div>
+</body>
+</html>

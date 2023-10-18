@@ -2,7 +2,8 @@
 use Libraries\Sessao;
 session_start();
 include_once 'app/Views/admin/inc/cabecalho.phtml'; 
-$qtd = (is_array($empresas) ? count($empresas) : 0);
+$qtd = (is_array($estoques) ? count($estoques) : 0);
+//dump($estoques);
 ?>
 <body class="">
     <div class="d-flex" id="wrapper">
@@ -16,7 +17,7 @@ $qtd = (is_array($empresas) ? count($empresas) : 0);
                     <div class="row gx-3 align-items-center justify-content-center">
                         <div class="col-lg-10 col-xl-10 col-xxl-10">
                             <div class="my-3 text-center text-xl-start">
-                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/estoques"><h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Empresas/Negócios</span></h3></a>
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/estoques"><h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Estoques</span></h3></a>
                             </div>
                         </div>
                     </div>
@@ -27,16 +28,17 @@ $qtd = (is_array($empresas) ? count($empresas) : 0);
               <?= Sessao::alert('OK'); ?>
               <?= Sessao::alert('ERRO'); ?>
             </section>
-            <section class="bg-light py-2">
-                <div class="container px-2 py-2 mx-auto row ">
-                    <div class="card bg-success text-center col-12 py-2 mb-4" style="width: 50rem;">
-                        <div class="card-body  text-white">
+            <section class="bg-light text-dark">
+                <div class="container mx-auto col-12 px-2 py-2 row ">
+                    <div class="card bg-success mx-auto text-center col-6 py-2 mb-4">
+                        <div class="card-body text-white">
                             <h5 class="card-title">ESTOQUES</h5>
                             <p class="card-text">Cadastre/Altere os dados dos seus estoques</p>
                             <a href="<?= DIRPAGE ?>cadastros/cadastro_estoques" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
-                    <?php if ($qtd != 0) { ?>
+                    <?php
+                    if($qtd != 0) { ?>
                     <table class="table table-striped table-bordered">
                         <thead class="text-center text-uppercase">
                             <th class="text-dark">#</th>
@@ -52,17 +54,19 @@ $qtd = (is_array($empresas) ? count($empresas) : 0);
                             for ($i= 0; $i < $qtd; $i++) { ?>
                             <tr class="">
                                 <td class="text-center align-middle"><?= $b; ?></td>
-                                <td class="text-center align-middle"><?= $empresas[$i]['EMP_NOME_FANTASIA']; ?></td>
-                                <td class="text-center align-middle"><?= $empresas[$i]['EMP_REGULAMENTACAO']; ?></td>
-                                <td class="text-center align-middle"><?= $empresas[$i]['EMP_TIPO']; ?></td>
-                                <td class="text-center align-middle"><?= $empresas[$i]['EMP_STATUS']; ?></td>
+                                <td class="text-center align-middle"><?= $estoques[$i]['EST_DESCRICAO']; ?></td>
+                                <td class="text-center align-middle"><?= $estoques[$i]['EMP_NOME_FANTASIA']; ?></td>
+                                <td class="text-center align-middle"><?= $estoques[$i]['EST_TIPO']; ?></td>
+                                <td class="text-center align-middle"><?= ($estoques[$i]['EST_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                 <td class="text-center align-middle">
-                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_empresas/'.$empresas[$i]['EMP_COD'].'/'.$_SESSION['USU_COD']; ?>" title="Alterar empresa"><i class="fa fa-edit"></i></a>
+                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_estoques/'.$estoques[$i]['EMP_COD'].'/'.$estoques[$i]['EST_COD']; ?>" title="Alterar empresa"><i class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                         <?php $b++; } ?>
                         </tbody>
                     </table>
+                    <?php }else { ?>
+                        <h4 class="text-center text-warning fs-4">EMPRESA SEM  NENHUM ESTOQUE CRIADO</h4>
                     <?php } ?>
                 </div>
             </section>
