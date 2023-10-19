@@ -19,6 +19,11 @@ class Clientes extends Model
         $this->codigo = $codigo;
         return $this;
     }
+    public function setCodEmpresa($codEmpresa)
+    {
+        $this->codEmpresa = $codEmpresa;
+        return $this;
+    }
     public function listar($ver = 0)
     {
         $parametros = "WHERE EMP_COD={$this->codEmpresa} AND CLI_COD={$this->codigo}";

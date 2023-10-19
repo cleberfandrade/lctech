@@ -16,7 +16,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                         <div class="row gx-3 align-items-center justify-content-center">
                             <div class="col-lg-10 col-xl-10 col-xxl-10">
                                 <div class="my-3 text-center text-xl-start">
-                                    <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_usuarios">
+                                    <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_vendedores">
                                         <h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2">
                                             <i class="bi bi-person-circle"></i>Cadastrar <span class="text-success"> Vendedores</span>
                                         </h5>
@@ -33,7 +33,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                 </section>
                 <section class="bg-light py-2">
                     <div class="container col-10 px-2 py-2 mx-auto row">
-                        <form class="p-4 p-md-6 border text-uppercase rounded-3 bg-3" action="<?= DIRPAGE ?>cadastros/cadastrar_usuarios" method="POST">
+                        <form class="p-4 p-md-6 border text-uppercase rounded-3 bg-3" action="<?= DIRPAGE ?>cadastros/cadastrar_vendedores" method="POST">
                             <div class="row ">    
                                 <div class="col-3 mb-3 form-floating ">
                                     <select class="form-select" name="VDD_NIVEL">                                        
@@ -74,8 +74,8 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                 <div class="col-3 text-center mb-3">
                                     <label for="inputPassword6" class="col-form-label">Código de Venda</label>
                                     <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" id="email" name="VDD_CODIGO" placeholder="EX. 001" value="<?= isset($_POST['VDD_CODIGO']) ? $_POST['VDD_CODIGO'] : ''; ?>">
-                                        <label for="email">Seu Código</label>
+                                        <input type="text" class="form-control" name="VDD_CODIGO" placeholder="EX. 001" value="<?= isset($_POST['VDD_CODIGO']) ? $_POST['VDD_CODIGO'] : ''; ?>">
+                                        <label for="text">Seu Código</label>
                                     </div>
                                 </div>
                                 <div class="col-3 text-center mb-3">

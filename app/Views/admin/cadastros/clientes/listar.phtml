@@ -2,7 +2,7 @@
 use Libraries\Sessao;
 session_start();
 include_once 'app/Views/admin/inc/cabecalho.phtml'; 
-$qtd = (is_array($estoques) ? count($estoques) : 0);
+$qtd = (is_array($clientes) ? count($clientes) : 0);
 ?>
 <body class="">
     <div class="d-flex" id="wrapper">
@@ -53,12 +53,12 @@ $qtd = (is_array($estoques) ? count($estoques) : 0);
                             for ($i= 0; $i < $qtd; $i++) { ?>
                             <tr class="">
                                 <td class="text-center align-middle"><?= $b; ?></td>
-                                <td class="text-center align-middle"><?= $estoques[$i]['EST_COD']; ?></td>
-                                <td class="text-center align-middle"><?= $estoques[$i]['EST_COD']; ?></td>
-                                <td class="text-center align-middle"><?= $estoques[$i]['EST_COD']; ?></td>
-                                <td class="text-center align-middle"><?= $estoques[$i]['EST_STATUS']; ?></td>
+                                <td class="text-center align-middle"><?= $clientes[$i]['EST_COD']; ?></td>
+                                <td class="text-center align-middle"><?= $clientes[$i]['EST_COD']; ?></td>
+                                <td class="text-center align-middle"><?= $clientes[$i]['EST_COD']; ?></td>
+                                <td class="text-center align-middle"><?= ($clientes[$i]['CLI_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                 <td class="text-center align-middle">
-                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_estoques_empresas/'.$empresas[0]['EMP_COD'].'/'.$_SESSION['USU_COD']; ?>" title="Alterar empresa"><i class="fa fa-edit"></i></a>
+                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_clientes_empresas/'.$empresas[0]['EMP_COD'].'/'.$_SESSION['USU_COD']; ?>" title="Alterar empresa"><i class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                         <?php $b++; } ?>

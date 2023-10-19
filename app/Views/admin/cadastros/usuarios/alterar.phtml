@@ -44,11 +44,11 @@ $qtd = (is_array($usuario) ? count($usuario) : 0);
                                     <label class="form-label">NÍVEL DO USUÁRIO</label>
                                 </div>
                                 <div class="col-4 form-floating mb-3">
-                                    <input type="text" class="form-control maiusculo" id="1" name="USU_NOME" placeholder="Informe seu nome" value="<?= isset($_POST['USU_NOME']) ? $_POST['USU_NOME'] :''; ?>">
+                                    <input type="text" class="form-control maiusculo" id="1" name="USU_NOME" placeholder="Informe seu nome" value="<?= isset($_POST['USU_NOME'])? $_POST['USU_NOME'] : (isset($usuario['USU_NOME']) ? $usuario['USU_NOME'] :''); ?>">
                                     <label class="px-3" for="1">Seu nome</label>
                                 </div>    
                                 <div class="col-6 form-floating mb-3">
-                                    <input type="text" class="form-control maiusculo" id="2" name="USU_SOBRENOME" placeholder="Informe seu nome" value="<?= isset($_POST['USU_SOBRENOME']) ? $_POST['USU_SOBRENOME'] : ''; ?>">
+                                    <input type="text" class="form-control maiusculo" id="2" name="USU_SOBRENOME" placeholder="Informe seu Sobrenome" value="<?= isset($_POST['USU_SOBRENOME'])? $_POST['USU_SOBRENOME'] : (isset($usuario['USU_SOBRENOME']) ? $usuario['USU_SOBRENOME'] : ''); ?>">
                                     <label class="px-3" for="2">Seu sobrenome</label>
                                 </div> 
                             </div> 
@@ -58,13 +58,13 @@ $qtd = (is_array($usuario) ? count($usuario) : 0);
                                     <label for="inputPassword6" class="col-form-label">Seu Sexo</label>
                                     <div class="mx-auto text-center">   
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="USU_SEXO" id="flexRadioDefault2" value="1" <?= (isset($_POST['USU_SEXO']) && $_POST['USU_SEXO'] == 1) ? "checked" : ''; ?>>
+                                            <input class="form-check-input" type="radio" name="USU_SEXO" id="flexRadioDefault2" value="1" <?= (isset($_POST['USU_SEXO']) && $_POST['USU_SEXO'] == 1) ? "checked" : ((isset($usuario['USU_SEXO']) && $usuario['USU_SEXO'] == 1)? "checked" : ''); ?>>
                                             <label class="form-check-label" for="flexRadioDefault2">
                                                 Masculino
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="USU_SEXO" value="2" <?= (isset($_POST['USU_SEXO']) && $_POST['USU_SEXO'] == 2) ? "checked" : ''; ?> id="flexRadioDefault1">
+                                            <input class="form-check-input" type="radio" name="USU_SEXO" value="2" <?= (isset($_POST['USU_SEXO']) && $_POST['USU_SEXO'] == 2) ? "checked" : ((isset($usuario['USU_SEXO']) && $usuario['USU_SEXO'] == 2)? "checked" : ''); ?> id="flexRadioDefault1">
                                             <label class="form-check-label" for="flexRadioDefault1">
                                                 Feminino
                                             </label>
@@ -74,12 +74,12 @@ $qtd = (is_array($usuario) ? count($usuario) : 0);
                                 <div class="col-7 text-center mb-3">
                                     <label for="inputPassword6" class="col-form-label">Email de Acesso</label>
                                     <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" id="email" name="USU_EMAIL" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['USU_EMAIL']) ? $_POST['USU_EMAIL'] : ''; ?>">
+                                        <input type="email" class="form-control" id="email" name="USU_EMAIL" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['USU_EMAIL']) ? $_POST['USU_EMAIL'] : (isset($usuario['USU_EMAIL']) ? $usuario['USU_EMAIL'] : ''); ?>">
                                         <label for="email">Seu Email</label>
                                     </div>
                                 </div>
                                 <hr class="my-4 text-dark">
-                                <span class="text-center mb-3">A SENHA SERÁ PADRÃO: <b>123456</b> O NOVO USUÁRIO DEVERÁ ALTERÁ-LA</span>
+                                <span class="text-center mb-3">A NOVA SENHA SERÁ: <b>123456</b> O USUÁRIO DEVERÁ ALTERÁ-LA</span>
                                 <input type="hidden" class="form-control" name="USU_COD" value="<?= isset($_SESSION['USU_COD']) ? $_SESSION['USU_COD'] : 0; ?>">
                                 <button class="w-100 btn btn-lg text-uppercase btn-success" name="CADASTRAR_NOVO_USUARIO" type="submit"><i class="fa fa-save"></i> Cadastrar</button>
                                 <hr class="my-4 text-dark">

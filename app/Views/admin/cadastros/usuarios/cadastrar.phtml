@@ -80,6 +80,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                 </div>
                                 <hr class="my-4 text-dark">
                                 <span class="text-center mb-3">A SENHA SERÁ PADRÃO: <b>123456</b> O NOVO USUÁRIO DEVERÁ ALTERÁ-LA</span>
+                                <input type="hidden" class="form-control" name="EMP_COD" value="<?= isset($_SESSION['EMP_COD']) ? $_SESSION['EMP_COD'] : 0; ?>">
                                 <input type="hidden" class="form-control" name="USU_COD" value="<?= isset($_SESSION['USU_COD']) ? $_SESSION['USU_COD'] : 0; ?>">
                                 <button class="w-100 btn btn-lg text-uppercase btn-success" name="CADASTRAR_NOVO_USUARIO" type="submit"><i class="fa fa-save"></i> Cadastrar</button>
                                 <hr class="my-4 text-dark">

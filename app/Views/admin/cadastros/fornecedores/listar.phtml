@@ -60,11 +60,11 @@ $qtd = (is_array($fornecedores) ? count($fornecedores) : 0);
                                     for ($i= 0; $i < $qtd; $i++) { ?>
                                     <tr class="">
                                         <td class="text-center align-middle"><?= $b; ?></td>
-                                        <td class="text-center align-middle"><?= $fornecedores[$i]['USU_COD'] ?></td>
-                                        <td class="text-center align-middle"><?= $fornecedores[$i]['USU_NOME'].' '.$fornecedores[$i]['USU_SOBRENOME']; ?></td>
-                                        <td class="text-center align-middle"><?= $fornecedores[$i]['USU_EMAIL']; ?></td>
-                                        <td class="text-center align-middle"><?= $fornecedores[$i]['USU_NIVEL']; ?></td>
-                                        <td class="text-center align-middle"><?= $fornecedores[$i]['USU_STATUS']; ?></td>
+                                        <td class="text-center align-middle"><?= $fornecedores[$i]['FOR_TIPO'] ?></td>
+                                        <td class="text-center align-middle"><?= $fornecedores[$i]['FOR_NOME_FANTASIA'].' '.$fornecedores[$i]['USU_SOBRENOME']; ?></td>
+                                        <td class="text-center align-middle"><?= $fornecedores[$i]['FOR_EMAIL']; ?></td>
+                                        <td class="text-center align-middle"><?= $fornecedores[$i]['FOR_TEL_1']; ?></td>
+                                        <td class="text-center align-middle"><?= ($fornecedores[$i]['FOR_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                         <td class="text-center align-middle">
                                             <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_fornecedores/'.$fornecedores[$i]['EMP_COD'].'/'.$fornecedores[$i]['USU_COD']; ?>" title="Alterar fornecedores"><i class="fa fa-edit"></i></a>
                                             <a type="button" class="btn btn-danger btn-sm d-print-none" data-toggle='modal' title="Excluir usuário" href="#"><i class="fa fa-trash"></i></a>

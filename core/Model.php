@@ -104,7 +104,7 @@ class Model extends Connection
                 }
                 exit;
             } catch (\PDOException $e) {
-                var_dump($e->getMessage());
+                dump($e->getMessage());
             }
         }
     }
@@ -123,7 +123,7 @@ class Model extends Connection
                 $pdo->execute();
                 return $pdo->rowCount();
             } catch (\PDOException $e) {
-                var_dump($e->getMessage());
+                dump($e->getMessage());
             }
         }
     }
@@ -148,7 +148,7 @@ class Model extends Connection
                 }
                 return $dados;
             } catch (\PDOException $e) {
-                var_dump($e->getMessage());
+                dump($e->getMessage());
             }
         }
     }

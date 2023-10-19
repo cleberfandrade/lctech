@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\Clientes;
 use Core\View;
 use App\Models\Empresas;
 use App\Models\Enderecos;
@@ -53,19 +54,69 @@ class cadastros extends View
     {
         $this->dados['title'] .= 'CLIENTES';
         $Usuarios = new Usuarios;
+        $Clientes = new Clientes;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        $Clientes->setCodEmpresa($_SESSION['EMP_COD']);
+        $this->dados['clientes'] = $Clientes->listarTodos();
+
         $this->render('admin/cadastros/clientes/listar', $this->dados);
     }
     public function cadastro_clientes()
     {
         $this->dados['title'] .= 'CLIENTES';
         $Usuarios = new Usuarios;
+        $Clientes = new Clientes;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+
         $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
     }
+    public function cadastrar_clientes()
+    {
+        $this->dados['title'] .= 'CLIENTES';
+        $Usuarios = new Usuarios;
+        $Clientes = new Clientes;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        //Recupera os dados enviados
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
+        $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
+    }
     //CADASTRO - FORNECEDORES
     public function fornecedores()
     {
@@ -110,7 +161,36 @@ class cadastros extends View
     public function cadastro_usuarios()
     {
         $this->dados['title'] .= 'USUÁRIOS';
+        $Usuarios = new Usuarios;
         $this->render('admin/cadastros/usuarios/cadastrar', $this->dados);
+    }
+    public function cadastrar_usuarios()
+    {
+        $this->dados['title'] .= 'USUÁRIOS';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        //Recupera os dados enviados
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['CADASTRAR_NOVO_USUARIO'])) {
+
+            unset($dados['CADASTRAR_NOVO_USUARIO']);
+            if($_SESSION['USU_COD'] == $dados['USU_COD']){
+            }
+        }
+
+        $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
     }
     public function alterar_usuarios()
     {
@@ -161,6 +241,9 @@ class cadastros extends View
             $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
         }
+        $Vendedores->setCodEmpresa($_SESSION['EMP_COD']);
+        $this->dados['vendedores'] = $Vendedores->listarTodos();
+
         $this->render('admin/cadastros/vendedores/listar', $this->dados);
     }
     public function cadastro_vendedores()
@@ -201,32 +284,135 @@ class cadastros extends View
             $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
         }
+       
          //Recupera os dados enviados
          $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-                
          if (isset($_POST) && isset($dados['CADASTRAR_NOVO_VENDEDOR'])) {
-             //Verifica se os campos foram todos preenchidos
+
              unset($dados['CADASTRAR_NOVO_VENDEDOR']);
+             if($_SESSION['USU_COD'] == $dados['USU_COD']){
 
-             $dados += array(
-                'VDD_DT_CADASTRO'=> date('Y-m-d H:i:s'),
-                'VDD_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),             
-                'VDD_STATUS'=> 1
-            );
+                $Vendedores->setCodEmpresa($dados['EMP_COD']);
+                $Vendedores->setEmail($dados['VDD_EMAIL']);
 
-            if($Vendedores->cadastrar($dados,0)){
-                Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
-            }else{
-                Sessao::alert('ERRO',' 3- Erro ao cadastrar novo vendedor, entre em contato com o suporte!','fs-4 alert alert-danger');
+                if(!$Vendedores->checarVendedorEmpresa()) {
+                    $dados += array(
+                        'VDD_DT_CADASTRO'=> date('Y-m-d H:i:s'),
+                        'VDD_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),             
+                        'VDD_STATUS'=> 1
+                    );
+                
+                    if($Vendedores->cadastrar($dados,0)){
+                        Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                    }else{
+                        Sessao::alert('ERRO',' 3- Erro ao cadastrar novo vendedor, entre em contato com o suporte!','fs-4 alert alert-danger');
+                    }
+                }else {
+                    Sessao::alert('ERRO',' 2- Email já utilizado por outro vendedor no sistema, digite outro email!','fs-4 alert alert-danger');
+                }
+            }else {
+                Sessao::alert('ERRO',' 1- Acesso inválido!','fs-4 alert alert-danger');
             }
-
-
          }
-
 
         $this->render('admin/cadastros/vendedores/cadastrar', $this->dados);
     }
+    public function alterar_vendedores()
+    {
+        $this->dados['title'] .= 'VENDEDORES';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Vendedores = new Vendedores;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);  
+        $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
+        $dados = explode("/",$dados['url']);
 
+        if (isset($dados[1]) && $dados[1] == 'alterar_vendedores') {
+
+            $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+            $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+            if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $this->dados['empresa'] = $Empresa->listar(0);
+                $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+                $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+            }
+            if($_SESSION['EMP_COD'] == $dados[2]){
+                if(isset($dados[3]) && isset($dados[2])){
+
+                    $Vendedores->setCodigo($dados[3]);
+                    $Vendedores->setCodEmpresa($dados[2]);
+
+                    $this->dados['vendedor'] = $Vendedores->listar(0);
+                    $this->render('admin/cadastros/vendedores/alterar', $this->dados);
+
+                }else {
+                    Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+                    $this->render('admin/cadastros/vendedores/listar', $this->dados);
+                }
+            }else{
+                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+                $this->render('admin/cadastros/vendedores/listar', $this->dados);
+            }
+
+        }else {
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
+            $this->render('admin/cadastros/vendedores/listar', $this->dados);
+        }
+        
+    }
+    public function excluir_vendedores()
+    {
+        $this->dados['title'] .= 'VENDEDORES';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Vendedores = new Vendedores;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);  
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        //Recupera os dados enviados
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['EXCLUIR_VENDEDOR'])) {
+
+            $Vendedores->setCodEmpresa($dados['EMP_COD']);
+            $Vendedores->setCodigo($dados['VDD_COD']);
+
+            if($Vendedores->excluir(0)){
+                //Sessao::alert('OK','Exclusao efetuada com sucesso!','fs-4 alert alert-success');
+                $respota = array(
+                    'COD'=>'OK',
+                    'MENSAGEM' => 'Exclusao efetuada com sucesso!'
+                );
+                echo json_encode($respota);
+            }else{
+                $respota = array(
+                    'COD'=>'ERRO',
+                    'MENSAGEM'=> 'ERRO 2: Erro ao excluir vendedor, entre em contato com o suporte!'
+                );
+                echo json_encode($respota);
+                //Sessao::alert('ERRO',' 2- Erro ao excluir vendedor, entre em contato com o suporte!','fs-4 alert alert-danger');
+            }
+        }else {
+            $respota = array(
+                'COD'=>'ERRO',
+                'MENSAGEM'=> 'ERRO 1- Acesso inválido!'
+            );
+            echo json_encode($respota);
+            //Sessao::alert('ERRO',' 1- Acesso inválido!','fs-4 alert alert-danger');
+        }
+    }
     //CADASTRO - CATEGORIAS
     public function categorias()
     {
@@ -337,9 +523,11 @@ class cadastros extends View
                 $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                 $this->dados['estoques'] = $Estoques->listarTodos(0);
             }
-            $Estoques->setCodigo($dados[3]);
-            $Estoques->setCodEmpresa($dados[2]);
-            $this->dados['estoque'] = $Estoques->listar(0);
+            if(isset($dados[3]) && isset($dados[2])){
+                $Estoques->setCodigo($dados[3]);
+                $Estoques->setCodEmpresa($dados[2]);
+                $this->dados['estoque'] = $Estoques->listar(0);
+            }
         }
       
         $this->render('admin/cadastros/estoques/alterar', $this->dados);
@@ -732,10 +920,10 @@ class cadastros extends View
         if (isset($dados[1]) && $dados[1] == 'alterar_empresas') {
        
             if(isset($dados[3]) && isset($dados[2])){
-            $UsuariosEmpresa->setCodigo($dados[3]);
-            $UsuariosEmpresa->setCodEmpresa($dados[2]);
-            $this->dados['empresa'] = $UsuariosEmpresa->listar(0);
-            $this->render('admin/cadastros/empresas/alterar', $this->dados);
+                $UsuariosEmpresa->setCodigo($dados[3]);
+                $UsuariosEmpresa->setCodEmpresa($dados[2]);
+                $this->dados['empresa'] = $UsuariosEmpresa->listar(0);
+                $this->render('admin/cadastros/empresas/alterar', $this->dados);
             }else{
                 Sessao::alert('ERRO',' 1- Dados inválido(s)!','alert alert-danger');
                 $this->render('admin/cadastros/empresas/listar', $this->dados);
