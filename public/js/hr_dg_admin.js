@@ -10,6 +10,28 @@ const getHours = () => {
     clock.innerHTML = `${hour}:${minute}:${second}`
   }
   
+ 
+  const getSaudacao = () => {
+  let fraseDiv = document.getElementsByClassName('frase')[0]
+  let frase = '';
+  
+  let data = new Date();
+  let hora = data.getHours();
+
+  if (hora >= 3 && hora < 12)
+      frase = 'Bom dia';
+  else if (hora >= 12 && hora < 18)
+      frase = 'Boa tarde';
+  else if (hora >= 18 && hora <= 23)
+      frase = 'Boa noite';       
+  fraseDiv.innerHTML = frase;
+
+  }
+
   setInterval(() => {
     getHours()
+    getSaudacao()
   }, 1000)
+
+
+ 

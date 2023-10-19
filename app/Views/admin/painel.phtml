@@ -24,16 +24,13 @@ $qtdME = (is_array($modulos_empresa) ? count($modulos_empresa) : 0);
                                         </h5>
                                     </a>
                                 </div>
-                                <h5>BEM VINDO(A) <?= $usuario['USU_NOME'].' '.$usuario['USU_SOBRENOME'] ?></h5>
+                                <h5><div class="frase"></div> <?= $usuario['USU_NOME'].' '.$usuario['USU_SOBRENOME'] ?></h5>
                             </div>
                             <div class="col-lg-3 col-xl-3 col-xxl-3 border-start">
                                 <span class=""></span>
                                 <h4><b>HOJE</b> <?= date("d/m/Y");
-                                
                                     include_once 'inc/hora.phtml'; ?>
-                                    
                                 </h4>
-                                
                             </div>
                         </div>
                     </section>
@@ -99,7 +96,7 @@ $qtdME = (is_array($modulos_empresa) ? count($modulos_empresa) : 0);
                                     </div>
                                 </a>
                             </div>
-                            
+                            <hr class="my-4 text-dark">
 
                             <!--
                             <div class="opacity-25 card text-bg-warning mb-3" style="max-width: 18rem;">
@@ -119,25 +116,28 @@ $qtdME = (is_array($modulos_empresa) ? count($modulos_empresa) : 0);
                             -->
                             
                         </div>
-                        <div class="col-3 mx-auto m-4 mx-auto ml-3">
-                            <span class="border-start"></span>
-                            
-                            <div class="card mx-auto bg-light" style="max-width: 15rem;">
-                                <div class="card-header">SUPORTE</div>
-                                <div class="card-body">
-                
-                                    <p class="card-text position-relative" style="max-height: 10rem;">
-                                    <p class="card-title small">Fale conosco</p>
-                                    <textarea class="form-control mb-4" name="SUP_TEXTO" id="SUP_TEXTO" width="100%;" rows="5rem;"></textarea>
-                                    <button type="button" class="mt-3 position-absolute btn btn-outline-secondary fixed-bottom">ENVIAR</button>
-                                    </p>
+                        <div class="col-3 mx-auto m-4 mx-auto ml-3 border-start">
+                            <div class="">
+                                <div class="card mx-auto bg-light" style="max-width: 15rem;">
+                                    <div class="card-header"><i class="bi bi-question-square"></i> SUPORTE</div>
+                                    <div class="card-body">
+                    
+                                        <p class="card-text position-relative" style="max-height: 10rem;">
+                                        <p class="card-title small">Fale conosco</p>
+                                        <textarea class="form-control mb-4" name="SUP_TEXTO" id="SUP_TEXTO" width="100%;" rows="5rem;"></textarea>
+                                        <button type="button" class="mt-5 position-absolute btn btn-outline-secondary fixed-bottom">ENVIAR</button>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
+                                </div>
                         </div>
                     <?php } ?>
                 
                 </section>
                 <?php include_once 'inc/rodape.phtml';?>
+                <script type="text/javascript">
+                    
+                </script>
             </div>
         </div>
     </div>
