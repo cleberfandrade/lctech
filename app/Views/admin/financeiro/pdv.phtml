@@ -1,0 +1,44 @@
+<?php 
+use Libraries\Sessao;
+session_start();
+include_once 'app/Views/admin/inc/cabecalho.phtml'; 
+?>
+<body>
+    <div class="d-flex" id="wrapper">
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <?php //include_once 'app/Views/admin/inc/menu_topo.phtml'; ?>
+            
+            <div class="bg-light p-0">
+                <section class="container py-1 text-center">
+                    <?= Sessao::alert('OK'); ?>
+                    <?= Sessao::alert('ERRO'); ?>
+                </section>
+                <section class="container-fluid row mx-auto col-12 mb-5">
+                    <table class="table table-success table-striped">
+                        <thead>
+                            <tr class="fs-2 text-center">
+                            <th colspan="3" scope="col-4">CAIXA FECHADO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>N° VENDA:</td>
+                                <td>DATA:</td>
+                                <td>OPERADOR:</td>
+                            </tr>
+                            <tr>
+                                <td>001</td>
+                                <td><?= date('d/m/Y h:i:s') ?></td>
+                                <td><?= isset($_SESSION['USU_NOME'])?$_SESSION['USU_NOME'] : 'FACA ACESSO!!' ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+           

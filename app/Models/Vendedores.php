@@ -3,11 +3,11 @@ namespace App\Models;
 
 use Core\Model;
 
-class vendas extends Model
+class Vendedores extends Model
 { 
-    private $tabela = 'tb_vendas';
+    private $tabela = 'tb_vendedores';
     private $Model = '';
-    private $codigo,$codEmpresa,$codProduto;
+    private $codigo,$codEmpresa,$codVenda, $codProduto;
 
     public function __construct()
     {
@@ -29,9 +29,14 @@ class vendas extends Model
         $this->codProduto = $codProduto;
         return $this;
     }
+    public function setCodVenda($codVenda)
+    {
+        $this->codVenda = $codVenda;
+        return $this;
+    }
     public function listar($ver = 0)
     {
-        $parametros = "";
+        $parametros = "VD INNER JOIN tb_empresas E ON E.EMP_COD=VD.EMP_COD WHERE VD.EMP_COD={$this->codEmpresa} AND VD.VDD_COD={$this->codigo}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -40,9 +45,9 @@ class vendas extends Model
             return false;
         }
     }
-    public function listarTodas($ver = 0)
+    public function listarTodos($ver = 0)
     {
-        $parametros = "V INNER JOIN tb_empresas E ON E.EMP_COD=V.EMP_COD WHERE V.EMP_COD={$this->codEmpresa} ORDER BY V.VEN_COD";
+        $parametros = "VD INNER JOIN tb_empresas E ON E.EMP_COD=VD.EMP_COD WHERE VD.EMP_COD={$this->codEmpresa} ORDER BY V.VDD_COD";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -62,7 +67,7 @@ class vendas extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = " V INNER JOIN tb_empresas E ON E.EMP_COD=V.EMP_COD WHERE V.EMP_COD={$this->codEmpresa} V.VEN_COD=";
+        $parametros = " VD INNER JOIN tb_empresas E ON E.EMP_COD=VD.EMP_COD WHERE VD.EMP_COD={$this->codEmpresa} VD.VDD_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;
@@ -75,7 +80,7 @@ class vendas extends Model
     }
     public function excluir(array $dados, $ver = 0)
     {
-        $parametros = " V INNER JOIN tb_empresas E ON E.EMP_COD=V.EMP_COD WHERE V.EMP_COD={$this->codEmpresa} V.VEN_COD=";
+        $parametros = " VD INNER JOIN tb_empresas E ON E.EMP_COD=VD.EMP_COD WHERE VD.EMP_COD={$this->codEmpresa} VD.VDD_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;

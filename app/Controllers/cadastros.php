@@ -10,6 +10,7 @@ use App\Models\Fornecedores;
 use App\Models\ModulosEmpresa;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
+use App\Models\Vendedores;
 use Libraries\Check;
 use Libraries\Url;
 use Libraries\Sessao;
@@ -94,9 +95,7 @@ class cadastros extends View
         $Empresa = new Empresas;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuario'] = $Usuarios->listar(0);
-
-       
+        $this->dados['usuario'] = $Usuarios->listar(0);  
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
         if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
@@ -142,6 +141,90 @@ class cadastros extends View
             $this->dados['empresa'] = $Empresa->listar(0);
         }
         $this->render('admin/cadastros/usuarios/meus_dados', $this->dados);
+    }
+    //CADASTRO - VENDEDORES
+     public function vendedores()
+    {
+        $this->dados['title'] .= 'USUÁRIOS';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Vendedores = new Vendedores;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);  
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        $this->render('admin/cadastros/vendedores/listar', $this->dados);
+    }
+    public function cadastro_vendedores()
+    {
+        $this->dados['title'] .= 'VENDEDORES';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Vendedores = new Vendedores;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);  
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        $this->render('admin/cadastros/vendedores/cadastrar', $this->dados);
+    }
+    public function cadastrar_vendedores()
+    {
+        $this->dados['title'] .= 'VENDEDORES';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Vendedores = new Vendedores;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);  
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+         //Recupera os dados enviados
+         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+                
+         if (isset($_POST) && isset($dados['CADASTRAR_NOVO_VENDEDOR'])) {
+             //Verifica se os campos foram todos preenchidos
+             unset($dados['CADASTRAR_NOVO_VENDEDOR']);
+
+             $dados += array(
+                'VDD_DT_CADASTRO'=> date('Y-m-d H:i:s'),
+                'VDD_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),             
+                'VDD_STATUS'=> 1
+            );
+
+            if($Vendedores->cadastrar($dados,0)){
+                Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+            }else{
+                Sessao::alert('ERRO',' 3- Erro ao cadastrar novo vendedor, entre em contato com o suporte!','fs-4 alert alert-danger');
+            }
+
+
+         }
+
+
+        $this->render('admin/cadastros/vendedores/cadastrar', $this->dados);
     }
 
     //CADASTRO - CATEGORIAS
@@ -680,8 +763,7 @@ class cadastros extends View
                 
                 $UsuariosEmpresa->setCodigo($dados['USU_COD']);
                 $UsuariosEmpresa->setCodEmpresa($dados['EMP_COD']);
-                dump($dados);
-                exit;
+                
                 $dados += array(
                     'USU_DT_ATUALIZACAO'=> date('Y-m-d H:i:s'),
                 );
