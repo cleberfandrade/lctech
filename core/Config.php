@@ -35,7 +35,7 @@ define('EMAILADM', 'contato@lctech.com.br');
 define ('DB',[
     "DRIVER" => "mysql",
     "HOSTNAME" => "localhost",
-    "DATABASE"=> "",
-    "USERNAME" => "",
+    "DATABASE"=> "lctech",
+    "USERNAME" => "root",
     "PASSWORD"=> ""
 ]);

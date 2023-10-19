@@ -941,34 +941,29 @@ class cadastros extends View
         $UsuariosEmpresa = new UsuariosEmpresa();
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
         $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
 
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
         if (isset($_POST) && isset($dados['ALTERAR_EMPRESA'])) {
+
             unset($dados['ALTERAR_EMPRESA']);
             
-            if($_SESSION['USU_COD'] == $dados['USU_COD']){
+            if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD']  == $dados['EMP_COD']){
                 
                 $UsuariosEmpresa->setCodigo($dados['USU_COD']);
                 $UsuariosEmpresa->setCodEmpresa($dados['EMP_COD']);
                 
                 $dados += array(
-                    'USU_DT_ATUALIZACAO'=> date('Y-m-d H:i:s'),
+                    'EMP_DT_ATUALIZACAO'=> date('Y-m-d H:i:s'),
                 );
 
                 unset($dados['USU_COD']);
                 
                 $ok = true;
                 foreach ($dados as $key => $value) {
-
-                   
-                    //Verifica se tem algum valor em branco
                     $value = $Check->checarString($value);
-                    //if(empty($dados["$key"])){
-                        //Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
-                        //$ok = false;
-                        //break;
-                    //}
                 }
                 //VERIFICAR SE TODOS OS CAMPOS FORAM PREENCHIDOS
                 if ($ok) {
@@ -984,23 +979,27 @@ class cadastros extends View
                         'END_CIDADE' =>  $dados['END_CIDADE'],
                         'END_ESTADO' =>  $dados['END_ESTADO']
                     );
-
-                    $ends = array_keys($dados, "END_");
-                    unset($dados[$ends]);
+                    
+                    //REMOVENDO DADOS DE ENDERECO DA ATUALIZACAO DA EMPRESA
+                    unset($dados["END_LOGRADOURO"]);
+                    unset($dados["END_NUMERO"]);
+                    unset($dados["END_BAIRRO"]);
+                    unset($dados["END_CEP"]);
+                    unset($dados["END_CIDADE"]);
+                    unset($dados["END_ESTADO"]);
 
                     if($Empresa->alterar($dados,0)){
+                        
                         $Enderecos->setCodEmpresa($dados['EMP_COD']);
                         $id = $Enderecos->checarEnderecoEmpresa();
-                       
-                        unset($dados['EMP_COD']);
 
-                        $Enderecos->setCodigo($id);
-                        
+                        $Enderecos->setCodigo($id[0]['END_COD']);
+                       
                         if($Enderecos->alterarEmpresa($db_endereco,0)){
                            
                             Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
                         }else {
-                            Sessao::alert('OK','Cadastro alterado, houve um erro ao alterar o endereco!','fs-4 alert alert-success');
+                            Sessao::alert('ERRO','Cadastro alterado, houve um erro ao alterar o endereço!','fs-4 alert alert-warning');
                         }
                     }else{
                         Sessao::alert('ERRO',' 3- Erro ao alterar sua empresa, entre em contato com o suporte!','fs-4 alert alert-danger');
@@ -1014,7 +1013,7 @@ class cadastros extends View
         }
 
         $this->dados['empresa'] = $UsuariosEmpresa->listar(0);
-
+        
         $this->render('admin/cadastros/empresas/alterar', $this->dados);
     }
     //Controller - ALTERAR DADOS DO USUARIO NO DB

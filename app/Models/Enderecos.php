@@ -78,7 +78,7 @@ class Enderecos extends Model
     }
     public function alterarEmpresa(array $dados, $ver = 0)
     {
-        $parametros = " WHERE EMP_COD='{$this->codEmpresa}' AND END_COD=";
+        $parametros = " WHERE EMP_COD={$this->codEmpresa} AND END_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;
