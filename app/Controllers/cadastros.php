@@ -99,6 +99,7 @@ class cadastros extends View
         $this->dados['title'] .= 'CLIENTES';
         $Usuarios = new Usuarios;
         $Clientes = new Clientes;
+        $Enderecos = new Enderecos;
         $Empresa = new Empresas;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
@@ -124,9 +125,56 @@ class cadastros extends View
                 $cli = $Clientes->checarRegistroCliente();
                 if(!$cli){
 
+                    $dados += array(
+                        'CLI_DT_CADASTRO'=> date('Y-m-d H:i:s'),
+                        'CLI_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),          
+                        'CLI_STATUS'=> 1
+                    );
 
+                    $db_endereco = array(
+                        'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                        'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                        'END_LOGRADOURO' =>  $dados['END_LOGRADOURO'],
+                        'END_NUMERO' =>  $dados['END_NUMERO'],
+                        'END_BAIRRO' =>  $dados['END_BAIRRO'],
+                        'END_CIDADE' =>  $dados['END_CIDADE'],
+                        'END_ESTADO' =>  $dados['END_ESTADO'],
+                        'END_CEP'    =>  $dados['END_CEP'],
+                        'END_STATUS' => 1
+                    );
+
+                    //REMOVENDO DADOS DE ENDERECO DA ATUALIZACAO DA EMPRESA
+                    unset($dados["END_LOGRADOURO"]);
+                    unset($dados["END_NUMERO"]);
+                    unset($dados["END_BAIRRO"]);
+                    unset($dados["END_CEP"]);
+                    unset($dados["END_CIDADE"]);
+                    unset($dados["END_ESTADO"]);
+                    $id = $Clientes->cadastrar($dados,0);
+                    if($id){ 
+                        $Enderecos->setCodEmpresa($id);
+                        $endr = $Enderecos->checarEnderecoCliente();
+                        if(!$endr){
+                            $db_endereco['CLI_COD'] = $id;
+                            if ($Enderecos->cadastrar($dados,0)) {
+                                Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                            }else {
+                                Sessao::alert('OK','Cadastro efetuado com sucesso, não foi possível cadastrar o endereço!','fs-4 alert alert-warning');
+                            }
+                        }else {
+                            Sessao::alert('OK','Cadastro efetuado com sucesso, endereço já cadastrado!','fs-4 alert alert-success');
+                        }
+                    }else{
+                        Sessao::alert('ERRO',' 4- Erro ao cadastrar novo cliente, entre em contato com o suporte!','fs-4 alert alert-danger');
+                    }
+                }else {
+                    Sessao::alert('ERRO',' 3- Cadastro já realizado!','fs-4 alert alert-warning');
                 }
+            }else {
+                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
             }
+        }else {
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
         }
 
         $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
@@ -150,6 +198,17 @@ class cadastros extends View
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
         $this->dados['fornecedores'] = $Fornecedores->listarTodosEmpresa(0);
 
+        $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
+    }
+    public function cadastrar_fornecedores()
+    {
+        $this->dados['title'] .= 'FORNECEDORES';
+        $Usuarios = new Usuarios;
+        $Fornecedores = new Fornecedores;
+        $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
+        $this->dados['fornecedores'] = $Fornecedores->listarTodosEmpresa(0);
+
+        
         $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
     }
     //CADASTRO - USUÁRIOS
@@ -222,9 +281,15 @@ class cadastros extends View
                             'USU_STATUS'=> 1
                         );
                     }
+                }else {
+                    # code...
                 }
 
+            }else {
+                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
             }
+        }else {
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
         }
 
         $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
@@ -503,6 +568,7 @@ class cadastros extends View
                 $Vendedores->setEmail($dados['VDD_EMAIL']);
 
                 if(!$Vendedores->checarVendedorEmpresa()) {
+
                     $dados += array(
                         'VDD_DT_CADASTRO'=> date('Y-m-d H:i:s'),
                         'VDD_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'), 
