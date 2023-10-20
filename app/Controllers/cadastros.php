@@ -119,10 +119,13 @@ class cadastros extends View
             unset($dados['CADASTRAR_NOVO_CLIENTE']);
             if($_SESSION['USU_COD'] == $dados['USU_COD']){
                 
-                $Empresa->setcodRegistro($dados['EMP_REGISTRO']);
+                $Clientes->setcodRegistro($dados['CLI_REGISTRO']);
                 //Verificar se já existe cadastro da empresa pelo REGISTRO: CPF ou CNPJ informado
-                $emp = $Empresa->checarRegistroEmpresa();
-                if(!$emp){}
+                $cli = $Clientes->checarRegistroCliente();
+                if(!$cli){
+
+
+                }
             }
         }
 
@@ -178,6 +181,7 @@ class cadastros extends View
     public function cadastrar_usuarios()
     {
         $this->dados['title'] .= 'USUÁRIOS';
+        $Check = new Check;
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
         $UsuariosEmpresa = new UsuariosEmpresa;
@@ -199,6 +203,26 @@ class cadastros extends View
             unset($dados['CADASTRAR_NOVO_USUARIO']);
             if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
 
+                if($Check->checarEmail($dados['USU_EMAIL'])){
+                    //$Usuarios->setCodEmpresa($dados['EMP_COD']);
+                    $Usuarios->setEmailUsuario($dados['USU_EMAIL']);
+                    if(!$Usuarios->checarEmailUsuario()){
+
+                        $db = array(
+                            'EMP_COD' => 0,
+                            'CRG_COD' => 0,
+                            'USU_DT_CADASTRO'   => date('Y-m-d H:i:s'),
+                            'USU_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),
+                            'USU_NOME'      => $dados['nome_usuario'],
+                            'USU_SOBRENOME' => $dados['sobrenome_usuario'],
+                            'USU_SEXO'  => $dados['sexo_usuario'],
+                            'USU_EMAIL' => $dados['email_usuario'],
+                            'USU_SENHA' => $Check->codificarSenha('123456'),
+                            'USU_NIVEL' => $dados['email_usuario'],
+                            'USU_STATUS'=> 1
+                        );
+                    }
+                }
 
             }
         }

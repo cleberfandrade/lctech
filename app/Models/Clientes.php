@@ -7,7 +7,7 @@ class Clientes extends Model
 { 
     private $tabela = 'tb_clientes';
     private $Model = '';
-    private $codigo,$codEmpresa;
+    private $codigo,$codEmpresa,$codRegistro;
 
     public function __construct()
     {
@@ -22,6 +22,11 @@ class Clientes extends Model
     public function setCodEmpresa($codEmpresa)
     {
         $this->codEmpresa = $codEmpresa;
+        return $this;   
+    }
+    public function setcodRegistro($codRegistro)
+    {
+        $this->codRegistro = $codRegistro;
         return $this;
     }
     public function listar($ver = 0)
@@ -78,6 +83,19 @@ class Clientes extends Model
         if ($ok) {
             return true;
         } else {
+            return false;
+        }
+    }
+    public function checarRegistroCliente()
+    {
+        $parametros = "WHERE CLI_REGISTRO='{$this->codRegistro}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            //Já existe
+            return $resultado[0];
+        } else {
+            //Nao existe
             return false;
         }
     }
