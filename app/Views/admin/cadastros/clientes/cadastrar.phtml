@@ -16,7 +16,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                         <div class="row gx-3 align-items-center justify-content-center">
                             <div class="col-lg-10 col-xl-10 col-xxl-10">
                                 <div class="my-3 text-center text-xl-start">
-                                    <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_usuarios">
+                                    <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_clientes">
                                         <h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2">
                                             <i class="bi bi-person-circle"></i>Cadastrar <span class="text-success"> Clientes</span>
                                         </h5>
@@ -24,6 +24,9 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                 </div>
                             </div>
                         </div>
+                    </section>
+                    <section class="container col-12 mx-auto px-5">
+                    <?php include_once 'app/Views/admin/inc/breadcrumb.phtml'; ?>
                     </section>
                 </header>
                 <section class="container py-2">
@@ -137,7 +140,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                 <hr class="my-4">
                                 <div class="col-4 mb-3">
                                     <div class="form-floating mb-3">
-                                        <input type="text" name="CLI_REGISTRO" id="registro" class="form-control" value="<?= isset($_POST['CLI_REGISTRO']) ? $_POST['CLI_REGISTRO'] : '' ?>">
+                                        <input type="text" name="CLI_REGISTRO" id="REGISTRO" class="form-control" value="<?= isset($_POST['CLI_REGISTRO']) ? $_POST['CLI_REGISTRO'] : '' ?>">
                                         <label for="registro">CPF/CNPJ</label>
                                     </div>
                                 </div>

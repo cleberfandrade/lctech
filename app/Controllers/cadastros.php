@@ -118,6 +118,11 @@ class cadastros extends View
 
             unset($dados['CADASTRAR_NOVO_CLIENTE']);
             if($_SESSION['USU_COD'] == $dados['USU_COD']){
+                
+                $Empresa->setcodRegistro($dados['EMP_REGISTRO']);
+                //Verificar se já existe cadastro da empresa pelo REGISTRO: CPF ou CNPJ informado
+                $emp = $Empresa->checarRegistroEmpresa();
+                if(!$emp){}
             }
         }
 
