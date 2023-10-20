@@ -3,9 +3,10 @@ namespace App\Controllers;
 
 use App\Models\Empresas;
 use App\Models\Estoques as ModelsEstoques;
+use App\Models\Produtos;
 use Libraries\Util;
 use Core\View;
-use App\Models\usuarios;
+use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
 use Libraries\Sessao;
 
@@ -20,7 +21,7 @@ class estoques extends View
     public function index()
     {
         $this->dados['title'] .= 'ACESSAR';
-        $Usuarios = new usuarios;
+        $Usuarios = new Usuarios;
         $Empresa = new Empresas;
         $Estoques = new ModelsEstoques;
         $UsuariosEmpresa = new UsuariosEmpresa;
@@ -49,7 +50,7 @@ class estoques extends View
     public function gerenciar()
     {
         $this->dados['title'] .= 'GERENCIAR ESTOQUE';
-        $Usuarios = new usuarios;
+        $Usuarios = new Usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $Estoques = new ModelsEstoques;
@@ -81,39 +82,100 @@ class estoques extends View
                 if (isset($_SESSION['EMP_COD']) && $_SESSION['EMP_COD'] == $dados[2]){
                     $Estoques->setCodEmpresa($dados[2]);
                     $Estoques->setCodigo($dados[3]);
-                    $this->dados['estoque'] = $Estoques->listarTodos(0);
+                    $this->dados['estoque'] = $Estoques->listar(0);
                     $this->render('admin/estoques/gerenciar', $this->dados);
                 }else {
                     Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
                     $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                     $this->dados['estoques'] = $Estoques->listarTodos(0);
-                    $this->render('admin/estoques/listar', $this->dados);
+                    $this->render('admin/estoques/estoques', $this->dados);
                 }
             }else {
                 Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
 
                 $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                 $this->dados['estoques'] = $Estoques->listarTodos(0);
-                $this->render('admin/estoques/listar', $this->dados);
+                $this->render('admin/estoques/estoques', $this->dados);
             }
         }else {
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
             $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['estoques'] = $Estoques->listarTodos(0);
-            $this->render('admin/estoques/listar', $this->dados);
+            $this->render('admin/estoques/estoques', $this->dados);
         }
     }
+    //PRODUTOS
     public function produtos()
     {
-        $Usuarios = new usuarios;
+        $this->dados['title'] .= 'GERENCIAR PRODUTOS';
+        $Usuarios = new Usuarios;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Empresa = new Empresas;
+        $Estoques = new ModelsEstoques;
+        $Produtos = new Produtos;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
-        $this->render('admin/estoque/produtos', $this->dados);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
+            if($qtd == 1) {
+                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $this->dados['empresas'] = $Empresa->listar(0);
+            }else {
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $Empresa->setCodUsuario($_SESSION['USU_COD']);
+                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
+            }    
+        }
+        $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
+        $dados = explode("/",$dados['url']);
+        
+        if (isset($dados[2]) && $dados[2] != '' && isset($dados[3]) && $dados[3] != '') {
+           
+            
+            if (isset($_SESSION['EMP_COD']) && $_SESSION['EMP_COD'] == $dados[2]){
+                
+                //Verificando a existencia do estoque informado
+                $Estoques->setCodEmpresa($dados[2]);
+                $Estoques->setCodigo($dados[3]);
+                $this->dados['estoque'] = $Estoques->listar(0);
+                //Buscando produtos deste estoque
+                $Produtos->setCodEstoque($this->dados['estoque']['EST_COD']);
+                $Produtos->setCodEmpresa($this->dados['estoque']['EMP_COD']);
+                $this->dados['produtos'] = $Produtos->listarTodos(0);
+               
+                $this->render('admin/estoques/produtos/listar', $this->dados);
+
+            }else {
+                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+                $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+                $this->dados['estoques'] = $Estoques->listarTodos(0);
+
+                $this->render('admin/estoques/estoques', $this->dados);
+            }
+        }else {
+            Sessao::alert('ERRO',' 1- Acesso inválido(s)!','fs-4 alert alert-danger');
+            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['estoques'] = $Estoques->listarTodos(0);
+            $this->render('admin/estoques/estoques', $this->dados);
+        }
+    }
+    public function cadastro_produtos()
+    {
+        $this->dados['title'] .= 'CADASTRAR PRODUTOS';
+        $Usuarios = new Usuarios;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+
+
+        $this->render('admin/estoques/produtos/cadastrar', $this->dados);
     }
     public function servicos()
     {
         $Usuarios = new usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
-        $this->render('admin/estoque/servicos', $this->dados);
+        $this->render('admin/estoques/servicos', $this->dados);
     }
 }

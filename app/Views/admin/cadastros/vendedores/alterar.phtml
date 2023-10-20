@@ -16,9 +16,9 @@ $qtd = (is_array($vendedor) ? count($vendedor) : 0);
                         <div class="row gx-3 align-items-center justify-content-center">
                             <div class="col-lg-10 col-xl-10 col-xxl-10">
                                 <div class="my-3 text-center text-xl-start">
-                                    <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_vendedores">
+                                    <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/alterar_vendedores/<?= $vendedor['EMP_COD']?>/<?= $vendedor['VDD_COD']?>">
                                         <h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2">
-                                            <i class="bi bi-person-circle"></i>Alterar <span class="text-success"> Vendedores</span>
+                                            <i class="bi bi-person-circle"></i>Alterar <span class="text-success"> Vendedor</span>
                                         </h5>
                                     </a>
                                 </div>
@@ -33,22 +33,22 @@ $qtd = (is_array($vendedor) ? count($vendedor) : 0);
                 </section>
                 <section class="bg-light py-2">
                     <div class="container col-10 px-2 py-2 mx-auto row">
-                        <form class="p-4 p-md-6 border text-uppercase rounded-3 bg-3" action="<?= DIRPAGE ?>cadastros/alterar_vendedores/<?= $vendedor['EMP_COD'].'/'.$vendedor['USU_COD']; ?>" method="POST">
+                        <form class="p-4 p-md-6 border text-uppercase rounded-3 bg-3" action="<?= DIRPAGE ?>cadastros/alterar_vendedores_empresa" method="POST">
                             <div class="row ">    
                                 <div class="col-3 mb-3 form-floating ">
                                     <select class="form-select" name="VDD_NIVEL">                                        
                                         <?php for ($i=1; $i <= 10; $i++) { ?>
-                                            <option value="<?= $i?>" <?= (isset($_POST['VDD_NIVEL']) &&  $_POST['VDD_NIVEL']  == $i)? 'selected' : '' ?>><?= $i ?></option>
+                                            <option value="<?= $i?>" <?= (isset($_POST['VDD_NIVEL']) &&  $_POST['VDD_NIVEL']  == $i)? 'selected' : ((isset($vendedor['VDD_NIVEL']) && $vendedor['VDD_NIVEL'] == $i)? 'selected' : '') ?>><?= $i ?></option>
                                         <?php } ?>
                                     </select>
                                     <label class="form-floating mb-3">NÍVEL DO VENDEDOR(A)</label>
                                 </div>
                                 <div class="col-4 form-floating mb-3">
-                                    <input type="text" class="form-control maiusculo" id="1" name="VDD_NOME" placeholder="Informe seu nome" value="<?= isset($_POST['VDD_NOME']) ? $_POST['VDD_NOME'] :''; ?>">
+                                    <input type="text" class="form-control maiusculo" id="1" name="VDD_NOME" placeholder="Informe seu nome" value="<?= isset($_POST['VDD_NOME']) ? $_POST['VDD_NOME'] : (isset($vendedor['VDD_NOME'])? $vendedor['VDD_NOME'] : ''); ?>">
                                     <label class="px-3" for="1">Seu nome</label>
                                 </div>    
                                 <div class="col-5 form-floating mb-3">
-                                    <input type="text" class="form-control maiusculo" id="2" name="VDD_SOBRENOME" placeholder="Informe seu nome" value="<?= isset($_POST['VDD_SOBRENOME']) ? $_POST['VDD_SOBRENOME'] : ''; ?>">
+                                    <input type="text" class="form-control maiusculo" id="2" name="VDD_SOBRENOME" placeholder="Informe seu nome" value="<?= isset($_POST['VDD_SOBRENOME']) ? $_POST['VDD_SOBRENOME'] : (isset($vendedor['VDD_SOBRENOME'])? $vendedor['VDD_SOBRENOME'] : ''); ?>">
                                     <label class="px-3" for="2">Seu sobrenome</label>
                                 </div> 
                             </div> 
@@ -58,14 +58,14 @@ $qtd = (is_array($vendedor) ? count($vendedor) : 0);
                                     <label for="inputPassword6" class="col-form-label">Seu Sexo</label>
                                     <div class="mx-auto text-center">   
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="VDD_SEXO" id="flexRadioDefault2" value="1" <?= (isset($_POST['VDD_SEXO']) && $_POST['VDD_SEXO'] == 1) ? "checked" : ''; ?>>
-                                            <label class="form-check-label" for="flexRadioDefault2">
+                                            <input class="form-check-input" type="radio" name="VDD_SEXO" id="sexo1" value="1" <?= (isset($_POST['VDD_SEXO']) && $_POST['VDD_SEXO'] == 1) ? "checked" : ((isset($vendedor['VDD_SEXO']) && $vendedor['VDD_SEXO'] == 1)? 'checked': ''); ?>>
+                                            <label class="form-check-label" for="sexo1">
                                                 Masculino
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="VDD_SEXO" value="2" <?= (isset($_POST['VDD_SEXO']) && $_POST['VDD_SEXO'] == 2) ? "checked" : ''; ?> id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
+                                            <input class="form-check-input" type="radio" name="VDD_SEXO" id="sexo2" value="2" <?= (isset($_POST['VDD_SEXO']) && $_POST['VDD_SEXO'] == 2) ? "checked" : ((isset($vendedor['VDD_SEXO']) && $vendedor['VDD_SEXO'] == 2)? 'checked': ''); ?>>
+                                            <label class="form-check-label" for="sexo2">
                                                 Feminino
                                             </label>
                                         </div>
@@ -74,14 +74,14 @@ $qtd = (is_array($vendedor) ? count($vendedor) : 0);
                                 <div class="col-3 text-center mb-3">
                                     <label for="inputPassword6" class="col-form-label">Código de Venda</label>
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" name="VDD_CODIGO" placeholder="EX. 001" value="<?= isset($_POST['VDD_CODIGO']) ? $_POST['VDD_CODIGO'] : ''; ?>">
+                                        <input type="text" class="form-control" name="VDD_CODIGO" placeholder="EX. 001" value="<?= isset($_POST['VDD_CODIGO']) ? $_POST['VDD_CODIGO'] : (isset($vendedor['VDD_CODIGO'])? $vendedor['VDD_CODIGO'] : ''); ?>">
                                         <label for="text">Seu Código</label>
                                     </div>
                                 </div>
                                 <div class="col-3 text-center mb-3">
                                     <label for="inputPassword6" class="col-form-label">Comissão de Venda</label>
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="text" name="VDD_COMISSAO" placeholder="EX. 5%" value="<?= isset($_POST['VDD_COMISSAO']) ? $_POST['VDD_COMISSAO'] : '0'; ?>">
+                                        <input type="text" class="form-control" id="text" name="VDD_COMISSAO" placeholder="EX. 5%" value="<?= isset($_POST['VDD_COMISSAO']) ? $_POST['VDD_COMISSAO'] : (isset($vendedor['VDD_COMISSAO'])? $vendedor['VDD_COMISSAO'] : '0'); ?>">
                                         <label for="text">%</label>
                                     </div>
                                 </div>
@@ -89,21 +89,41 @@ $qtd = (is_array($vendedor) ? count($vendedor) : 0);
                                 <div class="col-6 text-center mb-3">
                                     <label for="inputPassword6" class="col-form-label">Email</label>
                                     <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" id="email" name="VDD_EMAIL" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['VDD_EMAIL']) ? $_POST['VDD_EMAIL'] : ''; ?>">
+                                        <input type="email" class="form-control" id="email" name="VDD_EMAIL" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['VDD_EMAIL']) ? $_POST['VDD_EMAIL'] : (isset($vendedor['VDD_EMAIL'])? $vendedor['VDD_EMAIL'] : ''); ?>">
                                         <label for="email">Seu Email</label>
                                     </div>
                                 </div>
                                 <div class="col-6 text-center mb-3">
                                     <label for="inputPassword6" class="col-form-label">Telefone/Celular</label>
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="text" name="VDD_TELEFONE" placeholder="" value="<?= isset($_POST['VDD_TELEFONE']) ? $_POST['VDD_TELEFONE'] : ''; ?>">
+                                        <input type="text" class="form-control" id="text" name="VDD_TELEFONE" placeholder="" value="<?= isset($_POST['VDD_TELEFONE']) ? $_POST['VDD_TELEFONE'] : (isset($vendedor['VDD_TELEFONE'])? $vendedor['VDD_TELEFONE'] : ''); ?>">
                                         <label for="text">Seu tel.</label>
                                     </div>
                                 </div>
+                                
+                                <div class="col-6 text-center mb-3 row">
+                                    <label for="inputPassword6" class="col-form-label">RESETAR SENHA DO VENDEDOR</label>
+                                    <div class="mx-auto text-center">   
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" name="VDD_RESET_SENHA" type="radio" value="NAO" id="flexCheckChecked" checked>
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                                NÃO
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" name="VDD_RESET_SENHA"  type="radio" value="SIM" id="flexCheckDefault">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                SIM
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="col-6 text-center mb-3 fw-bold fs-5">EM CASO DE RESET,<br> A NOVA SENHA SERÁ: <b class="text-danger">123456</b><br> O VENDEDOR DEVERÁ ALTERÁ-LA</span>
                                 <hr class="my-4 text-dark">
+                                <input type="hidden" class="form-control" name="VDD_COD" value="<?= isset($vendedor['VDD_COD']) ? $vendedor['VDD_COD'] : 0; ?>">
                                 <input type="hidden" class="form-control" name="EMP_COD" value="<?= isset($_SESSION['EMP_COD']) ? $_SESSION['EMP_COD'] : 0; ?>">
                                 <input type="hidden" class="form-control" name="USU_COD" value="<?= isset($_SESSION['USU_COD']) ? $_SESSION['USU_COD'] : 0; ?>">
-                                <button class="w-100 btn btn-lg text-uppercase btn-success" name="CADASTRAR_NOVO_VENDEDOR" type="submit"><i class="fa fa-save"></i> Cadastrar</button>
+                                <button class="w-100 btn btn-lg text-uppercase btn-warning" name="ALTERAR_VENDEDOR" type="submit"><i class="fa fa-edit"></i> Alterar</button>
                                 <hr class="my-4 text-dark">
                             </div> 
                         </form>

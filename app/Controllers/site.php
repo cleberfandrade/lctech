@@ -44,6 +44,11 @@ class site extends View
         session_destroy($_SESSION);
         Url::redirecionar('site/index');
     }
+    public function acesso()
+    {
+        $this->dados['title'] = 'ACESSO | LC-TEC';
+        $this->render('site/acesso', $this->dados);
+    }
     public function descadastramento()
     {
         /**$this->dados['title'] = 'Termos e Privacidade | IPB de Santo Anastácio-SP';

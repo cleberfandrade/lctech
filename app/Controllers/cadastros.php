@@ -114,6 +114,12 @@ class cadastros extends View
         }
         //Recupera os dados enviados
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['CADASTRAR_NOVO_CLIENTE'])) {
+
+            unset($dados['CADASTRAR_NOVO_CLIENTE']);
+            if($_SESSION['USU_COD'] == $dados['USU_COD']){
+            }
+        }
 
         $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
     }
@@ -186,7 +192,9 @@ class cadastros extends View
         if (isset($_POST) && isset($dados['CADASTRAR_NOVO_USUARIO'])) {
 
             unset($dados['CADASTRAR_NOVO_USUARIO']);
-            if($_SESSION['USU_COD'] == $dados['USU_COD']){
+            if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
+
+
             }
         }
 
@@ -196,12 +204,181 @@ class cadastros extends View
     {
         $this->dados['title'] .= 'ALTERAR USUÁRIOS';
         $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
         $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
         $dados = explode("/",$dados['url']);
         $Usuarios->setCodigo($dados[3]);
         if (isset($dados[1]) && $dados[1] == 'alterar_usuarios') {
             $this->dados['usuario'] = $Usuarios->listar(0);
         }
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+
+        $this->render('admin/cadastros/usuarios/alterar', $this->dados);
+    }
+    //Controller - ALTERAR DADOS DO USUARIO NO DB
+    public function alterar_dados_usuarios()
+    {
+         $this->dados['title'] .= 'MEUS DADOS DE USUÁRIO';
+         $Usuarios = new Usuarios;
+         $Enderecos = new Enderecos;
+         $Check = new Check();
+         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+         if (isset($_POST) && isset($dados['ALTERAR_USUARIO'])) {
+             unset($dados['ALTERAR_USUARIO']);
+ 
+             $codUsuario = $dados['USU_COD'];
+             if($_SESSION['USU_COD'] == $codUsuario){
+ 
+                 $ok = true;
+                 foreach ($dados as $key => $value) {
+                 //Verifica se tem algum valor em branco
+                 $value = $Check->checarString($value);
+                     if(empty($dados["$key"])){
+                         Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
+                         $ok = false;
+                         break;
+                     }
+                 }
+                 //VERIFICAR SE TODOS OS CAMPOS FORAM PREENCHIDOS
+                 if ($ok) {
+                     $Usuarios->setCodUsuario($codUsuario);
+                     $dadosUsuario = $Usuarios->listar(0);
+                    
+                     //VERIFICAR SE O USUARIO  INFORMOU A SENHA PARA ALTERAR
+                     if(!empty($dados['USU_SENHA'])){
+                         //CONFERIR SE A SENHA É IGUAL A CONFIRMACAO DE SENHA
+                         if($dados['USU_SENHA'] == $dados['USU_CONF_SENHA']){
+                             unset($dados['USU_CONF_SENHA']);
+                             $dados['USU_SENHA']= $Check->codificarSenha($dados['USU_SENHA']);
+                             //Checar email válido
+                             if($Check->checarEmail($dados['USU_EMAIL'])){
+                                 $Usuarios->setEmailUsuario($dados['USU_EMAIL']);
+                                 //Checar se o email é do usuario ou se é um email que não esta cadastrado para outro usuário
+                                 $db_usuario = $Usuarios->checarEmailUsuario();
+                                 if(!isset($db_usuario) OR $db_usuario['USU_EMAIL'] == $dados['USU_EMAIL']){
+                                     $db = array(
+                                         'USU_DT_ATUALIZACAO'=> date('Y-m-d H:i:s'),
+                                         'USU_NOME'      => $dados['USU_NOME'],
+                                         'USU_SOBRENOME' => $dados['USU_SOBRENOME'],
+                                         'USU_SEXO'  => $dados['USU_SEXO'],
+                                         'USU_EMAIL' => $dados['USU_EMAIL'],
+                                         'USU_SENHA' => $dados['USU_SENHA'],
+                                         'USU_NIVEL' => $_SESSION['USU_NIVEL'],
+                                         'USU_STATUS'=> 1
+                                     );
+     
+                                     if($Usuarios->alterar($db,0)){
+                                         
+                                         //Alterando o endereco do usuario
+                                         $Enderecos->setCodUsuario($codUsuario);
+                                         //$db_end = $Enderecos->checarEnderecoUsuario();
+                                         $Enderecos->setCodigo($dadosUsuario['END_COD']);
+                                         $dados_endereco['END_LOGRADOURO'] = $Check->checarString($dados['END_LOGRADOURO']);
+                                         $dados_endereco['END_NUMERO'] = $Check->checarString($dados['END_NUMERO']);
+                                         $dados_endereco['END_BAIRRO'] = $Check->checarString($dados['END_BAIRRO']);
+                                         $dados_endereco['END_CIDADE'] = $Check->checarString($dados['END_CIDADE']);
+                                         $dados_endereco['END_ESTADO'] = $Check->checarString($dados['END_ESTADO']);
+                                         $db_endereco = array(
+                                             'END_DT_ATUALIZACAO' => date('Y-m-d H:i:s'),
+                                             'END_LOGRADOURO' =>  $dados_endereco['END_LOGRADOURO'],
+                                             'END_NUMERO' =>  $dados_endereco['END_NUMERO'],
+                                             'END_BAIRRO' =>  $dados_endereco['END_BAIRRO'],
+                                             'END_CIDADE' =>  $dados_endereco['END_CIDADE'],
+                                             'END_ESTADO' =>  $dados_endereco['END_ESTADO'],
+                                             'END_STATUS' => 1
+                                         );
+                                         //dump($db_endereco);
+                                         //exit;
+                                         if($Enderecos->alterar($db_endereco,0)){
+                                             $nv = array_merge($db,$db_endereco);
+                                             Sessao::criarSessao($nv);
+                                             Sessao::alert('OK','Usuário alterado com sucesso!','fs-4 alert alert-success');
+                                         }else {
+                                             Sessao::alert('OK','Usuário alterado, endereço não alterado!','fs-4 alert alert-success');
+                                         }
+                                     }else{
+                                         Sessao::alert('ERRO',' 7- Erro ao alterar usuário, contate o suporte!','fs-4 alert alert-danger');
+                                     }
+                                 }else{
+                                     Sessao::alert('ERRO',' 6- Email já utilizado por outro usuário no sistema, digite outro email!','fs-4 alert alert-danger');
+                                 }
+                             }else{
+                                 Sessao::alert('ERRO',' 5- Email inválido, digite outro email!','fs-4 alert alert-danger');
+                             }
+                         }else{
+                             Sessao::alert('ERRO',' 4- Senha não confere com a digitada!','fs-4 alert alert-danger');
+                         }
+                     }else{
+                         Sessao::alert('ERRO',' 3- Senhas não pode estar vázias, informe sua senha para alterar!','fs-4 alert alert-danger');
+                     }
+                 }else {
+                     //Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
+                 }
+             }else{
+                 Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+             }
+         }else{
+             Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
+         }
+         $this->render('admin/cadastros/usuarios/meus_dados', $this->dados);
+     }
+    public function alterar_usuarios_empresa()
+    {   
+        $this->dados['title'] .= 'ALTERAR DADOS DE USUÁRIO';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Enderecos = new Enderecos;
+        $Check = new Check();
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        
+        if (isset($_POST) && isset($dados['ALTERAR_USUARIO'])) {
+            unset($dados['ALTERAR_USUARIO']);
+            
+            if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
+
+                $Usuarios->setCodigo($dados['USU_COD']);
+
+                $dados += array(
+                    'USU_DT_ATUALIZACAO'=> date('Y-m-d H:i:s')             
+                );
+                if($dados['USU_RESET_SENHA']== "SIM") {
+                    $dados['USU_SENHA'] = $Check->codificarSenha('123456');
+                }
+                unset($dados['USU_RESET_SENHA']);
+                if($Usuarios->alterar($dados,0)){
+                    Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
+                }else{
+                    Sessao::alert('ERRO',' 3- Erro ao alterar o usuário da empresa, entre em contato com o suporte!','fs-4 alert alert-danger');
+                }
+
+            }else{
+                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+             }
+        }else {
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');   
+        }
+
+        $this->dados['usuario'] = $Usuarios->listar(0);
         $this->render('admin/cadastros/usuarios/alterar', $this->dados);
     }
     public function meus_dados()
@@ -269,6 +446,7 @@ class cadastros extends View
     public function cadastrar_vendedores()
     {
         $this->dados['title'] .= 'VENDEDORES';
+        $Check = new Check();
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
         $Vendedores = new Vendedores;
@@ -298,7 +476,8 @@ class cadastros extends View
                 if(!$Vendedores->checarVendedorEmpresa()) {
                     $dados += array(
                         'VDD_DT_CADASTRO'=> date('Y-m-d H:i:s'),
-                        'VDD_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),             
+                        'VDD_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'), 
+                        'VDD_SENHA' => $Check->codificarSenha('123456'),            
                         'VDD_STATUS'=> 1
                     );
                 
@@ -346,6 +525,8 @@ class cadastros extends View
                     $Vendedores->setCodigo($dados[3]);
                     $Vendedores->setCodEmpresa($dados[2]);
 
+
+
                     $this->dados['vendedor'] = $Vendedores->listar(0);
                     $this->render('admin/cadastros/vendedores/alterar', $this->dados);
 
@@ -363,6 +544,59 @@ class cadastros extends View
             $this->render('admin/cadastros/vendedores/listar', $this->dados);
         }
         
+    }
+    public function alterar_vendedores_empresa()
+    {
+        $this->dados['title'] .= 'VENDEDORES';
+        $Check = new Check();
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Vendedores = new Vendedores;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);  
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+       
+        //Recupera os dados enviados
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['ALTERAR_VENDEDOR'])) {
+
+             unset($dados['ALTERAR_VENDEDOR']);
+             if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
+
+                $Vendedores->setCodigo($dados['VDD_COD']);
+                $Vendedores->setCodEmpresa($dados['EMP_COD']);
+                
+                unset($dados['VDD_COD']);
+
+                $dados += array(
+                    'VDD_DT_ATUALIZACAO'=> date('Y-m-d H:i:s')             
+                );
+                if($dados['VDD_RESET_SENHA']== "SIM") {
+                    $dados['VDD_SENHA'] = $Check->codificarSenha('123456');
+                }
+                unset($dados['VDD_RESET_SENHA']);
+               
+                if($Vendedores->alterar($dados,0)){
+                    Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
+                }else{
+                    Sessao::alert('ERRO',' 3- Erro ao alterar o vendedor da empresa, entre em contato com o suporte!','fs-4 alert alert-danger');
+                }
+             }else{
+                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+             }
+        }else {
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');   
+        }
+        $this->render('admin/cadastros/vendedores/alterar', $this->dados);
     }
     public function excluir_vendedores()
     {
@@ -597,14 +831,30 @@ class cadastros extends View
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         //verificar se o usuario tem uma empresa, e retornar os dados
-        
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
+            if($qtd == 1) {
+                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $this->dados['empresas'] = $Empresa->listar(0);
+            }else {
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $Empresa->setCodUsuario($_SESSION['USU_COD']);
+                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
+            }
+
+            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['estoques'] = $Estoques->listarTodos(0);
+        }
 
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
         if (isset($_POST) && isset($dados['ALTERAR_ESTOQUE'])) {
             unset($dados['ALTERAR_ESTOQUE']);
            
-            if($_SESSION['USU_COD'] == $dados['USU_COD']){
+            if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
 
                 $Estoques->setCodigo($dados['EST_COD']);
                 $Estoques->setCodEmpresa($dados['EMP_COD']);
@@ -628,23 +878,7 @@ class cadastros extends View
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
         }
 
-        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
-        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
-            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
-            if($qtd == 1) {
-                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $this->dados['empresas'] = $Empresa->listar(0);
-            }else {
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $Empresa->setCodUsuario($_SESSION['USU_COD']);
-                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
-            }
-
-            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
-            $this->dados['estoques'] = $Estoques->listarTodos(0);
-        }
+        
 
         $Estoques->setCodigo($dados['EST_COD']);
         $Estoques->setCodEmpresa($dados['EMP_COD']);
@@ -1016,111 +1250,5 @@ class cadastros extends View
         
         $this->render('admin/cadastros/empresas/alterar', $this->dados);
     }
-    //Controller - ALTERAR DADOS DO USUARIO NO DB
-    public function alterar_dados_usuarios()
-    {
-        $this->dados['title'] .= 'MEUS DADOS DE USUÁRIO';
-        $Usuarios = new Usuarios;
-        $Enderecos = new Enderecos;
-        $Check = new Check();
-        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-        if (isset($_POST) && isset($dados['ALTERAR_USUARIO'])) {
-            unset($dados['ALTERAR_USUARIO']);
-
-            $codUsuario = $dados['USU_COD'];
-            if($_SESSION['USU_COD'] == $codUsuario){
-
-                $ok = true;
-                foreach ($dados as $key => $value) {
-                //Verifica se tem algum valor em branco
-                $value = $Check->checarString($value);
-                    if(empty($dados["$key"])){
-                        Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
-                        $ok = false;
-                        break;
-                    }
-                }
-                //VERIFICAR SE TODOS OS CAMPOS FORAM PREENCHIDOS
-                if ($ok) {
-                    $Usuarios->setCodUsuario($codUsuario);
-                    $dadosUsuario = $Usuarios->listar(0);
-                   
-                    //VERIFICAR SE O USUARIO  INFORMOU A SENHA PARA ALTERAR
-                    if(!empty($dados['USU_SENHA'])){
-                        //CONFERIR SE A SENHA É IGUAL A CONFIRMACAO DE SENHA
-                        if($dados['USU_SENHA'] == $dados['USU_CONF_SENHA']){
-                            unset($dados['USU_CONF_SENHA']);
-                            $dados['USU_SENHA']= $Check->codificarSenha($dados['USU_SENHA']);
-                            //Checar email válido
-                            if($Check->checarEmail($dados['USU_EMAIL'])){
-                                $Usuarios->setEmailUsuario($dados['USU_EMAIL']);
-                                //Checar se o email é do usuario ou se é um email que não esta cadastrado para outro usuário
-                                $db_usuario = $Usuarios->checarEmailUsuario();
-                                if(!isset($db_usuario) OR $db_usuario['USU_EMAIL'] == $dados['USU_EMAIL']){
-                                    $db = array(
-                                        'USU_DT_ATUALIZACAO'=> date('Y-m-d H:i:s'),
-                                        'USU_NOME'      => $dados['USU_NOME'],
-                                        'USU_SOBRENOME' => $dados['USU_SOBRENOME'],
-                                        'USU_SEXO'  => $dados['USU_SEXO'],
-                                        'USU_EMAIL' => $dados['USU_EMAIL'],
-                                        'USU_SENHA' => $dados['USU_SENHA'],
-                                        'USU_NIVEL' => $_SESSION['USU_NIVEL'],
-                                        'USU_STATUS'=> 1
-                                    );
-    
-                                    if($Usuarios->alterar($db,0)){
-                                        
-                                        //Alterando o endereco do usuario
-                                        $Enderecos->setCodUsuario($codUsuario);
-                                        //$db_end = $Enderecos->checarEnderecoUsuario();
-                                        $Enderecos->setCodigo($dadosUsuario['END_COD']);
-                                        $dados_endereco['END_LOGRADOURO'] = $Check->checarString($dados['END_LOGRADOURO']);
-                                        $dados_endereco['END_NUMERO'] = $Check->checarString($dados['END_NUMERO']);
-                                        $dados_endereco['END_BAIRRO'] = $Check->checarString($dados['END_BAIRRO']);
-                                        $dados_endereco['END_CIDADE'] = $Check->checarString($dados['END_CIDADE']);
-                                        $dados_endereco['END_ESTADO'] = $Check->checarString($dados['END_ESTADO']);
-                                        $db_endereco = array(
-                                            'END_DT_ATUALIZACAO' => date('Y-m-d H:i:s'),
-                                            'END_LOGRADOURO' =>  $dados_endereco['END_LOGRADOURO'],
-                                            'END_NUMERO' =>  $dados_endereco['END_NUMERO'],
-                                            'END_BAIRRO' =>  $dados_endereco['END_BAIRRO'],
-                                            'END_CIDADE' =>  $dados_endereco['END_CIDADE'],
-                                            'END_ESTADO' =>  $dados_endereco['END_ESTADO'],
-                                            'END_STATUS' => 1
-                                        );
-                                        //dump($db_endereco);
-                                        //exit;
-                                        if($Enderecos->alterar($db_endereco,0)){
-                                            $nv = array_merge($db,$db_endereco);
-                                            Sessao::criarSessao($nv);
-                                            Sessao::alert('OK','Usuário alterado com sucesso!','fs-4 alert alert-success');
-                                        }else {
-                                            Sessao::alert('OK','Usuário alterado, endereço não alterado!','fs-4 alert alert-success');
-                                        }
-                                    }else{
-                                        Sessao::alert('ERRO',' 7- Erro ao alterar usuário, contate o suporte!','fs-4 alert alert-danger');
-                                    }
-                                }else{
-                                    Sessao::alert('ERRO',' 6- Email já utilizado por outro usuário no sistema, digite outro email!','fs-4 alert alert-danger');
-                                }
-                            }else{
-                                Sessao::alert('ERRO',' 5- Email inválido, digite outro email!','fs-4 alert alert-danger');
-                            }
-                        }else{
-                            Sessao::alert('ERRO',' 4- Senha não confere com a digitada!','fs-4 alert alert-danger');
-                        }
-                    }else{
-                        Sessao::alert('ERRO',' 3- Senhas não pode estar vázias, informe sua senha para alterar!','fs-4 alert alert-danger');
-                    }
-                }else {
-                    //Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
-                }
-            }else{
-                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
-            }
-        }else{
-            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
-        }
-        $this->render('admin/cadastros/usuarios/meus_dados', $this->dados);
-    }
+   
 }

@@ -51,4 +51,9 @@ class admin extends View
     {
         $this->render('admin/painel', $this->dados);
     }
+    public function acesso()
+    {
+        $this->dados['title'] = 'ACESSO | LC-TEC';
+        $this->render('site/acesso', $this->dados);
+    }
 }

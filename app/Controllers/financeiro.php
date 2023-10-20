@@ -5,8 +5,11 @@ use App\Models\Empresas;
 use App\Models\Financas;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
+use App\Models\Vendedores;
 use Core\View;
+use Libraries\Check;
 use Libraries\Sessao;
+use Libraries\Url;
 
 class financeiro extends View
 {
@@ -41,6 +44,7 @@ class financeiro extends View
     }
     public function contas()
     {
+        $this->dados['title'] .= 'GERENCIAR CONTA DA EMPRESA/NEGÓCIO';   
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
         $UsuariosEmpresa = new UsuariosEmpresa;
@@ -69,16 +73,27 @@ class financeiro extends View
     }
     public function cadastro_conta()
     {
+        $this->dados['title'] .= 'GERENCIAR CONTA DA EMPRESA/NEGÓCIO';   
         $this->render('admin/financeiro/contas/cadastrar', $this->dados);
     }
     public function frente_caixa()
     {
-        
+        $this->dados['title'] .= 'GERENCIAR CAIXA EMPRESA/NEGÓCIO';   
+        $this->render('admin/financeiro/caixa/gerenciar', $this->dados);
+    }
+
+    public function alterar_caixa()
+    {
+        $this->dados['title'] .= 'GERENCIAR CAIXA EMPRESA/NEGÓCIO'; 
+
+
+        $this->render('admin/financeiro/caixa/status', $this->dados);
     }
     public function movimentacao()
     {
         
     }
+   
     public function pdv()
     {
         $this->dados['title'] .= 'PDV';   

@@ -37,10 +37,10 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             <div class="row ">    
                                 <div class="col-3 form-floating mb-2">
                                     
-                                    <select class="form-select" name="FOR_TIPO">
-                                        <option value="0">---</option>
-                                        <option value="PF">PESSOA FÍSICA</option>
-                                        <option value="PJ">PESSOA JURÍDICA</option>
+                                    <select class="form-select" name="CLI_TIPO">
+                                        <option value="0" <?= (isset($_POST['CLI_TIPO']) &&  $_POST['CLI_TIPO']  == "0")? 'selected' : '' ?>>---</option>
+                                        <option value="PF"<?= (isset($_POST['CLI_TIPO']) &&  $_POST['CLI_TIPO']  == "PF")? 'selected' : '' ?>>PESSOA FÍSICA</option>
+                                        <option value="PJ" <?= (isset($_POST['CLI_TIPO']) &&  $_POST['CLI_TIPO']  == "PJ")? 'selected' : '' ?>>PESSOA JURÍDICA</option>
                                     </select>
                                     <label class="form-label">TIPO</label>
                                 </div>
@@ -104,44 +104,50 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                 <div class="col-3 mb-2">
                                     <label class="form-label">ESTADO</label>
                                     <select id="UF" class="form-select text-uppercase" name="END_ESTADO">
-                                        <option value="">---</option>
-                                            <option value="AC" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "AC")? 'selected' : '' ?>>Acre</option>
-                                            <option value="AL" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "AL")? 'selected' : '' ?>>Alagoas</option>
-                                            <option value="AP" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "AP")? 'selected' : '' ?>>Amapá</option>
-                                            <option value="AM" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "AM")? 'selected' : '' ?>>Amazonas</option>
-                                            <option value="BA" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "BA")? 'selected' : '' ?>>Bahia</option>
-                                            <option value="CE" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "CE")? 'selected' : '' ?>>Ceará</option>
-                                            <option value="DF" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "DF")? 'selected' : '' ?>>Distrito Federal</option>
-                                            <option value="ES" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "ES")? 'selected' : '' ?>>Espirito Santo</option>
-                                            <option value="GO" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "GO")? 'selected' : '' ?>>Goiás</option>
-                                            <option value="MA" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "MA")? 'selected' : '' ?>>Maranhão</option>
-                                            <option value="MS" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "MS")? 'selected' : '' ?>>Mato Grosso do Sul</option>
-                                            <option value="MT" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "MT")? 'selected' : '' ?>>Mato Grosso</option>
-                                            <option value="MG" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "MG")? 'selected' : '' ?>>Minas Gerais</option>
-                                            <option value="PA" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "PA")? 'selected' : '' ?>>Pará</option>
-                                            <option value="PB" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "PB")? 'selected' : '' ?>>Paraíba</option>
-                                            <option value="PR" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "PR")? 'selected' : '' ?>>Paraná</option>
-                                            <option value="PE" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "PE")? 'selected' : '' ?>>Pernambuco</option>
-                                            <option value="PI" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "PI")? 'selected' : '' ?>>Piauí</option>
-                                            <option value="RJ" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "RJ")? 'selected' : '' ?>>Rio de Janeiro</option>
-                                            <option value="RN" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "RN")? 'selected' : '' ?>>Rio Grande do Norte</option>
-                                            <option value="RS" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "RS")? 'selected' : '' ?>>Rio Grande do Sul</option>
-                                            <option value="RO" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "RO")? 'selected' : '' ?>>Rondônia</option>
-                                            <option value="RR" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "RR")? 'selected' : '' ?>>Roraima</option>
-                                            <option value="SC" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "SC")? 'selected' : '' ?>>Santa Catarina</option>
-                                            <option value="SE" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "SE")? 'selected' : '' ?>>Sergipe</option>
-                                            <option value="SP" <?= (isset($_SESSION['END_ESTADO']) &&  $_SESSION['END_ESTADO']  == "SP")? 'selected' : '' ?>>São Paulo</option>
-                                            <option value="TO" <?= (isset($_SESSION['END_ESTADO']) && $_SESSION['END_ESTADO'] == "TO") ? "selected" : ''; ?>>Tocantins</option>
+                                        <option value="0" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "0")? 'selected' : '' ?>>---</option>
+                                        <option value="AC" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "AC")? 'selected' : '' ?>>Acre</option>
+                                        <option value="AL" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "AL")? 'selected' : '' ?>>Alagoas</option>
+                                        <option value="AP" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "AP")? 'selected' : '' ?>>Amapá</option>
+                                        <option value="AM" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "AM")? 'selected' : '' ?>>Amazonas</option>
+                                        <option value="BA" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "BA")? 'selected' : '' ?>>Bahia</option>
+                                        <option value="CE" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "CE")? 'selected' : '' ?>>Ceará</option>
+                                        <option value="DF" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "DF")? 'selected' : '' ?>>Distrito Federal</option>
+                                        <option value="ES" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "ES")? 'selected' : '' ?>>Espirito Santo</option>
+                                        <option value="GO" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "GO")? 'selected' : '' ?>>Goiás</option>
+                                        <option value="MA" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "MA")? 'selected' : '' ?>>Maranhão</option>
+                                        <option value="MS" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "MS")? 'selected' : '' ?>>Mato Grosso do Sul</option>
+                                        <option value="MT" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "MT")? 'selected' : '' ?>>Mato Grosso</option>
+                                        <option value="MG" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "MG")? 'selected' : '' ?>>Minas Gerais</option>
+                                        <option value="PA" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PA")? 'selected' : '' ?>>Pará</option>
+                                        <option value="PB" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PB")? 'selected' : '' ?>>Paraíba</option>
+                                        <option value="PR" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PR")? 'selected' : '' ?>>Paraná</option>
+                                        <option value="PE" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PE")? 'selected' : '' ?>>Pernambuco</option>
+                                        <option value="PI" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PI")? 'selected' : '' ?>>Piauí</option>
+                                        <option value="RJ" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RJ")? 'selected' : '' ?>>Rio de Janeiro</option>
+                                        <option value="RN" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RN")? 'selected' : '' ?>>Rio Grande do Norte</option>
+                                        <option value="RS" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RS")? 'selected' : '' ?>>Rio Grande do Sul</option>
+                                        <option value="RO" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RO")? 'selected' : '' ?>>Rondônia</option>
+                                        <option value="RR" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RR")? 'selected' : '' ?>>Roraima</option>
+                                        <option value="SC" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "SC")? 'selected' : '' ?>>Santa Catarina</option>
+                                        <option value="SE" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "SE")? 'selected' : '' ?>>Sergipe</option>
+                                        <option value="SP" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "SP")? 'selected' : '' ?>>São Paulo</option>
+                                        <option value="TO" <?= (isset($_POST['END_ESTADO']) && $_POST['END_ESTADO'] == "TO") ? "selected" : ''; ?>>Tocantins</option>
                                     </select>
                                 </div>
                                 <hr class="my-4">
-                                <div class="col-6 form-floating mb-3">
-                                    <input type="date" name="CLI_DT_NASCIMENTO" class="form-control" value="<?= isset($_POST['CLI_DT_NASCIMENTO']) ? $_POST['CLI_DT_NASCIMENTO'] : '' ?>">
-                                    <label class="form-label">DATA DE NASCIMENTO</label>
-                                </div>
-                                <div class="col-6 text-center mb-3">
+                                <div class="col-4 mb-3">
                                     <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" id="email" name="VDD_EMAIL" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['VDD_EMAIL']) ? $_POST['VDD_EMAIL'] : ''; ?>">
+                                        <input type="text" name="CLI_REGISTRO" id="registro" class="form-control" value="<?= isset($_POST['CLI_REGISTRO']) ? $_POST['CLI_REGISTRO'] : '' ?>">
+                                        <label for="registro">CPF/CNPJ</label>
+                                    </div>
+                                </div>
+                                <div class="col-3 form-floating mb-3">
+                                    <input type="date" name="CLI_DT_NASCIMENTO" id="nascimento" class="form-control" value="<?= isset($_POST['CLI_DT_NASCIMENTO']) ? $_POST['CLI_DT_NASCIMENTO'] : '' ?>">
+                                    <label for="nascimento">DATA DE NASCIMENTO</label>
+                                </div>
+                                <div class="col-5 text-center mb-3">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="email" name="CLI_EMAIL" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['CLI_EMAIL']) ? $_POST['CLI_EMAIL'] : ''; ?>">
                                         <label for="email">Seu Email</label>
                                     </div>
                                 </div>

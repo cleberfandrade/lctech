@@ -5,6 +5,7 @@ session_start();
 include_once 'app/Views/admin/inc/cabecalho.phtml'; 
 $qtd = (is_array($estoque) ? count($estoque) : 0);
 $qtdE = (is_array($empresas) ? count($empresas) : 0);
+
 ?>
 <body class="">
     <div class="d-flex" id="wrapper">
@@ -18,7 +19,7 @@ $qtdE = (is_array($empresas) ? count($empresas) : 0);
                     <div class="row gx-3 align-items-center justify-content-center">
                         <div class="col-lg-10 col-xl-10 col-xxl-10">
                             <div class="my-3 text-center text-xl-start">
-                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>estoques/gerenciar/">
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>estoques/gerenciar/<?= $estoque['EMP_COD']?>/<?= $estoque['EST_COD']?>">
                                 <h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-box"></i> Gerenciar <span class="text-success">Estoque</span></h3></a>
                             </div>
                         </div>
@@ -31,6 +32,13 @@ $qtdE = (is_array($empresas) ? count($empresas) : 0);
               <?= Sessao::alert('ERRO'); ?>
             </section>
             <section class="bg-light py-2">
+                    <div class="card bg-success mx-auto text-center col-6 py-2 mb-4">
+                        <div class="card-body text-white">
+                            <h5 class="card-title"><i class="bi bi-box2-fill"></i> PRODUTOS</h5>
+                            <p class="card-text">Cadastre/Altere os produtos deste estoque</p>
+                            <a href="<?= DIRPAGE ?>estoques/produtos/<?= $estoque['EMP_COD']?>/<?= $estoque['EST_COD']?>" class="btn btn-dark"><i class="bi bi-box2-fill"></i> ACESSAR</a>
+                        </div>
+                    </div>
             </section>
             <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
         </div>

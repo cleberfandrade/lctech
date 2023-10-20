@@ -7,7 +7,7 @@ class Vendedores extends Model
 { 
     private $tabela = 'tb_vendedores';
     private $Model = '';
-    private $codigo,$email, $codEmpresa,$codVenda, $codProduto;
+    private $codigo,$email,$senha, $codEmpresa,$codVenda, $codProduto;
 
     public function __construct()
     {
@@ -22,6 +22,11 @@ class Vendedores extends Model
     public function setEmail($email)
     {
         $this->email = $email;
+        return $this;
+    }
+    public function setSenha($senha)
+    {
+        $this->senha = $senha;
         return $this;
     }
     public function setCodEmpresa($codEmpresa)
@@ -72,7 +77,7 @@ class Vendedores extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = " VD INNER JOIN tb_empresas E ON E.EMP_COD=VD.EMP_COD WHERE VD.EMP_COD={$this->codEmpresa} VD.VDD_COD=";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND VDD_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;
@@ -106,6 +111,42 @@ class Vendedores extends Model
             return $resultado[0];
         } else {
             //Nao existe
+            return false;
+        }
+    }
+    public function checarEmailVendedor()
+    {
+        $parametros = "WHERE VDD_EMAIL='{$this->email}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            //Já existe
+            return $resultado[0];
+        } else {
+            //Nao existe
+            return false;
+        }
+    }
+    public function acessarPDV($ver = 0)
+    {
+        $parametros = " V INNER JOIN tb_empresas E ON E.EMP_COD=V.EMP_COD WHERE V.VDD_EMAIL='{$this->email}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
+        if ($resultado) {
+            if(self::checarSenhaAcesso($this->senha, $resultado[0]['VDD_SENHA'])){
+                return $resultado[0];
+            }else{
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    private static function checarSenhaAcesso($senhaUsuario, $senhaDB)
+    {
+        if (password_verify($senhaUsuario, $senhaDB)) {
+            return true;
+        } else {
             return false;
         }
     }
