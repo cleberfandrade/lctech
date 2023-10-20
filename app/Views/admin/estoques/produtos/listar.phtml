@@ -34,7 +34,7 @@ $qtd = (is_array($produtos) ? count($produtos) : 0);
                         <div class="card-body text-white">
                             <h5 class="card-title">PRODUTOS</h5>
                             <p class="card-text">Cadastre seus produtos</p>
-                            <a href="<?= DIRPAGE ?>estoques/cadastro_produtos" class="btn btn-dark">ACESSAR</a>
+                            <a href="<?= DIRPAGE ?>estoques/cadastro_produtos/<?= $estoque['EMP_COD']?>/<?= $estoque['EST_COD']?>" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
                 <?php if($qtd != 0) { ?>

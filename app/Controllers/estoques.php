@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Empresas;
 use App\Models\Estoques as ModelsEstoques;
+use App\Models\Fornecedores;
 use App\Models\Produtos;
 use Libraries\Util;
 use Core\View;
@@ -87,17 +88,18 @@ class estoques extends View
 
                     $Produtos->setCodEstoque($dados[3]);
                     $Produtos->setCodEmpresa($dados[2]);
-                    $this->dados['produtos'] = $Produtos->listarTodos(0);
-
+                    $this->dados['produtos'] = $Estoques->listarProdutosEstoque(0);
                     $this->render('admin/estoques/gerenciar', $this->dados);
+
                 }else {
+                    
                     Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
                     $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                     $this->dados['estoques'] = $Estoques->listarTodos(0);
 
                     $Produtos->setCodEstoque($dados[3]);
                     $Produtos->setCodEmpresa($_SESSION['EMP_COD']);
-                    $this->dados['produtos'] = $Produtos->listarTodos(0);
+                    $this->dados['produtos'] = $Estoques->listarProdutosEstoque(0);
 
                     $this->render('admin/estoques/estoques', $this->dados);
                 }
@@ -106,12 +108,14 @@ class estoques extends View
 
                 $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                 $this->dados['estoques'] = $Estoques->listarTodos(0);
+                $this->dados['produtos'] = 0;
                 $this->render('admin/estoques/estoques', $this->dados);
             }
         }else {
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
             $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['estoques'] = $Estoques->listarTodos(0);
+            $this->dados['produtos'] = 0;
             $this->render('admin/estoques/estoques', $this->dados);
         }
     }
@@ -176,11 +180,51 @@ class estoques extends View
     {
         $this->dados['title'] .= 'CADASTRAR PRODUTOS';
         $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Estoques = new ModelsEstoques;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Fornecedores = new Fornecedores;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
+            if($qtd == 1) {
+                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $this->dados['empresas'] = $Empresa->listar(0);
+            }else {
+                $Empresa->setCodigo($_SESSION['EMP_COD']);
+                $Empresa->setCodUsuario($_SESSION['USU_COD']);
+                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
+            }    
+        }
 
-
-        $this->render('admin/estoques/produtos/cadastrar', $this->dados);
+        $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
+        $dados = explode("/",$dados['url']);
+        
+        if (isset($dados[2]) && $dados[2] != '' && isset($dados[3]) && $dados[3] != '') {
+            
+            if (isset($_SESSION['EMP_COD']) && $_SESSION['EMP_COD'] == $dados[2]){
+                //Verificando a existencia do estoque informado
+                $Estoques->setCodEmpresa($dados[2]);
+                $Estoques->setCodigo($dados[3]);
+                $this->dados['estoque'] = $Estoques->listar(0);
+                $Fornecedores->setCodEmpresa($dados[2]);
+                $this->$dados['fornecedores'] = $Fornecedores->listarTodos(0);
+                $this->render('admin/estoques/produtos/cadastrar', $this->dados);
+            }else {
+                Sessao::alert('ERRO',' 2- Dados inválido(s)!','fs-4 alert alert-danger');
+                $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+                $this->dados['estoques'] = $Estoques->listarTodos(0);
+                $this->render('admin/estoques/estoques', $this->dados);
+            }
+        }else {
+            Sessao::alert('ERRO',' 1- Acesso inválido(s)!','fs-4 alert alert-danger');
+            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['estoques'] = $Estoques->listarTodos(0);
+            $this->render('admin/estoques/estoques', $this->dados);
+        }
     }
     public function servicos()
     {

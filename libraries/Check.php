@@ -21,6 +21,18 @@
             return false;
         }
      }
+     public static function breadcrumb(array $dados)
+     {
+
+        return '<nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="$dados">$dados</a></li>
+          <li class="breadcrumb-item"><a href="$dados">$dados</a></li>
+          <li class="breadcrumb-item active" aria-current="page">$dados</li>
+        </ol>
+      </nav>';
+     }
+
      public static function checarString($string)
      {
         $string = strip_tags(trim($string));

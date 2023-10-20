@@ -45,9 +45,9 @@ class Estoques extends Model
             return false;
         }
     }
-    public function listarEstoqueProdutos($ver = 0)
+    public function listarProdutosEstoque($ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD={$this->codigo} AND PRO_COD={$this->codProduto}";
+        $parametros = "ET INNER JOIN tb_produtos P ON P.EST_COD=ET.EST_COD WHERE ET.EMP_COD={$this->codEmpresa} AND ET.EST_COD={$this->codigo}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

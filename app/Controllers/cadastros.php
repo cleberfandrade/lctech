@@ -201,6 +201,13 @@ class cadastros extends View
         $dados = explode("/",$dados['url']);
 
         if (isset($dados[1]) && $dados[1] == 'alterar_clientes') {
+            
+            if($_SESSION['EMP_COD'] == $dados[2]){
+                
+                if(isset($dados[3]) && isset($dados[2])){
+                
+                }
+            }   
         }
 
         $this->render('admin/cadastros/clientes/alterar', $this->dados);
@@ -656,12 +663,10 @@ class cadastros extends View
                 Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
                 $this->render('admin/cadastros/vendedores/listar', $this->dados);
             }
-
         }else {
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
             $this->render('admin/cadastros/vendedores/listar', $this->dados);
         }
-        
     }
     public function alterar_vendedores_empresa()
     {

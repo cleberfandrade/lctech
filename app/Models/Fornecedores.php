@@ -40,20 +40,9 @@ class Fornecedores extends Model
             return false;
         }
     }
-    public function listarTodosEmpresa($ver = 0)
-    {
-        $parametros = " WHERE EMP_COD='{$this->codEmpresa}'";
-        $campos = "*";
-        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
-        if ($resultado) {
-            return $resultado[0];
-        } else {
-            return false;
-        }
-    }
     public function listarTodos($ver = 0)
     {
-        $parametros = "";
+        $parametros = "WHERE EMP_COD='{$this->codEmpresa}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

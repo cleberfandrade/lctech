@@ -2,7 +2,7 @@
 use Libraries\Sessao;
 session_start();
 include_once 'app/Views/admin/inc/cabecalho.phtml'; 
-
+$qtdF = (is_array($fornecedores) ? count($fornecedores) : 0);
 ?>
 <body class="">
     <div class="d-flex" id="wrapper">
@@ -40,123 +40,75 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             <div class="row ">    
                                 <div class="col-3 form-floating mb-2">
                                     <select class="form-select" name="PRO_TIPO">
-                                        <option value="0" <?= (isset($_POST['PRO_TIPO']) &&  $_POST['PRO_TIPO']  == "0")? 'selected' : '' ?>>---</option>
-                                        <option value="1"<?= (isset($_POST['PRO_TIPO']) &&  $_POST['PRO_TIPO']  == "1")? 'selected' : '' ?>>PRODUTO</option>
-                                        <option value="2" <?= (isset($_POST['PRO_TIPO']) &&  $_POST['PRO_TIPO']  == "2")? 'selected' : '' ?>>SERVIÇO</option>
+                                        <option value="0" <?= (isset($_POST['PRO_TIPO']) &&  $_POST['PRO_TIPO']  == 0)? 'selected' : '' ?>>---</option>
+                                        <option value="1" <?= (isset($_POST['PRO_TIPO']) &&  $_POST['PRO_TIPO']  == 1)? 'selected' : '' ?>>PRODUTO</option>
+                                        <option value="2" <?= (isset($_POST['PRO_TIPO']) &&  $_POST['PRO_TIPO']  == 2)? 'selected' : '' ?>>SERVIÇO</option>
                                     </select>
                                     <label class="form-label">TIPO</label>
                                 </div>
+                                <div class="col-9 form-floating mb-3">
+                                    <select class="form-select " name="FOR_COD">     
+                                        <option value="0" <?= (isset($_POST['FOR_COD']) &&  $_POST['FOR_COD']  == 0)? 'selected' : '' ?>>---</option>                     
+                                        <?php for ($i=1; $i <= $qtdF; $i++) { ?>
+                                            <option value="<?= $fornecedores[$i]['FOR_COD'] ?>" <?= (isset($_POST['FOR_COD']) &&  $_POST['FOR_COD']  == $fornecedores[$i]['FOR_COD'])? 'selected' : '' ?>><?= $fornecedores[$i]['FOR_NOME_FANTASIA'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <label class="form-label">FORNECEDORES</label>
+                                </div>
                                 <div class="col-4 form-floating mb-3">
-                                    <input type="text" class="form-control maiusculo" id="1" name="CLI_NOME" placeholder="Informe seu nome" value="<?= isset($_POST['CLI_NOME']) ? $_POST['CLI_NOME'] :''; ?>">
-                                    <label class="px-3" for="1">Sua descrição</label>
+                                    <input type="text" class="form-control maiusculo" id="1" name="PRO_NOME" placeholder="Informe o nome do produto" value="<?= isset($_POST['PRO_NOME']) ? $_POST['PRO_NOME'] :''; ?>">
+                                    <label class="px-3" for="1">Nome de Produto</label>
                                 </div>    
-                                <div class="col-5 form-floating mb-3">
-                                    <input type="text" class="form-control maiusculo" id="2" name="CLI_SOBRENOME" placeholder="Informe seu nome" value="<?= isset($_POST['CLI_SOBRENOME']) ? $_POST['CLI_SOBRENOME'] : ''; ?>">
-                                    <label class="px-3" for="2">Seu sobrenome</label>
+                                <div class="col-4 form-floating mb-3">
+                                    <input type="text" class="form-control maiusculo" id="2" name="PRO_CODIGO" placeholder="Informe seu nome" value="<?= isset($_POST['PRO_CODIGO']) ? $_POST['PRO_CODIGO'] : ''; ?>">
+                                    <label class="px-3" for="2">CÓDIGO (opcional)</label>
+                                </div> 
+                                <div class="col-4 form-floating mb-3">
+                                    <input type="text" class="form-control maiusculo" id="2" name="PRO_REFERENCIA" placeholder="Informe seu nome" value="<?= isset($_POST['PRO_REFERENCIA']) ? $_POST['PRO_REFERENCIA'] : ''; ?>">
+                                    <label class="px-3" for="2">REFERÊNCIA (opcional)</label>
+                                </div> 
+                                <hr>
+                                <div class="col-4 form-floating mb-3">
+                                    <input type="text" class="form-control maiusculo" id="2" name="PRO_PRECO_UNITARIO" placeholder="Informe seu nome" value="<?= isset($_POST['PRO_PRECO_UNITARIO']) ? $_POST['PRO_PRECO_UNITARIO'] : ''; ?>">
+                                    <label class="px-3" for="2">QUANTIDADE</label>
+                                </div> 
+                                <div class="col-4 form-floating mb-3">
+                                    <input type="text" class="form-control maiusculo" id="MARGEM" name="PRO_MARGEM" placeholder="Informe seu nome" value="<?= isset($_POST['PRO_MARGEM']) ? $_POST['PRO_MARGEM'] : ''; ?>">
+                                    <label class="px-3" for="2">QUANTIDADE MÍNIMA (opcional)</label>
+                                </div> 
+                                <div class="col-4 form-floating mb-3">
+                                    <input type="text" class="form-control maiusculo" id="2" name="PRO_PRECO_VENDA" placeholder="Informe seu nome" value="<?= isset($_POST['PRO_PRECO_VENDA']) ? $_POST['PRO_PRECO_VENDA'] : ''; ?>">
+                                    <label class="px-3" for="2">QUANTIDADE MAXÍMA (opcional)</label>
+                                </div> 
+                                <hr>
+                                <div class="col-3 form-floating mb-3">
+                                    <input type="text" class="form-control maiusculo" id="2" name="PRO_PRECO_UNITARIO" placeholder="Informe seu nome" value="<?= isset($_POST['PRO_PRECO_UNITARIO']) ? $_POST['PRO_PRECO_UNITARIO'] : ''; ?>">
+                                    <label class="px-3" for="2">PREÇO CUSTO</label>
+                                </div> 
+                                <div class="col-3 form-floating mb-3">
+                                    <input type="text" class="form-control maiusculo" id="PRO_MARGEM" name="PRO_MARGEM" placeholder="Informe seu nome" value="<?= isset($_POST['PRO_MARGEM']) ? $_POST['PRO_MARGEM'] : ''; ?>">
+                                    <label class="px-3" for="2">MARG. DE LUCRO %  (opc)</label>
+                                </div> 
+                                <div class="col-3 form-floating mb-3">
+                            
+                                    <input type="text" class="form-control maiusculo" name="PRO_DESCONTO" placeholder="Informe seu nome" value="<?= isset($_POST['PRO_DESCONTO']) ? $_POST['PRO_DESCONTO'] : ''; ?>">
+                                    <label class="px-3" for="2">DESC. MAX % (opc)</label>
+                                </div> 
+                                <div class="col-3 form-floating mb-3">
+                                    <input type="text" class="form-control maiusculo" id="PRO_PRECO_VENDA" name="PRO_PRECO_VENDA" placeholder="Informe seu nome" value="<?= isset($_POST['PRO_PRECO_VENDA']) ? $_POST['PRO_PRECO_VENDA'] : ''; ?>">
+                                    <label class="px-3" for="2">PREÇO VENDA</label>
                                 </div> 
                             </div> 
                             <div class="row">
-                                <hr>
-                                <div class="col-4 text-center mb-3">
-                                    <label for="inputPassword6" class="col-form-label">Seu Sexo</label>
-                                    <div class="mx-auto text-center">   
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="CLI_SEXO" id="flexRadioDefault2" value="1" <?= (isset($_POST['CLI_SEXO']) && $_POST['CLI_SEXO'] == 1) ? "checked" : ''; ?>>
-                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                Masculino
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="CLI_SEXO" value="2" <?= (isset($_POST['CLI_SEXO']) && $_POST['CLI_SEXO'] == 2) ? "checked" : ''; ?> id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
-                                                Feminino
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div> 
-                                <div class="col-4 mb-2">
-                                    <label class="form-label">TEL./CEL. 1 (WHATSAPP) (opcional)</label>
-                                    <input type="text" id="FOR_TEL_1" name="CLI_TEL_1" onkeyup="handlePhone(event)" class="form-control" value="<?= isset($_POST['CLI_TEL_1']) ? $_POST['CLI_TEL_1'] : '' ?>">
-                                </div>
-                                <div class="col-4 mb-2">
-                                    <label class="form-label">TELEFONE 2 (opcional)</label>
-                                    <input type="text" id="FOR_TEL_2" name="CLI_TEL_2" onkeyup="handlePhone(event)"  class="form-control" value="<?= isset($_POST['CLI_TEL_2']) ? $_POST['CLI_TEL_2'] : '' ?>">
-                                </div>
-                                <hr class="my-4">
-                                <div class="col-2 mb-2">
-                                    <label class="form-label">CEP</label>
-                                    <input type="text" id="END_CEP" name="END_CEP" class="form-control" onkeypress="cepMascara(this);" value="<?= isset($_POST['END_CEP']) ? $_POST['END_CEP'] : '' ?>">
-                                </div>
-                                <div class="col-8 mb-2">
-                                    <label class="form-label">LOGRADOURO</label>
-                                    <input type="text" id="END_LOGRADOURO" name="END_LOGRADOURO" class="form-control maiusculo" value="<?= isset($_POST['END_LOGRADOURO']) ? $_POST['END_LOGRADOURO'] : '' ?>">
-                                </div>
-                                <div class="col-2 mb-2">
-                                    <label class="form-label">NÚMERO</label>
-                                    <input type="text" id="END_NUMERO" name="END_NUMERO" class="form-control" value="<?= isset($_POST['END_NUMERO']) ? $_POST['END_NUMERO'] : '' ?>">
-                                </div>
-                                <div class="col-4 mb-2">
-                                    <label class="form-label">BAIRRO</label>
-                                    <input type="text" id="END_BAIRRO" name="END_BAIRRO" class="form-control maiusculo" value="<?= isset($_POST['END_BAIRRO']) ? $_POST['END_BAIRRO'] : '' ?>">
-                                </div>
-                                <div class="col-5 mb-2">
-                                    <label class="form-label">CIDADE</label>
-                                    <input type="text" id="END_CIDADE" name="END_CIDADE" class="form-control maiusculo" value="<?= isset($_POST['END_CIDADE']) ? $_POST['END_CIDADE'] : '' ?>">
-                                </div>
-                                <div class="col-3 mb-2">
-                                    <label class="form-label">ESTADO</label>
-                                    <select id="UF" class="form-select text-uppercase" name="END_ESTADO">
-                                        <option value="0" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "0")? 'selected' : '' ?>>---</option>
-                                        <option value="AC" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "AC")? 'selected' : '' ?>>Acre</option>
-                                        <option value="AL" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "AL")? 'selected' : '' ?>>Alagoas</option>
-                                        <option value="AP" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "AP")? 'selected' : '' ?>>Amapá</option>
-                                        <option value="AM" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "AM")? 'selected' : '' ?>>Amazonas</option>
-                                        <option value="BA" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "BA")? 'selected' : '' ?>>Bahia</option>
-                                        <option value="CE" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "CE")? 'selected' : '' ?>>Ceará</option>
-                                        <option value="DF" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "DF")? 'selected' : '' ?>>Distrito Federal</option>
-                                        <option value="ES" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "ES")? 'selected' : '' ?>>Espirito Santo</option>
-                                        <option value="GO" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "GO")? 'selected' : '' ?>>Goiás</option>
-                                        <option value="MA" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "MA")? 'selected' : '' ?>>Maranhão</option>
-                                        <option value="MS" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "MS")? 'selected' : '' ?>>Mato Grosso do Sul</option>
-                                        <option value="MT" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "MT")? 'selected' : '' ?>>Mato Grosso</option>
-                                        <option value="MG" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "MG")? 'selected' : '' ?>>Minas Gerais</option>
-                                        <option value="PA" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PA")? 'selected' : '' ?>>Pará</option>
-                                        <option value="PB" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PB")? 'selected' : '' ?>>Paraíba</option>
-                                        <option value="PR" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PR")? 'selected' : '' ?>>Paraná</option>
-                                        <option value="PE" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PE")? 'selected' : '' ?>>Pernambuco</option>
-                                        <option value="PI" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "PI")? 'selected' : '' ?>>Piauí</option>
-                                        <option value="RJ" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RJ")? 'selected' : '' ?>>Rio de Janeiro</option>
-                                        <option value="RN" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RN")? 'selected' : '' ?>>Rio Grande do Norte</option>
-                                        <option value="RS" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RS")? 'selected' : '' ?>>Rio Grande do Sul</option>
-                                        <option value="RO" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RO")? 'selected' : '' ?>>Rondônia</option>
-                                        <option value="RR" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "RR")? 'selected' : '' ?>>Roraima</option>
-                                        <option value="SC" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "SC")? 'selected' : '' ?>>Santa Catarina</option>
-                                        <option value="SE" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "SE")? 'selected' : '' ?>>Sergipe</option>
-                                        <option value="SP" <?= (isset($_POST['END_ESTADO']) &&  $_POST['END_ESTADO']  == "SP")? 'selected' : '' ?>>São Paulo</option>
-                                        <option value="TO" <?= (isset($_POST['END_ESTADO']) && $_POST['END_ESTADO'] == "TO") ? "selected" : ''; ?>>Tocantins</option>
-                                    </select>
-                                </div>
-                                <hr class="my-4">
-                                <div class="col-4 mb-3">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" name="CLI_REGISTRO" id="REGISTRO" class="form-control" value="<?= isset($_POST['CLI_REGISTRO']) ? $_POST['CLI_REGISTRO'] : '' ?>">
-                                        <label for="registro">CPF/CNPJ</label>
-                                    </div>
-                                </div>
-                                <div class="col-3 form-floating mb-3">
-                                    <input type="date" name="CLI_DT_NASCIMENTO" id="nascimento" class="form-control" value="<?= isset($_POST['CLI_DT_NASCIMENTO']) ? $_POST['CLI_DT_NASCIMENTO'] : '' ?>">
-                                    <label for="nascimento">DATA DE NASCIMENTO</label>
-                                </div>
-                                <div class="col-5 text-center mb-3">
-                                    <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" id="email" name="CLI_EMAIL" placeholder="Informe seu email nome@examplo.com" value="<?= isset($_POST['CLI_EMAIL']) ? $_POST['CLI_EMAIL'] : ''; ?>">
-                                        <label for="email">Seu Email</label>
-                                    </div>
+                                <div class="col-12 mb-2">
+                                    <label for="address2" class="form-label">DESCRIÇÃO (opcional)</label>
+                                    <textarea type="text" class="form-control h-100 maiusculo" name="PRO_DESCRICAO"><?= isset($_POST['PRO_DESCRICAO'])? $_POST['PRO_DESCRICAO']  : '' ?></textarea>
                                 </div>
                                 <hr class="my-4 text-dark">
-                                <input type="hidden" class="form-control" name="EMP_COD" value="<?= isset($_SESSION['EMP_COD']) ? $_SESSION['EMP_COD'] : 0; ?>">
+                                <input type="hidden" class="form-control" name="EST_COD" value="<?= isset($estoque['EST_COD']) ? $estoque['EST_COD'] : 0; ?>">
+                                <input type="hidden" class="form-control" name="EMP_COD" value="<?= isset($estoque['EMP_COD']) ? $estoque['EMP_COD'] : 0; ?>">
                                 <input type="hidden" class="form-control" name="USU_COD" value="<?= isset($_SESSION['USU_COD']) ? $_SESSION['USU_COD'] : 0; ?>">
-                                <button class="w-100 btn btn-lg text-uppercase btn-success" name="CADASTRAR_NOVO_CLIENTE" type="submit"><i class="fa fa-save"></i> Cadastrar</button>
+                                <button class="w-100 btn btn-lg text-uppercase btn-success" name="CADASTRAR_NOVO_PRODUTO" type="submit"><i class="fa fa-save"></i> Cadastrar</button>
                                 <hr class="my-4 text-dark">
                             </div> 
                         </form>
