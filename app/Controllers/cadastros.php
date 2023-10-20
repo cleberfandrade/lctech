@@ -121,6 +121,7 @@ class cadastros extends View
             if($_SESSION['USU_COD'] == $dados['USU_COD']){
                 
                 $Clientes->setcodRegistro($dados['CLI_REGISTRO']);
+                $Clientes->setCodEmpresa($dados['EMP_COD']);
                 //Verificar se já existe cadastro da empresa pelo REGISTRO: CPF ou CNPJ informado
                 $cli = $Clientes->checarRegistroCliente();
                 if(!$cli){
@@ -178,6 +179,31 @@ class cadastros extends View
         }
 
         $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
+    }
+    public function alterar_clientes()
+    {
+        $this->dados['title'] .= 'CLIENTES';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
+        $dados = explode("/",$dados['url']);
+
+        if (isset($dados[1]) && $dados[1] == 'alterar_clientes') {
+        }
+
+        $this->render('admin/cadastros/clientes/alterar', $this->dados);
     }
     //CADASTRO - FORNECEDORES
     public function fornecedores()
@@ -619,9 +645,6 @@ class cadastros extends View
 
                     $Vendedores->setCodigo($dados[3]);
                     $Vendedores->setCodEmpresa($dados[2]);
-
-
-
                     $this->dados['vendedor'] = $Vendedores->listar(0);
                     $this->render('admin/cadastros/vendedores/alterar', $this->dados);
 

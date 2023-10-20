@@ -46,7 +46,7 @@ class Clientes extends Model
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
-            return $resultado[0];
+            return $resultado;
         } else {
             return false;
         }
@@ -88,7 +88,7 @@ class Clientes extends Model
     }
     public function checarRegistroCliente()
     {
-        $parametros = "WHERE CLI_REGISTRO='{$this->codRegistro}'";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND CLI_REGISTRO='{$this->codRegistro}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

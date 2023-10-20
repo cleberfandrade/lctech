@@ -56,6 +56,7 @@ class estoques extends View
         $Estoques = new ModelsEstoques;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Empresa = new Empresas;
+        $Produtos = new Produtos;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
 
@@ -83,11 +84,21 @@ class estoques extends View
                     $Estoques->setCodEmpresa($dados[2]);
                     $Estoques->setCodigo($dados[3]);
                     $this->dados['estoque'] = $Estoques->listar(0);
+
+                    $Produtos->setCodEstoque($dados[3]);
+                    $Produtos->setCodEmpresa($dados[2]);
+                    $this->dados['produtos'] = $Produtos->listarTodos(0);
+
                     $this->render('admin/estoques/gerenciar', $this->dados);
                 }else {
                     Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
                     $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                     $this->dados['estoques'] = $Estoques->listarTodos(0);
+
+                    $Produtos->setCodEstoque($dados[3]);
+                    $Produtos->setCodEmpresa($_SESSION['EMP_COD']);
+                    $this->dados['produtos'] = $Produtos->listarTodos(0);
+
                     $this->render('admin/estoques/estoques', $this->dados);
                 }
             }else {

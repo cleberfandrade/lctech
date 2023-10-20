@@ -31,29 +31,30 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                     <form class="col-12 col-sm-11 col-md-11 col-lg-11 mx-auto py-3 border rounded-3"  action="<?= DIRPAGE; ?>cadastros/cadastrar_fornecedores" accept-charset="utf-8" method="post">
                         <h4 class="mb-0 text-uppercase text-center text-orange"></h4>
                         <div class="row">
-                            <div class="col-2 mb-2">
+                            <div class="col-4 mb-2">
                                 <label class="form-label">TIPO</label>
                                 <select class="form-select" name="FOR_TIPO">
-                                    <option value="0">---</option>
-                                    <option value="PF">PESSOA FÍSICA</option>
-                                    <option value="PJ">PESSOA JURÍDICA</option>
+                                    <option value="0" <?= (isset($_POST['FOR_TIPO']) &&  $_POST['FOR_TIPO']  == "0")? 'selected' : '' ?>>---</option>
+                                    <option value="PF"<?= (isset($_POST['FOR_TIPO']) &&  $_POST['FOR_TIPO']  == "PF")? 'selected' : '' ?>>PESSOA FÍSICA</option>
+                                    <option value="PJ"<?= (isset($_POST['FOR_TIPO']) &&  $_POST['FOR_TIPO']  == "PJ")? 'selected' : '' ?>>PESSOA JURÍDICA</option>
                                 </select>
                             </div>
-                            <div class="col-5 mb-2">
-                                <label class="form-label">NOME FANTASIA</label>
-                                <input type="text" name="FOR_NOME_FANTASIA" class="form-control maiusculo" value="<?= isset($_POST['FOR_NOME_FANTASIA']) ? $_POST['FOR_NOME_FANTASIA'] : '' ?>">
-                            </div>
-                            <div class="col-5 mb-2">
-                                <label class="form-label">RAZÃO SOCIAL</label>
-                                <input type="text" name="FOR_RAZAO_SOCIAL" class="form-control maiusculo" value="<?= isset($_POST['FOR_RAZAO_SOCIAL']) ? $_POST['FOR_RAZAO_SOCIAL'] : '' ?>">
-                            </div>
-                            <div class="col-3 mb-2">
+                            
+                            <div class="col-4 mb-2">
                                 <label class="form-label">CPF/CNPJ</label>
                                 <input type="text" name="FOR_REGISTRO" class="form-control" value="<?= isset($_POST['FOR_REGISTRO']) ? $_POST['FOR_REGISTRO'] : '' ?>">
                             </div>
-                            <div class="col-3 mb-2">
+                            <div class="col-4 mb-2">
                                 <label class="form-label">INSCRIÇÃO ESTADUAL</label>
                                 <input type="text" name="FOR_INSCRICAO_ESTADUAL" class="form-control" value="<?= isset($_POST['FOR_INSCRICAO_ESTADUAL']) ? $_POST['FOR_INSCRICAO_ESTADUAL'] : '' ?>">
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label class="form-label">NOME FANTASIA</label>
+                                <input type="text" name="FOR_NOME_FANTASIA" class="form-control maiusculo" value="<?= isset($_POST['FOR_NOME_FANTASIA']) ? $_POST['FOR_NOME_FANTASIA'] : '' ?>">
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label class="form-label">RAZÃO SOCIAL</label>
+                                <input type="text" name="FOR_RAZAO_SOCIAL" class="form-control maiusculo" value="<?= isset($_POST['FOR_RAZAO_SOCIAL']) ? $_POST['FOR_RAZAO_SOCIAL'] : '' ?>">
                             </div>
                             <hr class="my-4">
                             <div class="col-2 mb-2">

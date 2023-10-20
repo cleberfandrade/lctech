@@ -32,7 +32,7 @@ $qtd = (is_array($clientes) ? count($clientes) : 0);
                     <div class="card bg-success mx-auto text-center col-6 py-2 mb-4">
                         <div class="card-body text-white">
                             <h5 class="card-title">CLIENTES</h5>
-                            <p class="card-text">Cadastre/Altere os dados dos seus clientes</p>
+                            <p class="card-text">Cadastre seus clientes</p>
                             <a href="<?= DIRPAGE ?>cadastros/cadastro_clientes" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
@@ -50,15 +50,17 @@ $qtd = (is_array($clientes) ? count($clientes) : 0);
                         <tbody>
                         <?php
                             $b = 1;
-                            for ($i= 0; $i < $qtd; $i++) { ?>
+                            for ($i= 0; $i < $qtd; $i++) { 
+                                $data = new DateTime($clientes[$i]['CLI_DT_CADASTRO']);
+                                ?>
                             <tr class="">
                                 <td class="text-center align-middle"><?= $b; ?></td>
-                                <td class="text-center align-middle"><?= $clientes[$i]['EST_COD']; ?></td>
-                                <td class="text-center align-middle"><?= $clientes[$i]['EST_COD']; ?></td>
-                                <td class="text-center align-middle"><?= $clientes[$i]['EST_COD']; ?></td>
+                                <td class="text-center align-middle"><?= $clientes[$i]['CLI_NOME']; ?></td>
+                                <td class="text-center align-middle"><?= $data->format('d/m/Y h:i:s'); ?></td>
+                                <td class="text-center align-middle"><?= ($clientes[$i]['CLI_TIPO'] != '0')? $clientes[$i]['CLI_TIPO'] : 'NÃO INFORMADO'; ?></td>
                                 <td class="text-center align-middle"><?= ($clientes[$i]['CLI_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                 <td class="text-center align-middle">
-                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_clientes_empresas/'.$empresas[0]['EMP_COD'].'/'.$_SESSION['USU_COD']; ?>" title="Alterar empresa"><i class="fa fa-edit"></i></a>
+                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_clientes/'.$clientes[$i]['EMP_COD'].'/'.$clientes[$i]['USU_COD']; ?>" title="Alterar cliente"><i class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                         <?php $b++; } ?>
