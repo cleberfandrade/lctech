@@ -208,7 +208,7 @@ class cadastros extends View
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
         $this->dados['fornecedores'] = $Fornecedores->listarTodosEmpresa(0);
 
-        
+
         $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
     }
     //CADASTRO - USUÁRIOS

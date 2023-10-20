@@ -48,11 +48,11 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                     <label class="form-label">TIPO</label>
                                 </div>
                                 <div class="col-4 form-floating mb-3">
-                                    <input type="text" class="form-control maiusculo" id="1" name="VDD_NOME" placeholder="Informe seu nome" value="<?= isset($_POST['VDD_NOME']) ? $_POST['VDD_NOME'] :''; ?>">
+                                    <input type="text" class="form-control maiusculo" id="1" name="CLI_NOME" placeholder="Informe seu nome" value="<?= isset($_POST['CLI_NOME']) ? $_POST['CLI_NOME'] :''; ?>">
                                     <label class="px-3" for="1">Seu nome</label>
                                 </div>    
                                 <div class="col-5 form-floating mb-3">
-                                    <input type="text" class="form-control maiusculo" id="2" name="VDD_SOBRENOME" placeholder="Informe seu nome" value="<?= isset($_POST['VDD_SOBRENOME']) ? $_POST['VDD_SOBRENOME'] : ''; ?>">
+                                    <input type="text" class="form-control maiusculo" id="2" name="CLI_SOBRENOME" placeholder="Informe seu nome" value="<?= isset($_POST['CLI_SOBRENOME']) ? $_POST['CLI_SOBRENOME'] : ''; ?>">
                                     <label class="px-3" for="2">Seu sobrenome</label>
                                 </div> 
                             </div> 
@@ -62,13 +62,13 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                     <label for="inputPassword6" class="col-form-label">Seu Sexo</label>
                                     <div class="mx-auto text-center">   
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="VDD_SEXO" id="flexRadioDefault2" value="1" <?= (isset($_POST['VDD_SEXO']) && $_POST['VDD_SEXO'] == 1) ? "checked" : ''; ?>>
+                                            <input class="form-check-input" type="radio" name="CLI_SEXO" id="flexRadioDefault2" value="1" <?= (isset($_POST['CLI_SEXO']) && $_POST['CLI_SEXO'] == 1) ? "checked" : ''; ?>>
                                             <label class="form-check-label" for="flexRadioDefault2">
                                                 Masculino
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="VDD_SEXO" value="2" <?= (isset($_POST['VDD_SEXO']) && $_POST['VDD_SEXO'] == 2) ? "checked" : ''; ?> id="flexRadioDefault1">
+                                            <input class="form-check-input" type="radio" name="CLI_SEXO" value="2" <?= (isset($_POST['CLI_SEXO']) && $_POST['CLI_SEXO'] == 2) ? "checked" : ''; ?> id="flexRadioDefault1">
                                             <label class="form-check-label" for="flexRadioDefault1">
                                                 Feminino
                                             </label>
@@ -77,11 +77,11 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                 </div> 
                                 <div class="col-4 mb-2">
                                     <label class="form-label">TEL./CEL. 1 (WHATSAPP) (opcional)</label>
-                                    <input type="text" id="FOR_TEL_1" name="FOR_TEL_1" onkeyup="handlePhone(event)" class="form-control" value="<?= isset($_POST['FOR_TEL_1']) ? $_POST['FOR_TEL_1'] : '' ?>">
+                                    <input type="text" id="FOR_TEL_1" name="CLI_TEL_1" onkeyup="handlePhone(event)" class="form-control" value="<?= isset($_POST['CLI_TEL_1']) ? $_POST['CLI_TEL_1'] : '' ?>">
                                 </div>
                                 <div class="col-4 mb-2">
                                     <label class="form-label">TELEFONE 2 (opcional)</label>
-                                    <input type="text" id="FOR_TEL_2" name="FOR_TEL_2" onkeyup="handlePhone(event)"  class="form-control" value="<?= isset($_POST['FOR_TEL_2']) ? $_POST['FOR_TEL_2'] : '' ?>">
+                                    <input type="text" id="FOR_TEL_2" name="CLI_TEL_2" onkeyup="handlePhone(event)"  class="form-control" value="<?= isset($_POST['CLI_TEL_2']) ? $_POST['CLI_TEL_2'] : '' ?>">
                                 </div>
                                 <hr class="my-4">
                                 <div class="col-2 mb-2">
@@ -157,7 +157,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                 <hr class="my-4 text-dark">
                                 <input type="hidden" class="form-control" name="EMP_COD" value="<?= isset($_SESSION['EMP_COD']) ? $_SESSION['EMP_COD'] : 0; ?>">
                                 <input type="hidden" class="form-control" name="USU_COD" value="<?= isset($_SESSION['USU_COD']) ? $_SESSION['USU_COD'] : 0; ?>">
-                                <button class="w-100 btn btn-lg text-uppercase btn-success" name="CADASTRAR_NOVO_VENDEDOR" type="submit"><i class="fa fa-save"></i> Cadastrar</button>
+                                <button class="w-100 btn btn-lg text-uppercase btn-success" name="CADASTRAR_NOVO_CLIENTE" type="submit"><i class="fa fa-save"></i> Cadastrar</button>
                                 <hr class="my-4 text-dark">
                             </div> 
                         </form>
