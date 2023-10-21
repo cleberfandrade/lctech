@@ -15,9 +15,9 @@ $qtd = (is_array($produtos) ? count($produtos) : 0);
                 <section class="container px-3">
                     <div class="row gx-3 align-items-center justify-content-center">
                         <div class="col-lg-9 col-xl-9 col-xxl-9">
-                            <div class="my-3 text-center text-xl-start">
+                            <div class="my-3">
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>estoques/produtos/<?= $estoque['EMP_COD']?>/<?= $estoque['EST_COD']?>">
-                                    <h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-box2-fill"></i> Listagem de <span class="text-success">Produtos</span></h3>
+                                    <h3 class="display-5 fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-box2-fill"></i> Listagem de <span class="text-success">Produtos</span></h3>
                                 </a>
                             </div>
                             <h5><div class="frase"></div> <?= $usuario['USU_NOME'].' '.$usuario['USU_SOBRENOME'] ?></h5>

@@ -12,13 +12,22 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
         <div class="container-fluid bg-light p-0">
             <header class="py-3">
                 <section class="container px-3">
-                    <div class="row gx-3 align-items-center justify-content-center">
-                        <div class="col-lg-10 col-xl-11 col-xxl-11">
-                            <div class="my-2 text-center text-xl-start">
+                    <div class="row gx-5 align-items-center justify-content-center">
+                        <div class="col-lg-9 col-xl-9 col-xxl-9">
+                            <div class="my-2 text-xl-start">
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros"><h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Cadastros</span></h5></a>
                             </div>
                         </div>
+                        <div class="col-lg-3 col-xl-3 col-xxl-3 border-start">
+                                <span class=""></span>
+                                <h4><b>HOJE</b> <?= date("d/m/Y");
+                                    include_once 'app/Views/admin/inc/hora.phtml'; ?>
+                                </h4>
+                            </div>
                     </div>
+                </section>
+                <section class="container col-12 mx-auto px-5">
+                    <?= $breadcrumb ?>
                 </section>
             </header>
             <section class="container py-2">

@@ -90,7 +90,7 @@ class estoques extends View
                     $Produtos->setCodEstoque($dados[3]);
                     $Produtos->setCodEmpresa($dados[2]);
                     $this->dados['produtos'] = $Estoques->listarProdutosEstoque(0);
-                    $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR ESTOQUE'];
+                    $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados[2].'/'.$dados[3],'nome' => 'GERENCIAR ESTOQUE'];
                     $Check->setLink($this->link);
                     $this->dados['breadcrumb'] = $Check->breadcrumb();
 
@@ -166,8 +166,8 @@ class estoques extends View
                 $Produtos->setCodEstoque($this->dados['estoque']['EST_COD']);
                 $Produtos->setCodEmpresa($this->dados['estoque']['EMP_COD']);
                 $this->dados['produtos'] = $Produtos->listarTodos(0);
-                $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR ESTOQUE'];
-                $this->link[3] = ['link'=> 'estoques/produtos/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR PRODUTOS'];
+                $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados[2].'/'.$dados[3],'nome' => 'GERENCIAR ESTOQUE'];
+                $this->link[3] = ['link'=> 'estoques/produtos/'.$dados[2].'/'.$dados[3],'nome' => 'GERENCIAR PRODUTOS'];
                 $Check->setLink($this->link);
                 $this->dados['breadcrumb'] = $Check->breadcrumb();
                 $this->render('admin/estoques/produtos/listar', $this->dados);
@@ -222,9 +222,9 @@ class estoques extends View
                 $this->dados['estoque'] = $Estoques->listar(0);
                 $Fornecedores->setCodEmpresa($dados[2]);
                 $this->$dados['fornecedores'] = $Fornecedores->listarTodos(0);
-                $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR ESTOQUE'];
-                $this->link[3] = ['link'=> 'estoques/produtos/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR PRODUTOS'];
-                $this->link[4] = ['link'=> 'estoques/cadastro_produtos'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'CADASTRAR PRODUTOS'];
+                $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados[2].'/'.$dados[3],'nome' => 'GERENCIAR ESTOQUE'];
+                $this->link[3] = ['link'=> 'estoques/produtos/'.$dados[2].'/'.$dados[3],'nome' => 'GERENCIAR PRODUTOS'];
+                $this->link[4] = ['link'=> 'estoques/cadastro_produtos'.$dados[2].'/'.$dados[3],'nome' => 'CADASTRAR PRODUTOS'];
                 $Check->setLink($this->link);
                 $this->dados['breadcrumb'] = $Check->breadcrumb();
                 $this->render('admin/estoques/produtos/cadastrar', $this->dados);
