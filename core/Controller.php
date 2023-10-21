@@ -9,6 +9,7 @@ class Controller
     private $url = '';
     private $rota = '';
 
+    
     public function __construct()
     {
         $this->url = filter_input(INPUT_GET, 'url', FILTER_DEFAULT);
@@ -25,7 +26,22 @@ class Controller
         } 
        
     }
-    
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    public function getController()
+    {
+        return $this->controller;
+    }
+    public function getMethod()
+    {
+        return $this->method;
+    }
+    public function getParams()
+    {
+        return $this->params;
+    }
     public function carregar()
     {
         $classe = '\\App\\Controllers\\' . $this->controller;

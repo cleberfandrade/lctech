@@ -3,8 +3,17 @@
 
  class Check
  {
-     private $string;
+     private $string,$link;
      
+    public function setLink($link)
+    {
+        $this->link = $link;
+        return $this;
+    }
+    public function getLink()
+    {
+        return $this->link ;
+    }
      public static function checarNome($string)
      {
         if(preg_match('',$string)){
@@ -21,16 +30,29 @@
             return false;
         }
      }
-     public static function breadcrumb(array $dados)
+     public function breadcrumb()
      {
-
-        return '<nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="$dados">$dados</a></li>
-          <li class="breadcrumb-item"><a href="$dados">$dados</a></li>
-          <li class="breadcrumb-item active" aria-current="page">$dados</li>
-        </ol>
-      </nav>';
+        $link = self::getLink();
+    
+        $qtd = (is_array($link) ? count($link) : 0);
+        $printar = '<nav aria-label="breadcrumb"><ol class="breadcrumb">';
+        for ($i=0; $i < $qtd; $i++) { 
+            $printar .=' <li class="breadcrumb-item ';
+            if ($i+1 < $qtd) {
+                $ac = '';
+                $ar ='';
+                $lk = 'href="'.DIRPAGE.$link[$i]['link'].'"';
+            } else {
+                $ac = 'active';
+                $ar ='aria-current="page"';
+                $lk = '';
+            }
+            $printar.=''.$ac.'"'.$ar.'>
+            <a '.$lk.'>'.$link[$i]['nome'].'</a></li>';
+            // <li class="breadcrumb-item active" aria-current="page">$dados</li>
+        }
+        $printar.='</ol></nav>';
+        return $printar;
      }
 
      public static function checarString($string)

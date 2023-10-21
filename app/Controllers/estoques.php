@@ -9,15 +9,20 @@ use Libraries\Util;
 use Core\View;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
+use Core\Controller;
+use Libraries\Check;
 use Libraries\Sessao;
 
 class estoques extends View
 {
     private $dados = [];
+    private $link;
     public function __construct()
     {
         Sessao::naoLogado();
         $this->dados['title'] = 'MÓDULO | ESTOQUES >>';
+        $this->link[0] = ['link'=> 'admin','nome' => 'PAINEL'];
+        $this->link[1] = ['link'=> 'estoques','nome' => 'ESTOQUES'];
     }
     public function index()
     {
@@ -26,6 +31,7 @@ class estoques extends View
         $Empresa = new Empresas;
         $Estoques = new ModelsEstoques;
         $UsuariosEmpresa = new UsuariosEmpresa;
+        $Check = new Check;
 
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
@@ -39,9 +45,9 @@ class estoques extends View
             $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
         }
         $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
-        $this->dados['estoques'] = $Estoques->listarTodos(0);
-        
-
+        $this->dados['estoques'] = $Estoques->listarTodos(0);           
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/estoques/estoques', $this->dados);
     }
     public function gerenciar()
@@ -54,6 +60,8 @@ class estoques extends View
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Empresa = new Empresas;
         $Produtos = new Produtos;
+        $Check = new Check;
+
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
 
@@ -82,6 +90,10 @@ class estoques extends View
                     $Produtos->setCodEstoque($dados[3]);
                     $Produtos->setCodEmpresa($dados[2]);
                     $this->dados['produtos'] = $Estoques->listarProdutosEstoque(0);
+                    $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR ESTOQUE'];
+                    $Check->setLink($this->link);
+                    $this->dados['breadcrumb'] = $Check->breadcrumb();
+
                     $this->render('admin/estoques/gerenciar', $this->dados);
 
                 }else {
@@ -93,7 +105,8 @@ class estoques extends View
                     $Produtos->setCodEstoque($dados[3]);
                     $Produtos->setCodEmpresa($_SESSION['EMP_COD']);
                     $this->dados['produtos'] = $Estoques->listarProdutosEstoque(0);
-
+                    $Check->setLink($this->link);
+                    $this->dados['breadcrumb'] = $Check->breadcrumb();
                     $this->render('admin/estoques/estoques', $this->dados);
                 }
             }else {
@@ -102,6 +115,8 @@ class estoques extends View
                 $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                 $this->dados['estoques'] = $Estoques->listarTodos(0);
                 $this->dados['produtos'] = 0;
+                $Check->setLink($this->link);
+                $this->dados['breadcrumb'] = $Check->breadcrumb();
                 $this->render('admin/estoques/estoques', $this->dados);
             }
         }else {
@@ -109,6 +124,8 @@ class estoques extends View
             $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['estoques'] = $Estoques->listarTodos(0);
             $this->dados['produtos'] = 0;
+            $Check->setLink($this->link);
+            $this->dados['breadcrumb'] = $Check->breadcrumb();
             $this->render('admin/estoques/estoques', $this->dados);
         }
     }
@@ -121,6 +138,7 @@ class estoques extends View
         $Empresa = new Empresas;
         $Estoques = new ModelsEstoques;
         $Produtos = new Produtos;
+        $Check = new Check;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
@@ -148,20 +166,26 @@ class estoques extends View
                 $Produtos->setCodEstoque($this->dados['estoque']['EST_COD']);
                 $Produtos->setCodEmpresa($this->dados['estoque']['EMP_COD']);
                 $this->dados['produtos'] = $Produtos->listarTodos(0);
-               
+                $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR ESTOQUE'];
+                $this->link[3] = ['link'=> 'estoques/produtos/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR PRODUTOS'];
+                $Check->setLink($this->link);
+                $this->dados['breadcrumb'] = $Check->breadcrumb();
                 $this->render('admin/estoques/produtos/listar', $this->dados);
 
             }else {
                 Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
                 $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                 $this->dados['estoques'] = $Estoques->listarTodos(0);
-
+                $Check->setLink($this->link);
+                $this->dados['breadcrumb'] = $Check->breadcrumb();
                 $this->render('admin/estoques/estoques', $this->dados);
             }
         }else {
             Sessao::alert('ERRO',' 1- Acesso inválido(s)!','fs-4 alert alert-danger');
             $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['estoques'] = $Estoques->listarTodos(0);
+            $Check->setLink($this->link);
+            $this->dados['breadcrumb'] = $Check->breadcrumb();
             $this->render('admin/estoques/estoques', $this->dados);
         }
     }
@@ -174,6 +198,7 @@ class estoques extends View
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Fornecedores = new Fornecedores;
         $Produtos = new Produtos;
+        $Check = new Check;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
@@ -197,17 +222,26 @@ class estoques extends View
                 $this->dados['estoque'] = $Estoques->listar(0);
                 $Fornecedores->setCodEmpresa($dados[2]);
                 $this->$dados['fornecedores'] = $Fornecedores->listarTodos(0);
+                $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR ESTOQUE'];
+                $this->link[3] = ['link'=> 'estoques/produtos/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR PRODUTOS'];
+                $this->link[4] = ['link'=> 'estoques/cadastro_produtos'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'CADASTRAR PRODUTOS'];
+                $Check->setLink($this->link);
+                $this->dados['breadcrumb'] = $Check->breadcrumb();
                 $this->render('admin/estoques/produtos/cadastrar', $this->dados);
             }else {
                 Sessao::alert('ERRO',' 2- Dados inválido(s)!','fs-4 alert alert-danger');
                 $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                 $this->dados['estoques'] = $Estoques->listarTodos(0);
+                $Check->setLink($this->link);
+                $this->dados['breadcrumb'] = $Check->breadcrumb();
                 $this->render('admin/estoques/estoques', $this->dados);
             }
         }else {
             Sessao::alert('ERRO',' 1- Acesso inválido(s)!','fs-4 alert alert-danger');
             $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['estoques'] = $Estoques->listarTodos(0);
+            $Check->setLink($this->link);
+            $this->dados['breadcrumb'] = $Check->breadcrumb();
             $this->render('admin/estoques/estoques', $this->dados);
         }
     }
@@ -220,6 +254,7 @@ class estoques extends View
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Fornecedores = new Fornecedores;
         $Produtos = new Produtos;
+        $Check = new Check;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
@@ -267,15 +302,23 @@ class estoques extends View
                 Sessao::alert('ERRO',' 2- Dados inválido(s)!','fs-4 alert alert-danger');
                 $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
                 $this->dados['estoques'] = $Estoques->listarTodos(0);
+                $Check->setLink($this->link);
+                $this->dados['breadcrumb'] = $Check->breadcrumb();
                 $this->render('admin/estoques/estoques', $this->dados);
             }
         }else{
             Sessao::alert('ERRO',' 1- Acesso inválido(s)!','fs-4 alert alert-danger');
             $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['estoques'] = $Estoques->listarTodos(0);
+            $Check->setLink($this->link);
+            $this->dados['breadcrumb'] = $Check->breadcrumb();
             $this->render('admin/estoques/estoques', $this->dados);
         }
-
+        $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR ESTOQUE'];
+        $this->link[3] = ['link'=> 'estoques/produtos/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'GERENCIAR PRODUTOS'];
+        $this->link[4] = ['link'=> 'estoques/cadastro_produtos/'.$dados['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'CADASTRAR PRODUTOS'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/estoques/produtos/cadastrar', $this->dados);
     }
     public function servicos()
