@@ -219,7 +219,7 @@ class cadastros extends View
         $Usuarios = new Usuarios;
         $Fornecedores = new Fornecedores;
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
-        $this->dados['fornecedores'] = $Fornecedores->listarTodosEmpresa(0);
+        $this->dados['fornecedores'] = $Fornecedores->listarTodos(0);
         $this->render('admin/cadastros/fornecedores/listar', $this->dados);
     }
     public function cadastro_fornecedores()
@@ -229,7 +229,7 @@ class cadastros extends View
         $Fornecedores = new Fornecedores;
 
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
-        $this->dados['fornecedores'] = $Fornecedores->listarTodosEmpresa(0);
+        $this->dados['fornecedores'] = $Fornecedores->listarTodos(0);
 
         $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
     }
@@ -239,7 +239,7 @@ class cadastros extends View
         $Usuarios = new Usuarios;
         $Fornecedores = new Fornecedores;
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
-        $this->dados['fornecedores'] = $Fornecedores->listarTodosEmpresa(0);
+        $this->dados['fornecedores'] = $Fornecedores->listarTodos(0);
 
 
         $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);

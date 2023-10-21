@@ -3,7 +3,6 @@ use Libraries\Sessao;
 session_start();
 include_once 'app/Views/admin/inc/cabecalho.phtml'; 
 $qtd = (is_array($produtos) ? count($produtos) : 0);
-
 ?>
 <body class="">
     <div class="d-flex" id="wrapper">
@@ -15,11 +14,17 @@ $qtd = (is_array($produtos) ? count($produtos) : 0);
             <header class="py-3">
                 <section class="container px-3">
                     <div class="row gx-3 align-items-center justify-content-center">
-                        <div class="col-lg-10 col-xl-10 col-xxl-10">
+                        <div class="col-lg-7 col-xl-7 col-xxl-7">
                             <div class="my-3 text-center text-xl-start">
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>estoques/produtos/<?= $estoque['EMP_COD']?>/<?= $estoque['EST_COD']?>"><h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-box2-fill"></i> Listagem de <span class="text-success">Produtos</span></h3></a>
                             </div>
                         </div>
+                        <div class="col-lg-3 col-xl-3 col-xxl-3 border-start">
+                                <span class=""></span>
+                                <h4><b>HOJE</b> <?= date("d/m/Y");
+                                    include_once 'inc/hora.phtml'; ?>
+                                </h4>
+                            </div>
                     </div>
                 </section>
             </header>
@@ -41,12 +46,14 @@ $qtd = (is_array($produtos) ? count($produtos) : 0);
                     <table class="table table-striped table-bordered">
                         <thead class="text-center text-uppercase">
                             <th class="text-dark">#</th>
-                            <th class="text-dark">Descricao</th>
-                            <th class="text-dark">Empresa</th>
-                            <th class="text-dark">Empresa</th>
-                            <th class="text-dark">Empresa</th>
-                            <th class="text-dark">Empresa</th>
-                            <th class="text-dark">Tipo</th>
+                            <th class="text-dark">ESTOQUE</th>
+                            <th class="text-dark">TIPO</th>
+                            <th class="text-dark">CÓDIGO/REFERÊNCIA</th>
+                            <th class="text-dark">NOME</th>
+                            <th class="text-dark">QTD</th>
+                            <th class="text-dark">PREÇO UNITÁRIO</th>
+                            <th class="text-dark">PREÇO VENDA</th>
+                           
                             <th class="text-dark">Status</th>
                             <th class="text-dark">Ações</th>
                         </thead>
@@ -56,12 +63,16 @@ $qtd = (is_array($produtos) ? count($produtos) : 0);
                             for ($i= 0; $i < $qtd; $i++) { ?>
                             <tr class="">
                                 <td class="text-center align-middle"><?= $b; ?></td>
-                                <td class="text-center align-middle"><?= $estoque[$i]['EST_DESCRICAO']; ?></td>
-                                <td class="text-center align-middle"><?= $estoque[$i]['EMP_NOME_FANTASIA']; ?></td>
-                                <td class="text-center align-middle"><?= $estoque[$i]['EST_TIPO']; ?></td>
-                                <td class="text-center align-middle"><?= ($estoque[$i]['EST_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
+                                <td class="text-center align-middle"><?= $produtos[$i]['EST_DESCRICAO']; ?></td>
+                                <td class="text-center align-middle"><?= ($produtos[$i]['PRO_TIPO'] == 1)? 'PRODUTO': (($produtos[$i]['PRO_TIPO'] == 2) ? 'SERVIÇO' : 'N.I.'); ?></td>
+                                <td class="text-center align-middle"><?= $produtos[$i]['PRO_CODIGO'].'/'.$produtos[$i]['PRO_REFERENCIA']; ?></td>
+                                <td class="text-center align-middle"><?= $produtos[$i]['PRO_NOME']; ?></td>
+                                <td class="text-center align-middle"><?= $produtos[$i]['PRO_QUANTIDADE']; ?></td>
+                                <td class="text-center align-middle"><?= number_format($produtos[$i]['PRO_PRECO_UNITARIO'],2,',','.'); ?></td>
+                                <td class="text-center align-middle"><?= number_format($produtos[$i]['PRO_PRECO_VENDA'],2,',','.'); ?></td>
+                                <td class="text-center align-middle"><?= ($produtos[$i]['EST_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                 <td class="text-center align-middle">
-                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_estoques/'.$estoques[$i]['EMP_COD'].'/'.$estoques[$i]['EST_COD']; ?>" title="Alterar empresa"><i class="fa fa-edit"></i></a>
+                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_produtos/'.$produtos[$i]['EMP_COD'].'/'.$produtos[$i]['EST_COD'].'/'.$produtos[$i]['PRO_COD']; ?>" title="Alterar produto"><i class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                         <?php $b++; } ?>

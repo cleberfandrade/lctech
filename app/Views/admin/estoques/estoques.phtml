@@ -1,5 +1,9 @@
-<?php 
+<?php
+
+use App\Models\Produtos;
 use Libraries\Sessao;
+
+$Produtos = new Produtos;
 session_start();
 include_once 'app/Views/admin/inc/cabecalho.phtml'; 
 $qtd = (is_array($estoques) ? count($estoques) : 0);
@@ -15,11 +19,17 @@ $qtdE = (is_array($empresas) ? count($empresas) : 0);
             <header class="py-3">
                 <section class="container px-3">
                     <div class="row gx-3 align-items-center justify-content-center">
-                        <div class="col-lg-10 col-xl-10 col-xxl-10">
+                        <div class="col-lg-7 col-xl-7 col-xxl-7">
                             <div class="my-3 text-center text-xl-start">
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>estoques">
-                                <h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-box"></i> Acessar <span class="text-success">Estoques</span></h3></a>
+                                <h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-box"></i> Listagem de <span class="text-success">Estoques</span></h3></a>
                             </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-xxl-3 border-start">
+                                <span class=""></span>
+                                <h4><b>HOJE</b> <?= date("d/m/Y");
+                                    include_once 'inc/hora.phtml'; ?>
+                                </h4>
                         </div>
                     </div>
                 </section>
@@ -44,8 +54,17 @@ $qtdE = (is_array($empresas) ? count($empresas) : 0);
                                         <p class="card-text">Empresa/Negócio: <?= $estoques[$i]['EMP_NOME_FANTASIA']; ?></p>
                                     </div>
                                     <div class="col-3">
-                                        <h2 class="card-title">0</h2>
-                                        <p class="card-text">Produtos</p>
+                                        <h2 class="card-title">
+                                            <?php 
+                                                $Produtos->setCodEmpresa($estoques[$i]['EMP_COD']);
+                                                $Produtos->setCodEstoque($estoques[$i]['EST_COD']);
+                                                $Produtos->setTipo(1);
+                                                $prod = $Produtos->listarTodosTipo(0);
+                                                $qtdP = (is_array($prod) ? count($prod) : 0);
+                                                echo $qtdP;
+                                            ?>
+                                        </h2>
+                                        <p class="card-text">Produto(s)</p>
                                     </div>
                                 </div>
                                 

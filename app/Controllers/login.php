@@ -78,6 +78,7 @@ class login extends View
     }
     public function sair()
     {
+        $this->dados['title'] = 'Login | Acesso Administrativo';
         Sessao::logado();
         $Usuarios = new usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);

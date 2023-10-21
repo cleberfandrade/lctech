@@ -32,19 +32,15 @@ class estoques extends View
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
         if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
-            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
-            if($qtd == 1) {
-                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $this->dados['empresas'] = $Empresa->listar(0);
-            }else {
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $Empresa->setCodUsuario($_SESSION['USU_COD']);
-                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
-            }
-            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
-            $this->dados['estoques'] = $Estoques->listarTodos(0);
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
         }
+        $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+        $this->dados['estoques'] = $Estoques->listarTodos(0);
+        
 
         $this->render('admin/estoques/estoques', $this->dados);
     }
@@ -65,18 +61,15 @@ class estoques extends View
         $dados = explode("/",$dados['url']);
 
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
         if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
-            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
-            if($qtd == 1) {
-                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $this->dados['empresas'] = $Empresa->listar(0);
-            }else {
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $Empresa->setCodUsuario($_SESSION['USU_COD']);
-                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
-            }    
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
         }
+
         if (isset($dados[0]) && $dados[0] == 'estoques' && isset($dados[1]) && $dados[1] == 'gerenciar') {
             
             if (isset($dados[2]) && $dados[2] != '' && isset($dados[3]) && $dados[3] != '') {
@@ -131,17 +124,13 @@ class estoques extends View
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
         if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
-            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
-            if($qtd == 1) {
-                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $this->dados['empresas'] = $Empresa->listar(0);
-            }else {
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $Empresa->setCodUsuario($_SESSION['USU_COD']);
-                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
-            }    
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
         }
         $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
         $dados = explode("/",$dados['url']);
@@ -184,20 +173,16 @@ class estoques extends View
         $Estoques = new ModelsEstoques;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Fornecedores = new Fornecedores;
+        $Produtos = new Produtos;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
         if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
-            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
-            if($qtd == 1) {
-                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $this->dados['empresas'] = $Empresa->listar(0);
-            }else {
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $Empresa->setCodUsuario($_SESSION['USU_COD']);
-                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
-            }    
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
         }
 
         $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
@@ -225,6 +210,73 @@ class estoques extends View
             $this->dados['estoques'] = $Estoques->listarTodos(0);
             $this->render('admin/estoques/estoques', $this->dados);
         }
+    }
+    public function cadastrar_produtos()
+    {
+        $this->dados['title'] .= 'CADASTRAR PRODUTOS';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Estoques = new ModelsEstoques;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Fornecedores = new Fornecedores;
+        $Produtos = new Produtos;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        //Recupera os dados enviados
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['CADASTRAR_NOVO_PRODUTO'])) {
+
+            unset($dados['CADASTRAR_NOVO_PRODUTO']);
+            if($_SESSION['USU_COD'] == $dados['USU_COD'] && isset($_SESSION['EMP_COD']) && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
+                    
+                $Estoques->setCodEmpresa($dados['EMP_COD']);
+                $Estoques->setCodigo($dados['EST_COD']);
+                $this->dados['estoque'] = $Estoques->listar(0);
+                $Fornecedores->setCodEmpresa($dados['EMP_COD']);
+                $this->$dados['fornecedores'] = $Fornecedores->listarTodos(0);
+                //Checar duplicidade de cadastro
+                $Produtos->setCodEmpresa($dados['EMP_COD']);
+                $Produtos->setCodEstoque($dados['EST_COD']);
+                if (!$Produtos->checarNomeProduto()) {
+
+                    $dados += array(
+                        'PRO_DT_CADASTRO'=> date('Y-m-d H:i:s'),
+                        'PRO_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),          
+                        'PRO_STATUS'=> 1
+                    );
+                
+                    if ($Produtos->cadastrar($dados,0)) {
+                        Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                    }else {
+                        Sessao::alert('ERRO',' 4- Erro ao cadastrar novo vendedor, entre em contato com o suporte!','fs-4 alert alert-danger');
+                    }
+                }else {
+                    Sessao::alert('ERRO',' 3- Nome já utilizado por outro produto no sistema, digite outro nome!','fs-4 alert alert-danger');
+                }
+            }else {
+                Sessao::alert('ERRO',' 2- Dados inválido(s)!','fs-4 alert alert-danger');
+                $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+                $this->dados['estoques'] = $Estoques->listarTodos(0);
+                $this->render('admin/estoques/estoques', $this->dados);
+            }
+        }else{
+            Sessao::alert('ERRO',' 1- Acesso inválido(s)!','fs-4 alert alert-danger');
+            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['estoques'] = $Estoques->listarTodos(0);
+            $this->render('admin/estoques/estoques', $this->dados);
+        }
+
+        $this->render('admin/estoques/produtos/cadastrar', $this->dados);
     }
     public function servicos()
     {
