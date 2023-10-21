@@ -14,7 +14,7 @@ $qtdF = (is_array($fornecedores) ? count($fornecedores) : 0);
                 <header class="py-3">
                     <section class="container px-3">
                         <div class="row gx-3 align-items-center justify-content-center">
-                            <div class="col-lg-10 col-xl-10 col-xxl-10">
+                            <div class="col-lg-9 col-xl-9 col-xxl-9">
                                 <div class="my-3 text-center text-xl-start">
                                     <a class="text-decoration-none" href="<?= DIRPAGE; ?>estoques/cadastro_produtos/<?= $estoque['EMP_COD']?>/<?= $estoque['EST_COD']?>">
                                         <h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2">
@@ -22,11 +22,18 @@ $qtdF = (is_array($fornecedores) ? count($fornecedores) : 0);
                                         </h5>
                                     </a>
                                 </div>
+                                <h5><div class="frase"></div> <?= $usuario['USU_NOME'].' '.$usuario['USU_SOBRENOME'] ?></h5>
+                            </div>
+                            <div class="col-lg-3 col-xl-3 col-xxl-3 border-start">
+                                <span class=""></span>
+                                <h4><b>HOJE</b> <?= date("d/m/Y");
+                                    include_once 'inc/hora.phtml'; ?>
+                                </h4>
                             </div>
                         </div>
                     </section>
                     <section class="container col-12 mx-auto px-5">
-                    <?php include_once 'app/Views/admin/inc/breadcrumb.phtml'; ?>
+                        <?= $breadcrumb ?>
                     </section>
                 </header>
                 <section class="container py-2">
