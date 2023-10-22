@@ -169,7 +169,7 @@ class cadastros extends View
                     unset($dados["END_ESTADO"]);
                     $id = $Clientes->cadastrar($dados,0);
                     if($id){ 
-                        $Enderecos->setCodEmpresa($id);
+                        $Enderecos->setCodCliente($id);
                         $endr = $Enderecos->checarEnderecoCliente();
                         if(!$endr){
                             $db_endereco['CLI_COD'] = $id;
@@ -231,6 +231,7 @@ class cadastros extends View
                 $Clientes->setCodEmpresa($dados[2]);
                 $Clientes->setCodigo($dados[3]);
                 $this->dados['cliente'] = $Clientes->listar(0);
+               
                 if ($this->dados['cliente'] != 0) {
                     $this->link[3] = ['link'=> 'cadastros/clientes/alterar_clientes/'.$_SESSION['EMP_COD'].'/'.$dados[3],'nome' => 'ALTERAR CLIENTES'];
                     $Check->setLink($this->link);
@@ -258,7 +259,168 @@ class cadastros extends View
     }
     public function alterar_clientes_empresa()
     {
+        $this->dados['title'] .= 'CLIENTES';
+        $Check = new Check;
+        $Usuarios = new Usuarios;
+        $Enderecos = new Enderecos;
+        $Empresa = new Empresas;
+        $Clientes = new Clientes;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        $this->link[2] = ['link'=> 'cadastros/clientes','nome' => 'GERENCIAR SEUS CLIENTES'];
+         //Recupera os dados enviados
+         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
         
+         if (isset($_POST) && isset($dados['ALTERAR_CLIENTE'])) {
+ 
+             unset($dados['ALTERAR_CLIENTE']);
+            
+             if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
+               
+                foreach ($dados as $key => $value) {
+                    //Verifica se tem algum valor proibido
+                    $value = $Check->checarString($value);
+                }
+                
+                $this->link[3] = ['link'=> 'cadastros/clientes/alterar_clientes/'.$dados['EMP_COD'].'/'.$dados['CLI_COD'],'nome' => 'ALTERAR CLIENTES'];
+
+                $db_endereco = array(
+                    'END_LOGRADOURO' => $dados['END_LOGRADOURO'],
+                    'END_NUMERO' => $dados['END_NUMERO'],
+                    'END_BAIRRO' => $dados['END_BAIRRO'],
+                    'END_CIDADE' => $dados['END_CIDADE'],
+                    'END_CEP'    => $dados['END_CEP'],
+                    'END_ESTADO' => $dados['END_ESTADO'],
+                    'END_STATUS' => 1
+                );
+                
+                $Clientes->setCodigo($dados['CLI_COD']);
+                $Clientes->setCodEmpresa($dados['EMP_COD']);
+
+                $Enderecos->setCodCliente($dados['CLI_COD']);
+                $Enderecos->setCodigo($dados['END_COD']);
+
+                $codEnd = $dados['END_COD'];
+                unset($dados['END_LOGRADOURO']);
+                unset($dados['END_NUMERO']);
+                unset($dados['END_BAIRRO']);
+                unset($dados['END_CIDADE']);
+                unset($dados['END_CEP']);
+                unset($dados['END_ESTADO']);
+
+                unset($dados['CLI_COD']);
+                unset($dados['EMP_COD']);
+                unset($dados['END_COD']);
+
+                $dados += array(
+                    'CLI_DT_ATUALIZACAO'=> date('Y-m-d H:i:s')
+                );
+
+                if($Clientes->alterar($dados,0)){
+
+                    if($codEnd != 0){
+                        
+                        $db_endereco += array(
+                            'END_DT_ATUALIZACAO'=> date('Y-m-d H:i:s')
+                        );
+
+                        if($Enderecos->alterarCliente($db_endereco,0)){
+                            Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
+                        }else {
+                            Sessao::alert('OK','Cadastro alterado, endereço não alterado!','fs-4 alert alert-warning');
+                        }
+                    }else {
+                        $db_endereco += array(
+                            'CLI_COD' => $dados['CLI_COD'],
+                            'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                            'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                            'END_STATUS' => 1
+                        );
+                        //CADASTRAR O ENDERECO
+                        if($Enderecos->cadastrar($db_endereco,0)){
+                            Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
+                        }else {
+                            Sessao::alert('OK','Cadastro alterado, endereço não alterado!','fs-4 alert alert-warning');
+                        }
+                    }
+                }else{
+                    Sessao::alert('ERRO',' 3- Erro ao alterar o cliente da empresa, entre em contato com o suporte!','fs-4 alert alert-danger');
+                }
+
+                $this->dados['cliente'] = $Clientes->listar(0);
+
+                if ($this->dados['cliente'] != 0) {
+                    $Check->setLink($this->link);
+                    $this->dados['breadcrumb'] = $Check->breadcrumb();
+                    $this->render('admin/cadastros/clientes/alterar', $this->dados);
+                }else {
+                    $Check->setLink($this->link);
+                    $this->dados['breadcrumb'] = $Check->breadcrumb();
+                    Sessao::alert('ERRO',' 3- Cliente não foi encontrado!','fs-4 alert alert-danger');
+                    $this->render('admin/cadastros/clientes/listar', $this->dados);
+                }
+             }
+        }
+    }
+    public function desativar_clientes()
+    {
+        $this->dados['title'] .= 'CLIENTES';
+        $Usuarios = new Usuarios;
+        $Empresa = new Empresas;
+        $Clientes = new Clientes;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);  
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        //Recupera os dados enviados
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['EXCLUIR_CLIENTE'])) {
+
+            $Clientes->setCodEmpresa($dados['EMP_COD']);
+            $Clientes->setCodigo($dados['CLI_COD']);
+            $db = array(
+                'CLI_DT_ATUALIZACAO'=> date('Y-m-d H:i:s'),
+                'CLI_STATUS' => 2
+            );
+            if($Clientes->alterar($db,0)){
+                //Sessao::alert('OK','Exclusao efetuada com sucesso!','fs-4 alert alert-success');
+                $respota = array(
+                    'COD'=>'OK',
+                    'MENSAGEM' => 'Desativação efetuada com sucesso!'
+                );
+                echo json_encode($respota);
+            }else{
+                $respota = array(
+                    'COD'=>'ERRO',
+                    'MENSAGEM'=> 'ERRO 2- Erro ao desativar cliente, entre em contato com o suporte!'
+                );
+                echo json_encode($respota);
+            }
+        }else {
+            $respota = array(
+                'COD'=>'ERRO',
+                'MENSAGEM'=> 'ERRO 1- Acesso inválido!'
+            );
+            echo json_encode($respota);
+        }
     }
     //CADASTRO - FORNECEDORES
     public function fornecedores()
@@ -269,6 +431,9 @@ class cadastros extends View
         $Fornecedores = new Fornecedores;
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
         $this->dados['fornecedores'] = $Fornecedores->listarTodos(0);
+        $this->link[2] = ['link'=> 'cadastros/fornecedores','nome' => 'LISTAGEM DE FORNECEDORES'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/cadastros/fornecedores/listar', $this->dados);
     }
     public function cadastro_fornecedores()
@@ -277,10 +442,25 @@ class cadastros extends View
         $Check = new Check;
         $Usuarios = new Usuarios;
         $Fornecedores = new Fornecedores;
-
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
         $this->dados['fornecedores'] = $Fornecedores->listarTodos(0);
-
+        $this->link[2] = ['link'=> 'cadastros/fornecedores','nome' => 'LISTAGEM DE FORNECEDORES'];
+        $this->link[3] = ['link'=> 'cadastros/cadastro_fornecedores','nome' => 'CADASTRAR FORNECEDORES'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
     }
     public function cadastrar_fornecedores()
@@ -288,12 +468,217 @@ class cadastros extends View
         $this->dados['title'] .= 'FORNECEDORES';
         $Check = new Check;
         $Usuarios = new Usuarios;
+        $Enderecos = new Enderecos;
         $Fornecedores = new Fornecedores;
+        $Empresa = new Empresas;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
         $this->dados['fornecedores'] = $Fornecedores->listarTodos(0);
+        $this->link[2] = ['link'=> 'cadastros/fornecedores','nome' => 'LISTAGEM DE FORNECEDORES'];
+        //Recupera os dados enviados
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['CADASTRAR_NOVO_FORNECEDOR'])) {
 
+            unset($dados['CADASTRAR_NOVO_FORNECEDOR']);
+            if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
+                foreach ($dados as $key => $value) {
+                    //Verifica se tem algum valor em branco
+                    $value = $Check->checarString($value);
+                        //if(empty($dados["$key"])){
+                          //  Sessao::alert('ERRO',' 2- Preencha todos os campos!','alert alert-danger');
+                           // $ok = false;
+                           // break;
+                     //   }
+                }
 
+                $Fornecedores->setcodRegistro($dados['FOR_REGISTRO']);
+                $Fornecedores->setCodEmpresa($dados['EMP_COD']);
+                //Verificar se já existe cadastro da empresa pelo REGISTRO: CPF ou CNPJ informado
+                $forn = $Fornecedores->checarRegistro();
+                if(!$forn){
+                    $dados += array(
+                        'FOR_DT_CADASTRO'=> date('Y-m-d H:i:s'),
+                        'FOR_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),          
+                        'FOR_STATUS'=> 1
+                    );
+                    $db_endereco = array(
+                        'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                        'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                        'END_LOGRADOURO' =>  $dados['END_LOGRADOURO'],
+                        'END_NUMERO' =>  $dados['END_NUMERO'],
+                        'END_BAIRRO' =>  $dados['END_BAIRRO'],
+                        'END_CIDADE' =>  $dados['END_CIDADE'],
+                        'END_ESTADO' =>  $dados['END_ESTADO'],
+                        'END_CEP'    =>  $dados['END_CEP'],
+                        'END_STATUS' => 1
+                    );
+
+                    //REMOVENDO DADOS DE ENDERECO DA ATUALIZACAO DA EMPRESA
+                    unset($dados["END_LOGRADOURO"]);
+                    unset($dados["END_NUMERO"]);
+                    unset($dados["END_BAIRRO"]);
+                    unset($dados["END_CEP"]);
+                    unset($dados["END_CIDADE"]);
+                    unset($dados["END_ESTADO"]);
+                    $id = $Fornecedores->cadastrar($dados,0);
+                    if($id){ 
+                        $Enderecos->setCodFornecedor($id);
+                        $endr = $Enderecos->checarEnderecoFornecedor();
+                        if(!$endr){
+                            $db_endereco['FOR_COD'] = $id;
+                            if ($Enderecos->cadastrar($dados,0)) {
+                                Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                            }else {
+                                Sessao::alert('OK','Cadastro efetuado com sucesso, não foi possível cadastrar o endereço!','fs-4 alert alert-warning');
+                            }
+                        }else {
+                            Sessao::alert('OK','Cadastro efetuado com sucesso, endereço já cadastrado!','fs-4 alert alert-success');
+                        }
+                    }else{
+                        Sessao::alert('ERRO',' 4- Erro ao cadastrar novo fornecedor, entre em contato com o suporte!','fs-4 alert alert-danger');
+                    }
+                }else {
+                    Sessao::alert('ERRO',' 3- Cadastro já realizado!','fs-4 alert alert-danger');
+                }
+            }else {
+                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+            }
+        }else {
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
+        }
+        
+        $this->link[3] = ['link'=> 'cadastros/cadastro_fornecedores','nome' => 'CADASTRAR FORNECEDORES'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
+    }
+    public function alterar_fornecedores_empresa()
+    {
+        $this->dados['title'] .= 'FORNECEDORES';
+        $Check = new Check;
+        $Usuarios = new Usuarios;
+        $Enderecos = new Enderecos;
+        $Empresa = new Empresas;
+        $Fornecedores = new Fornecedores;
+        $Clientes = new Clientes;
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuario'] = $Usuarios->listar(0);
+        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
+        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
+        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
+            $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
+            $Empresa->setCodigo($_SESSION['EMP_COD']);
+            $this->dados['empresa'] = $Empresa->listar(0);
+            $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
+            $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
+        }
+        $this->link[2] = ['link'=> 'cadastros/clientes','nome' => 'GERENCIAR SEUS FORNECEDORES'];
+         //Recupera os dados enviados
+         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        
+         if (isset($_POST) && isset($dados['ALTERAR_FORNECEDOR'])) {
+ 
+             unset($dados['ALTERAR_FORNECEDOR']);
+            
+             if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
+               
+                foreach ($dados as $key => $value) {
+                    //Verifica se tem algum valor proibido
+                    $value = $Check->checarString($value);
+                }
+                
+                $this->link[3] = ['link'=> 'cadastros/fornecedores/alterar_fornecedores/'.$dados['EMP_COD'].'/'.$dados['CLI_COD'],'nome' => 'ALTERAR CLIENTES'];
+
+                $db_endereco = array(
+                    'END_LOGRADOURO' => $dados['END_LOGRADOURO'],
+                    'END_NUMERO' => $dados['END_NUMERO'],
+                    'END_BAIRRO' => $dados['END_BAIRRO'],
+                    'END_CIDADE' => $dados['END_CIDADE'],
+                    'END_CEP'    => $dados['END_CEP'],
+                    'END_ESTADO' => $dados['END_ESTADO'],
+                    'END_STATUS' => 1
+                );
+                
+                $Clientes->setCodigo($dados['CLI_COD']);
+                $Clientes->setCodEmpresa($dados['EMP_COD']);
+
+                $Enderecos->setCodCliente($dados['CLI_COD']);
+                $Enderecos->setCodigo($dados['END_COD']);
+
+                $codEnd = $dados['END_COD'];
+                unset($dados['END_LOGRADOURO']);
+                unset($dados['END_NUMERO']);
+                unset($dados['END_BAIRRO']);
+                unset($dados['END_CIDADE']);
+                unset($dados['END_CEP']);
+                unset($dados['END_ESTADO']);
+
+                unset($dados['CLI_COD']);
+                unset($dados['EMP_COD']);
+                unset($dados['END_COD']);
+
+                $dados += array(
+                    'CLI_DT_ATUALIZACAO'=> date('Y-m-d H:i:s')
+                );
+
+                if($Clientes->alterar($dados,0)){
+
+                    if($codEnd != 0){
+                        
+                        $db_endereco += array(
+                            'END_DT_ATUALIZACAO'=> date('Y-m-d H:i:s')
+                        );
+
+                        if($Enderecos->alterarCliente($db_endereco,0)){
+                            Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
+                        }else {
+                            Sessao::alert('OK','Cadastro alterado, endereço não alterado!','fs-4 alert alert-warning');
+                        }
+                    }else {
+                        $db_endereco += array(
+                            'CLI_COD' => $dados['CLI_COD'],
+                            'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                            'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                            'END_STATUS' => 1
+                        );
+                        //CADASTRAR O ENDERECO
+                        if($Enderecos->cadastrar($db_endereco,0)){
+                            Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
+                        }else {
+                            Sessao::alert('OK','Cadastro alterado, endereço não alterado!','fs-4 alert alert-warning');
+                        }
+                    }
+                }else{
+                    Sessao::alert('ERRO',' 3- Erro ao alterar o cliente da empresa, entre em contato com o suporte!','fs-4 alert alert-danger');
+                }
+
+                $this->dados['cliente'] = $Clientes->listar(0);
+
+                if ($this->dados['cliente'] != 0) {
+                    $Check->setLink($this->link);
+                    $this->dados['breadcrumb'] = $Check->breadcrumb();
+                    $this->render('admin/cadastros/clientes/alterar', $this->dados);
+                }else {
+                    $Check->setLink($this->link);
+                    $this->dados['breadcrumb'] = $Check->breadcrumb();
+                    Sessao::alert('ERRO',' 3- Cliente não foi encontrado!','fs-4 alert alert-danger');
+                    $this->render('admin/cadastros/clientes/listar', $this->dados);
+                }
+             }
+        }
     }
     //CADASTRO - USUÁRIOS
     public function usuarios()
@@ -329,6 +714,7 @@ class cadastros extends View
         $Check = new Check;
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
+        $Enderecos = new Enderecos;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
@@ -368,7 +754,7 @@ class cadastros extends View
                         );
                     }
                 }else {
-                    # code...
+                    Sessao::alert('ERRO','3- Email do usuário ja utilizado, altere o cadastro, ou entre em contato com o suporte!','fs-4 alert alert-warning');
                 }
 
             }else {
@@ -1263,7 +1649,7 @@ class cadastros extends View
 
                         $db_conta_empresa = array(
                             'EMP_COD'  => $id,
-                            'CTA_TIPO' => 1,
+                            'CTA_TIPO' => 'PJ',
                             'CTA_DT_CADASTRO'    => date('Y-m-d H:i:s'),
                             'CTA_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
                             'CTA_NOME'     => 'PRINCIPAL',

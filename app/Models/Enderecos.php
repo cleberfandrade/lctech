@@ -7,7 +7,7 @@ class Enderecos extends Model
 {
     private $tabela = 'tb_enderecos';
     private $Model = '';
-    private $codigo,$codEmpresa,$codUsuario;
+    private $codigo,$codEmpresa,$codUsuario,$codFornecedor,$codCliente;
     public function __construct()
     {
         $this->Model = new Model();
@@ -21,6 +21,16 @@ class Enderecos extends Model
     public function setCodUsuario($cod)
     {
         $this->codUsuario = $cod;
+        return $this;
+    }
+    public function setCodCliente($cod)
+    {
+        $this->codCliente = $cod;
+        return $this;
+    }
+    public function setCodFornecedor($cod)
+    {
+        $this->codFornecedor = $cod;
         return $this;
     }
     public function setCodEmpresa($cod)
@@ -52,7 +62,7 @@ class Enderecos extends Model
     }
     public function checarEnderecoCliente()
     {
-        $parametros = " WHERE CLI_COD='{$this->codEmpresa}'";
+        $parametros = " WHERE CLI_COD='{$this->codCliente}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -92,6 +102,32 @@ class Enderecos extends Model
     public function alterar(array $dados, $ver = 0)
     {
         $parametros = " WHERE USU_COD='{$this->codUsuario}' AND END_COD=";
+        $this->Model->setParametros($parametros);
+        $this->Model->setCodigo($this->codigo);
+        $ok = false;
+        $ok = $this->Model->alterar($dados, $ver);
+        if ($ok) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function alterarCliente(array $dados, $ver = 0)
+    {
+        $parametros = " WHERE CLI_COD='{$this->codCliente}' AND END_COD=";
+        $this->Model->setParametros($parametros);
+        $this->Model->setCodigo($this->codigo);
+        $ok = false;
+        $ok = $this->Model->alterar($dados, $ver);
+        if ($ok) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function alterarFornecedor(array $dados, $ver = 0)
+    {
+        $parametros = " WHERE FOR_COD={$this->codFornecedor} AND END_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;

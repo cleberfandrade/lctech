@@ -7,7 +7,7 @@ class Fornecedores extends Model
 { 
     private $tabela = 'tb_fornecedores';
     private $Model = '';
-    private $codigo,$codUsuario,$codEmpresa;
+    private $codigo,$codUsuario,$codEmpresa,$codRegistro;
 
     public function __construct()
     {
@@ -29,9 +29,14 @@ class Fornecedores extends Model
         $this->codEmpresa = $empresa;
         return $this;
     }
+    public function setcodRegistro($codRegistro)
+    {
+        $this->codRegistro = $codRegistro;
+        return $this;
+    }
     public function listar($ver = 0)
     {
-        $parametros = "WHERE FOR_COD='{$this->codigo}'";
+        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND FOR_COD='{$this->codigo}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -42,11 +47,11 @@ class Fornecedores extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = "WHERE EMP_COD='{$this->codEmpresa}'";
+        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND FOR_STATUS=1";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
-            return $resultado[0];
+            return $resultado;
         } else {
             return false;
         }
@@ -62,7 +67,7 @@ class Fornecedores extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = " WHERE FOR_COD=";
+        $parametros = " WHERE EMP_COD='{$this->codEmpresa}' AND FOR_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;
@@ -70,6 +75,19 @@ class Fornecedores extends Model
         if ($ok) {
             return true;
         } else {
+            return false;
+        }
+    }
+    public function checarRegistro()
+    {
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND FOR_REGISTRO='{$this->codRegistro}' AND FOR_STATUS=1";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            //Já existe
+            return $resultado[0];
+        } else {
+            //Nao existe
             return false;
         }
     }

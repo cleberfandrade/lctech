@@ -144,7 +144,6 @@ class login extends View
                         if($dados_usuario['senha_usuario'] == $dados_usuario['conf_senha_usuario']){
                             $db = array(
                                 'EMP_COD' => 0,
-                                'CRG_COD' => 0,
                                 'USU_DT_CADASTRO'   => date('Y-m-d H:i:s'),
                                 'USU_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),
                                 'USU_NOME'      => $dados_usuario['nome_usuario'],

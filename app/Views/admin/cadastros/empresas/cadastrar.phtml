@@ -70,7 +70,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             </div>
                             <div class="col-3 mb-2">
                                 <label class="form-label">CPF/CNPJ</label>
-                                <input type="text" name="EMP_REGISTRO" id="REGISTRO" class="form-control" value="<?= isset($_POST['EMP_REGISTRO']) ? $_POST['EMP_REGISTRO'] : '' ?>">
+                                <input type="text" name="EMP_REGISTRO" onfocus="javascript: retirarFormatacao(this);" onblur="javascript: formatarCampo(this);" maxlength="14" class="form-control" value="<?= isset($_POST['EMP_REGISTRO']) ? $_POST['EMP_REGISTRO'] : '' ?>">
                             </div>
                             <div class="col-3 mb-2">
                                 <label class="form-label">INSCRIÇÃO ESTADUAL</label>
@@ -179,5 +179,23 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
             <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
         </div>
     </div>
+    <script>
+        function formatarCampo(campoTexto) {
+        if (campoTexto.value.length <= 11) {
+            campoTexto.value = mascaraCpf(campoTexto.value);
+        } else {
+            campoTexto.value = mascaraCnpj(campoTexto.value);
+        }
+        }
+        function retirarFormatacao(campoTexto) {
+            campoTexto.value = campoTexto.value.replace(/(\.|\/|\-)/g,"");
+        }
+        function mascaraCpf(valor) {
+            return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4");
+        }
+        function mascaraCnpj(valor) {
+            return valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g,"\$1.\$2.\$3\/\$4\-\$5");
+        }
+    </script>
 </body>
 </html>

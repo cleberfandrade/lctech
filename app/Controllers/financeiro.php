@@ -14,10 +14,13 @@ use Libraries\Url;
 class financeiro extends View
 {
     private $dados = [];
+    private $link;
     public function __construct()
     {
         Sessao::naoLogado();
         $this->dados['title'] = 'MÓDULO | FINANCEIRO >>';   
+        $this->link[0] = ['link'=> 'admin','nome' => 'PAINEL'];
+        $this->link[1] = ['link'=> 'financeiro','nome' => 'MÓDULO DE FINANÇAS'];
     }
     public function index()
     {
@@ -25,6 +28,7 @@ class financeiro extends View
         $Empresa = new Empresas;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Financas = new Financas;
+        $Check = new Check;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         
@@ -39,24 +43,20 @@ class financeiro extends View
             $Financas->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['contas'] = $Financas->listarTodas();
         }
-
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/financeiro/financeiro', $this->dados);
     }
     public function contas()
     {
-        $this->dados['title'] .= 'GERENCIAR CONTA DA EMPRESA/NEGÓCIO';   
+        $this->dados['title'] .= 'GERENCIAR CONTAS';   
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Financas = new Financas;
+        $Check = new Check;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
-        //$Controller = new Controller();
-        //dump($Controller);
-
-        $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
-        $dados = explode("/",$dados);
-        $this->dados['CTA_COD'] = $dados[3];
 
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
@@ -69,7 +69,31 @@ class financeiro extends View
             $Financas->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['contas'] = $Financas->listarTodas();
         }
+        $this->link[2] = ['link'=> 'financeiro/contas','nome' => 'LISTAGEM DE CONTAS'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/financeiro/contas/listar', $this->dados);
+    }
+    public function detalhar_contas()
+    {
+        $this->dados['title'] .= 'DETALHAR CONTA'; 
+        $UsuariosEmpresa = new UsuariosEmpresa;
+        $Financas = new Financas;
+        $Check = new Check;
+        $Empresa = new Empresas;
+        $Usuarios = new Usuarios;
+        $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
+        $dados = explode("/",$dados);
+        
+        $this->dados['CTA_COD'] = $dados[3];
+
+        $this->render('admin/financeiro/contas/detalhar', $this->dados);
+    }
+    public function alterar_contas()
+    {
+        $this->dados['title'] .= 'ALTERAR CONTA'; 
+
+        $this->render('admin/financeiro/contas/alterar', $this->dados);
     }
     public function cadastro_conta()
     {

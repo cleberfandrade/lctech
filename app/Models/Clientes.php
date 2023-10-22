@@ -31,9 +31,9 @@ class Clientes extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND CLI_COD={$this->codigo}";
+        $parametros = "C INNER JOIN tb_enderecos ED ON C.CLI_COD=ED.CLI_COD WHERE C.EMP_COD={$this->codEmpresa} AND C.CLI_COD={$this->codigo} AND C.CLI_STATUS=1";
         $campos = "*";
-        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
             return $resultado[0];
         } else {
@@ -42,7 +42,7 @@ class Clientes extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} ORDER BY CLI_NOME";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND CLI_STATUS=1 ORDER BY CLI_NOME";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -88,7 +88,7 @@ class Clientes extends Model
     }
     public function checarRegistroCliente()
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND CLI_REGISTRO='{$this->codRegistro}'";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND CLI_REGISTRO='{$this->codRegistro}' AND CLI_STATUS=1";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

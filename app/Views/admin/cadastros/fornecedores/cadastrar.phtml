@@ -2,6 +2,7 @@
 use Libraries\Sessao;
 session_start();
 include_once 'app/Views/admin/inc/cabecalho.phtml'; 
+//dump($dados);
 ?>
 <body class="">
     <div class="d-flex" id="wrapper">
@@ -12,20 +13,21 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
         <div class="container-fluid bg-light p-0">
             <header class="py-3">
                 <section class="container px-3">
-                    <div class="row gx-3 align-items-center justify-content-center">
-                        <div class="col-lg-11 col-xl-11 col-xxl-11">
-                            <div class="my-2 text-center text-xl-start">
-                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_fornecedores"><h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-bank"></i> Cadastrar <span class="text-success"> Fornecedores</span></h5></a>
+                    <div class="row gx-5 align-items-center justify-content-center">
+                        <div class="col-lg-9 col-xl-9 col-xxl-9">
+                            <div class="my-1 px-4 mx-auto">
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/cadastro_fornecedores">
+                                <h5 class="fs-2 fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-boxes"></i> Cadastrar <span class="text-success"> Fornecedores</span></h5></a>
                             </div>
                         </div>
+                        <?php include_once 'app/Views/admin/inc/saudacao.phtml'; ?> 
                     </div>
                 </section>
+                <section class="container col-12 mx-auto px-5">
+                    <?= $breadcrumb ?>
+                </section>
             </header>
-            <section class="container py-2">
-              <hr>
-              <?= Sessao::alert('OK'); ?>
-              <?= Sessao::alert('ERRO'); ?>
-            </section>
+            <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>
             <section class="bg-light py-2">
                 <div class="container px-2 py-2 mx-auto row">
                     <form class="col-12 col-sm-11 col-md-11 col-lg-11 mx-auto py-3 border rounded-3"  action="<?= DIRPAGE; ?>cadastros/cadastrar_fornecedores" accept-charset="utf-8" method="post">
@@ -42,7 +44,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             
                             <div class="col-4 mb-2">
                                 <label class="form-label">CPF/CNPJ</label>
-                                <input type="text" name="FOR_REGISTRO" class="form-control" value="<?= isset($_POST['FOR_REGISTRO']) ? $_POST['FOR_REGISTRO'] : '' ?>">
+                                <input type="text" name="FOR_REGISTRO" onfocus="javascript: retirarFormatacao(this);" onblur="javascript: formatarCampo(this);" maxlength="14" class="form-control" value="<?= isset($_POST['FOR_REGISTRO']) ? $_POST['FOR_REGISTRO'] : '' ?>">
                             </div>
                             <div class="col-4 mb-2">
                                 <label class="form-label">INSCRIÇÃO ESTADUAL</label>
@@ -137,7 +139,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             </div>
                             <div class="col-4 mb-2">
                                 <label class="form-label">NOME/VENDEDOR/RESPONSÁVEL/CONTATO DA EMPRESA</label>
-                                <input type="text" name="FOR_RESPONSAVEL" class="form-control"value="<?= isset($_POST['FOR_RESPONSAVEL']) ? $_POST['FOR_RESPONSAVEL'] : '' ?>">
+                                <input type="text" name="FOR_RESPONSAVEL" class="form-control maiusculo"value="<?= isset($_POST['FOR_RESPONSAVEL']) ? $_POST['FOR_RESPONSAVEL'] : '' ?>">
                             </div>
                             <div class="col-8 mb-2">
                                 <label for="address2" class="form-label">DESCRIÇÃO (opcional)</label>
@@ -145,6 +147,7 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             </div>
                         </div>
                         <hr class="my-4">
+                        <input type="hidden" class="form-control" name="EMP_COD" value="<?= $empresa['EMP_COD']?>">
                         <input type="hidden" class="form-control" name="USU_COD" value="<?= $usuario['USU_COD']?>">
                         <button class="w-100 btn btn-lg btn-success" type="submit" name="CADASTRAR_NOVO_FORNECEDOR"><i class="fa fa-save"></i> CADASTRAR</button>
                     </form>
@@ -153,5 +156,24 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
             <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
         </div>
     </div>
+    <script>
+        function formatarCampo(campoTexto) {
+        if (campoTexto.value.length <= 11) {
+            campoTexto.value = mascaraCpf(campoTexto.value);
+        } else {
+            campoTexto.value = mascaraCnpj(campoTexto.value);
+        }
+        }
+        function retirarFormatacao(campoTexto) {
+            campoTexto.value = campoTexto.value.replace(/(\.|\/|\-)/g,"");
+        }
+        function mascaraCpf(valor) {
+            return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4");
+        }
+        function mascaraCnpj(valor) {
+            return valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g,"\$1.\$2.\$3\/\$4\-\$5");
+        }
+    </script>
+
 </body>
 </html>
