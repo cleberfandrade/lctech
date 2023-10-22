@@ -14,27 +14,19 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                 <section class="container px-3">
                     <div class="row gx-5 align-items-center justify-content-center">
                         <div class="col-lg-9 col-xl-9 col-xxl-9">
-                            <div class="my-2 text-xl-start">
-                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros"><h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Cadastros</span></h5></a>
+                            <div class="my-1 px-4 mx-auto">
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros">
+                                <h5 class="fs-2 fw-bolder text-uppercase text-dark"><i class="bi bi-plus-square"></i> Gerenciar <span class="text-success">Cadastros</span></h5></a>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-xl-3 col-xxl-3 border-start">
-                                <span class=""></span>
-                                <h4><b>HOJE</b> <?= date("d/m/Y");
-                                    include_once 'app/Views/admin/inc/hora.phtml'; ?>
-                                </h4>
-                            </div>
+                        <?php include_once 'app/Views/admin/inc/saudacao.phtml'; ?>   
                     </div>
                 </section>
                 <section class="container col-12 mx-auto px-5">
                     <?= $breadcrumb ?>
                 </section>
             </header>
-            <section class="container py-2">
-            <hr class="my-4 text-dark">
-              <?= Sessao::alert('OK'); ?>
-              <?= Sessao::alert('ERRO'); ?>
-            </section>
+            <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
             <section class="container bg-light mx-auto col-12 py-2 mb-5">
                 <div class="px-2 py-2 row">
                     <div class="card text-center m-2" style="width: 20rem;">

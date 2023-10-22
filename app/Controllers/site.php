@@ -15,6 +15,7 @@ class site extends View
     }
     public function index()
     { 
+        $this->dados['title'] = 'LC-TECH | Acesso Administrativo';
         $this->render('site/login', $this->dados);
     }
     public function quem_somos()

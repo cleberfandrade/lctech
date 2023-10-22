@@ -14,23 +14,23 @@ $qtd = (is_array($usuario) ? count($usuario) : 0);
                 <header class="py-3">
                     <section class="container px-3">
                         <div class="row gx-3 align-items-center justify-content-center">
-                            <div class="col-lg-10 col-xl-10 col-xxl-10">
-                                <div class="my-3 text-center text-xl-start">
+                            <div class="col-lg-9 col-xl-9 col-xxl-9">
+                                <div class="my-1 px-4 mx-auto">
                                     <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/alterar_usuarios/<?= $_SESSION['EMP_COD'] ?>/<?= $usuario['USU_COD'] ?>">
-                                        <h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2">
+                                        <h5 class="fs-2 text-center fw-bolder text-uppercase text-dark">
                                             <i class="bi bi-person-circle"></i>Alterar <span class="text-success"> Usuário</span>
                                         </h5>
                                     </a>
                                 </div>
                             </div>
+                            <?php include_once 'app/Views/admin/inc/saudacao.phtml'; ?> 
                         </div>
                     </section>
+                    <section class="container col-12 mx-auto px-5">
+                        <?= $breadcrumb ?>
+                    </section>
                 </header>
-                <section class="container py-2">
-                <hr>
-                <?= Sessao::alert('OK'); ?>
-                <?= Sessao::alert('ERRO'); ?>
-                </section>
+                <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
                 <section class="bg-light py-2">
                     <div class="container col-10 px-2 py-2 mx-auto row">
                         <form class="p-4 p-md-6 border text-uppercase rounded-3 bg-3" action="<?= DIRPAGE ?>cadastros/alterar_usuarios_empresa" method="POST">

@@ -17,23 +17,23 @@ $qtd = (is_array($fornecedores) ? count($fornecedores) : 0);
                     <header class="py-3">
                         <section class="container px-3">
                             <div class="row gx-5 align-items-center justify-content-center">
-                                <div class="col-lg-10 col-xl-10 col-xxl-10">
-                                    <div class="my-3 text-center text-xl-start">
+                                <div class="col-lg-9 col-xl-9 col-xxl-9">
+                                    <div class="my-1 px-4 mx-auto">
                                         <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/fornecedores">
-                                            <h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2">
+                                            <h5 class="fs-2 fw-bolder text-uppercase text-dark">
                                                 <i class="bi bi-person-circle"></i>Lista de <span class="text-success">Fornecedores</span>
                                             </h5>
                                         </a>
                                     </div>
                                 </div>
+                                <?php include_once 'app/Views/admin/inc/saudacao.phtml'; ?> 
                             </div>
                         </section>
+                        <section class="container col-12 mx-auto px-5">
+                            <?= $breadcrumb ?>
+                        </section>
                     </header>
-                    <section class="container py-2">
-                    <hr>
-                    <?= Sessao::alert('OK'); ?>
-                    <?= Sessao::alert('ERRO'); ?>
-                    </section>
+                    <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
                     <section class="bg-light  text-dark  py-2">
                         <div class="container mx-auto col-12 px-2 py-2 mx-auto row">
                             <div class="card bg-success text-center py-2 mb-4">
@@ -67,7 +67,7 @@ $qtd = (is_array($fornecedores) ? count($fornecedores) : 0);
                                         <td class="text-center align-middle"><?= ($fornecedores[$i]['FOR_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                         <td class="text-center align-middle">
                                             <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_fornecedores/'.$fornecedores[$i]['EMP_COD'].'/'.$fornecedores[$i]['USU_COD']; ?>" title="Alterar fornecedores"><i class="fa fa-edit"></i></a>
-                                            <a type="button" class="btn btn-danger btn-sm d-print-none" data-toggle='modal' title="Excluir usuário" href="#"><i class="fa fa-trash"></i></a>
+                                            <button type="button" class="btn btn-danger btn-sm d-print-none" data-bs-toggle='modal'  data-bs-target="#excluir" title="Excluir fornecedor" data-codigo="<?= $fornecedores[$i]['FOR_COD']; ?>" data-nome="<?= $fornecedores[$i]['FOR_NOME_FANTASIA']; ?>" title="Deseja excluir?" ><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 <?php $b++; } ?>
@@ -82,6 +82,25 @@ $qtd = (is_array($fornecedores) ? count($fornecedores) : 0);
                 <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
             </div>
            
+        </div>
+    </div>
+    <div class="modal" id="excluir" tabindex="-1" role="dialog" data-bs-backdrop="true" aria-labelledby="excluir" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center text-uppercase">
+                    Deseja excluir o Fornecedor(a)?
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-center text-uppercase mx-auto">Confirma exclusão deste registro?</p>
+                    <span id="FOR_NOME_FANTASIA" class="mt-3 text-center h5"></span>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="FOR_COD" name="FOR_COD" value="" />
+                    <input type="hidden" id="EMP_COD" name="EMP_COD" value="<?= $empresa['EMP_COD'] ?>" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
+                    <button id="deletar" type="button" class="btn btn-danger" value=""><i class="fa fa-trash"></i> DELETAR</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>

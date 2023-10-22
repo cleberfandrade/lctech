@@ -42,13 +42,14 @@
                 $ac = '';
                 $ar ='';
                 $lk = 'href="'.DIRPAGE.$link[$i]['link'].'"';
+                $printar.=''.$ac.'"'.$ar.'><a class="text-decoration-none text-dark" '.$lk.' title="VOLTAR À '.$link[$i]['nome'].'">'.$link[$i]['nome'].'</a></li>';
             } else {
                 $ac = 'active';
                 $ar ='aria-current="page"';
                 $lk = '';
+                $printar.=''.$ac.'"'.$ar.'><b class="text-success" title="VOCÊ ESTÁ AQUI">'.$link[$i]['nome'].'</b></li>';
             }
-            $printar.=''.$ac.'"'.$ar.'>
-            <a '.$lk.'>'.$link[$i]['nome'].'</a></li>';
+            
             // <li class="breadcrumb-item active" aria-current="page">$dados</li>
         }
         $printar.='</ol></nav>';

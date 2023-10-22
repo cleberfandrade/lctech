@@ -19,6 +19,7 @@ use Libraries\Sessao;
 class cadastros extends View
 {
     private $dados = [];
+    private $link;
     public function __construct()
     {
         Sessao::naoLogado();
@@ -27,6 +28,7 @@ class cadastros extends View
         $Empresa = new Empresas;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $ModulosEmpresa = new ModulosEmpresa;
+        $Check = new Check;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
@@ -41,18 +43,25 @@ class cadastros extends View
             $this->dados['modulos_empresa'] = false;
             $this->dados['empresa'] = false;
         }
+
+        $this->link[0] = ['link'=> 'admin','nome' => 'PAINEL'];
+        $this->link[1] = ['link'=> 'cadastros','nome' => 'MÓDULO DE CADASTROS'];
     }
     public function index()
     {
         $Usuarios = new Usuarios;
+        $Check = new Check;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/cadastros/cadastros', $this->dados);
     }
     //CADASTRO - CLIENTES
     public function clientes()
     {
         $this->dados['title'] .= 'CLIENTES';
+        $Check = new Check;
         $Usuarios = new Usuarios;
         $Clientes = new Clientes;
         $Empresa = new Empresas;
@@ -70,7 +79,9 @@ class cadastros extends View
         }
         $Clientes->setCodEmpresa($_SESSION['EMP_COD']);
         $this->dados['clientes'] = $Clientes->listarTodos();
-
+        $this->link[2] = ['link'=> 'cadastros/clientes','nome' => 'GERENCIAR SEUS CLIENTES'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/cadastros/clientes/listar', $this->dados);
     }
     public function cadastro_clientes()
@@ -79,6 +90,7 @@ class cadastros extends View
         $Usuarios = new Usuarios;
         $Clientes = new Clientes;
         $Empresa = new Empresas;
+        $Check = new Check;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
@@ -91,12 +103,16 @@ class cadastros extends View
             $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
         }
-
+        $this->link[2] = ['link'=> 'cadastros/clientes','nome' => 'GERENCIAR SEUS CLIENTES'];
+        $this->link[3] = ['link'=> 'cadastros/cadastro_clientes','nome' => 'CADASTRAR CLIENTES'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
     }
     public function cadastrar_clientes()
     {
         $this->dados['title'] .= 'CLIENTES';
+        $Check = new Check;
         $Usuarios = new Usuarios;
         $Clientes = new Clientes;
         $Enderecos = new Enderecos;
@@ -177,14 +193,19 @@ class cadastros extends View
         }else {
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
         }
-
+        $this->link[2] = ['link'=> 'cadastros/clientes','nome' => 'GERENCIAR SEUS CLIENTES'];
+        $this->link[3] = ['link'=> 'cadastros/cadastro_clientes','nome' => 'CADASTRAR CLIENTES'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
         $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
     }
     public function alterar_clientes()
     {
         $this->dados['title'] .= 'CLIENTES';
+        $Check = new Check;
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
+        $Clientes = new Clientes;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
@@ -199,23 +220,51 @@ class cadastros extends View
         }
         $dados = filter_input_array(INPUT_GET, FILTER_DEFAULT);
         $dados = explode("/",$dados['url']);
+        $Clientes->setCodEmpresa($_SESSION['EMP_COD']);
+        $this->dados['clientes'] = $Clientes->listarTodos();
+        $this->link[2] = ['link'=> 'cadastros/clientes','nome' => 'GERENCIAR SEUS CLIENTES'];
+       
 
         if (isset($dados[1]) && $dados[1] == 'alterar_clientes') {
             
-            if($_SESSION['EMP_COD'] == $dados[2]){
-                
-                if(isset($dados[3]) && isset($dados[2])){
-                
+            if($_SESSION['EMP_COD'] == $dados[2] && isset($dados[3]) && $dados[3] !=''){
+                $Clientes->setCodEmpresa($dados[2]);
+                $Clientes->setCodigo($dados[3]);
+                $this->dados['cliente'] = $Clientes->listar(0);
+                if ($this->dados['cliente'] != 0) {
+                    $this->link[3] = ['link'=> 'cadastros/clientes/alterar_clientes/'.$_SESSION['EMP_COD'].'/'.$dados[3],'nome' => 'ALTERAR CLIENTES'];
+                    $Check->setLink($this->link);
+                    $this->dados['breadcrumb'] = $Check->breadcrumb();
+                    $this->render('admin/cadastros/clientes/alterar', $this->dados);
+                }else {
+                    $Check->setLink($this->link);
+                    $this->dados['breadcrumb'] = $Check->breadcrumb();
+                    Sessao::alert('ERRO',' 3- Cliente não foi encontrado!','fs-4 alert alert-danger');
+                    $this->render('admin/cadastros/clientes/listar', $this->dados);
                 }
-            }   
+                
+            }else{
+                $Check->setLink($this->link);
+                $this->dados['breadcrumb'] = $Check->breadcrumb();
+                Sessao::alert('ERRO',' 2- Acesso inválido(s)!','fs-4 alert alert-danger');
+                $this->render('admin/cadastros/clientes/listar', $this->dados);
+            }
+        }else {
+            $Check->setLink($this->link);
+            $this->dados['breadcrumb'] = $Check->breadcrumb();
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
+            $this->render('admin/cadastros/clientes/listar', $this->dados);
         }
-
-        $this->render('admin/cadastros/clientes/alterar', $this->dados);
+    }
+    public function alterar_clientes_empresa()
+    {
+        
     }
     //CADASTRO - FORNECEDORES
     public function fornecedores()
     {
         $this->dados['title'] .= 'FORNECEDORES';
+        $Check = new Check;
         $Usuarios = new Usuarios;
         $Fornecedores = new Fornecedores;
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
@@ -225,6 +274,7 @@ class cadastros extends View
     public function cadastro_fornecedores()
     {
         $this->dados['title'] .= 'FORNECEDORES';
+        $Check = new Check;
         $Usuarios = new Usuarios;
         $Fornecedores = new Fornecedores;
 
@@ -236,6 +286,7 @@ class cadastros extends View
     public function cadastrar_fornecedores()
     {
         $this->dados['title'] .= 'FORNECEDORES';
+        $Check = new Check;
         $Usuarios = new Usuarios;
         $Fornecedores = new Fornecedores;
         $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
@@ -248,6 +299,7 @@ class cadastros extends View
     public function usuarios()
     {
         $this->dados['title'] .= 'USUÁRIOS';
+        $Check = new Check;
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
         $UsuariosEmpresa = new UsuariosEmpresa;
@@ -267,6 +319,7 @@ class cadastros extends View
     public function cadastro_usuarios()
     {
         $this->dados['title'] .= 'USUÁRIOS';
+        $Check = new Check;
         $Usuarios = new Usuarios;
         $this->render('admin/cadastros/usuarios/cadastrar', $this->dados);
     }

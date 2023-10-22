@@ -66,7 +66,7 @@ $qtd = (is_array($usuarios) ? count($usuarios) : 0);
                                         <td class="text-center align-middle"><?= ($usuarios[$i]['USU_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                         <td class="text-center align-middle">
                                             <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_usuarios/'.$usuarios[$i]['EMP_COD'].'/'.$usuarios[$i]['USU_COD']; ?>" title="Alterar usuário"><i class="fa fa-edit"></i></a>
-                                            <a type="button" class="btn btn-danger btn-sm d-print-none" data-toggle='modal' title="Excluir usuário" href="#"><i class="fa fa-trash"></i></a>
+                                            <button type="button" class="btn btn-danger btn-sm d-print-none" data-bs-toggle='modal'  data-bs-target="#excluir" title="Excluir usuário" data-codigo="<?= $usuarios[$i]['USU_COD']; ?>" data-nome="<?= $usuarios[$i]['USU_NOME']; ?>" title="Deseja excluir?" ><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 <?php $b++; } ?>

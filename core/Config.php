@@ -27,7 +27,7 @@ define('DIRDESIGN', DIRPAGE . "public/design/");
 define('DIRCSS', DIRPAGE . "public/css/");
 define('DIRFONT', DIRPAGE . "public/fonts/");
 define('DIRJS', DIRPAGE . "public/js/");
-
+define('DIRADMINC', DIRPAGE . "app/Views/admin/inc/");
 define('CONTROLLER', 'site');
 define('CONTROLLERERRO', 'site/error');
 define('EMAILADM', 'contato@lctech.com.br');
