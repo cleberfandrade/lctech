@@ -645,7 +645,7 @@ class cadastros extends View
             $UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD']);
             $this->dados['usuarios'] = $UsuariosEmpresa->listarTodos(0);
         }
-        $this->link[2] = ['link'=> 'cadastros/clientes','nome' => 'GERENCIAR SEUS FORNECEDORES'];
+        $this->link[2] = ['link'=> 'cadastros/fornecedores','nome' => 'LISTAGEM DE FORNECEDORES'];
          //Recupera os dados enviados
          $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
         
@@ -702,7 +702,7 @@ class cadastros extends View
                             'END_DT_ATUALIZACAO'=> date('Y-m-d H:i:s')
                         );
 
-                        if($Enderecos->alterarCliente($db_endereco,0)){
+                        if($Enderecos->alterarFornecedor($db_endereco,0)){
                             Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
                         }else {
                             Sessao::alert('OK','Cadastro alterado, endereço não alterado!','fs-4 alert alert-warning');
