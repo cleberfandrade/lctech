@@ -105,5 +105,38 @@ $qtd = (is_array($fornecedores) ? count($fornecedores) : 0);
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#excluir').on('show.bs.modal', function(event) {
+                var button = null;
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var codigo = null;
+                var codigo = button.data('codigo'); // Extract info from data-* attributes
+                var nome = button.data('nome');
+                var modal = $(this);
+                modal.find('#FOR_COD').val(codigo);
+                modal.find('#deletar').val(codigo);
+                modal.find('#FOR_NOME_FANTASIA').html(nome);
+            });
+        });
+        $("#deletar").click(function(){
+            var data = $('#deletar').val();
+            var EMP_COD = $('#EMP_COD').val();
+            setTimeout(function () {
+                    $('#excluir').modal('hide');
+            }, 100);
+            $.post('<?= DIRPAGE; ?>cadastros/desativar_fornecedores', {FOR_COD: data,EXCLUIR_FORNECEDOR: true,EMP_COD: EMP_COD,cache: false}, function(retorno) {
+                var resposta = JSON.parse(retorno);
+                if (resposta['COD'] !== 'ERRO') {
+                    $('#resposta').addClass('alert alert-success');
+                }else{
+                    $('#resposta').addClass('alert alert-warning');
+                }
+                $('#resposta').html(resposta['MENSAGEM']);
+                setTimeout( () => { window.location.href="<?= DIRPAGE ?>cadastros/fornecedores"}, 5000);
+            });
+
+        });
+    </script>
 </body>
 </html>

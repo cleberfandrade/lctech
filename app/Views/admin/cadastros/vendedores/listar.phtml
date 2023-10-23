@@ -17,31 +17,29 @@ $qtd = (is_array($vendedores) ? count($vendedores) : 0);
                     <header class="py-3">
                         <section class="container px-3">
                             <div class="row gx-5 align-items-center justify-content-center">
-                                <div class="col-lg-10 col-xl-10 col-xxl-10">
-                                    <div class="my-3 text-center text-xl-start">
+                                <div class="col-lg-9 col-xl-9 col-xxl-9">
+                                    <div class="my-1 px-4 mx-auto">
                                         <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/vendedores">
-                                            <h5 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2">
-                                                <i class="bi bi-person-bounding-box"></i> Listagem de <span class="text-success">Vendedores</span>
+                                            <h5 class="fs-2 fw-bolder text-uppercase text-dark">
+                                                <i class="bi bi-person-bounding-box"></i> Listagem de <span class="text-success">Funcionários/Vendedores</span>
                                             </h5>
                                         </a>
                                     </div>
                                 </div>
+                                <?php include_once 'app/Views/admin/inc/saudacao.phtml'; ?> 
                             </div>
                         </section>
+                        <section class="container col-12 mx-auto px-5">
+                            <?= $breadcrumb ?>
+                        </section>
                     </header>
-                    <section class="container py-2">
-                   
-                    <hr>
-                    <div id="resposta" class="fs-3 text-center"></div>
-                    <?= Sessao::alert('OK'); ?>
-                    <?= Sessao::alert('ERRO'); ?>
-                    </section>
+                    <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
                     <section class="bg-light  text-dark  py-2">
                         <div class="container mx-auto col-12 px-2 py-2 row">
                             <div class="card bg-success text-center py-2 mb-4" style="width: 100rem;">
                                 <div class="card-body  text-white">
-                                    <h5 class="card-title">VENDEDORES</h5>
-                                    <p class="card-text">Cadastre/Altere os dados dos seus vendedores do sistema</p>
+                                    <h5 class="card-title">FUNCIONÁRIOS/VENDEDORES</h5>
+                                    <p class="card-text">Cadastre os seus funcionários/vendedores no sistema</p>
                                     <a href="<?= DIRPAGE ?>cadastros/cadastro_vendedores" class="btn btn-dark">ACESSAR</a>
                                 </div>
                             </div>

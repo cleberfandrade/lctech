@@ -26,12 +26,11 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                             <?php include_once 'app/Views/admin/inc/saudacao.phtml'; ?> 
                         </div>
                     </section>
+                    <section class="container col-12 mx-auto px-5">
+                            <?= $breadcrumb ?>
+                    </section>
                 </header>
-                <section class="container py-2">
-                <hr>
-                <?= Sessao::alert('OK'); ?>
-                <?= Sessao::alert('ERRO'); ?>
-                </section>
+                <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
                 <section class="bg-light py-2">
                     <div class="container col-10 px-2 py-2 mx-auto row">
                         <form class="p-4 p-md-6 border text-uppercase rounded-3 bg-3" action="<?= DIRPAGE ?>cadastros/cadastrar_vendedores" method="POST">
@@ -102,10 +101,10 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                     </div>
                                 </div>
                                 <hr class="my-4 text-dark">
+                                <span class="text-center fs-3 mb-3">A SENHA PADRÃO SERÁ: <b>123456</b><br> O NOVO USUÁRIO DEVERÁ ALTERÁ-LA</span>
                                 <input type="hidden" class="form-control" name="EMP_COD" value="<?= isset($_SESSION['EMP_COD']) ? $_SESSION['EMP_COD'] : 0; ?>">
                                 <input type="hidden" class="form-control" name="USU_COD" value="<?= isset($_SESSION['USU_COD']) ? $_SESSION['USU_COD'] : 0; ?>">
                                 <button class="w-100 btn btn-lg text-uppercase btn-success" name="CADASTRAR_NOVO_VENDEDOR" type="submit"><i class="fa fa-save"></i> Cadastrar</button>
-                                <hr class="my-4 text-dark">
                             </div> 
                         </form>
                     </div>

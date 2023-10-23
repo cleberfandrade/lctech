@@ -36,7 +36,7 @@ class Fornecedores extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND FOR_COD='{$this->codigo}'";
+        $parametros = "F INNER JOIN tb_enderecos ED ON F.FOR_COD=ED.FOR_COD WHERE F.EMP_COD='{$this->codEmpresa}' AND F.FOR_COD='{$this->codigo}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {

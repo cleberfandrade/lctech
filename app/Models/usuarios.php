@@ -77,7 +77,7 @@ class Usuarios extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = "  U INNER JOIN tb_enderecos E ON E.USU_COD=U.USU_COD ORDER BY U.USU_NOME ASC";
+        $parametros = " U INNER JOIN tb_enderecos E ON E.USU_COD=U.USU_COD WHERE U.USU_COD<>'{$this->codigo}' ORDER BY U.USU_NOME ASC";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {

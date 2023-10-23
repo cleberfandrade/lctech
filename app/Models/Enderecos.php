@@ -47,6 +47,17 @@ class Enderecos extends Model
             return false;
         }
     }
+    public function listar($ver = 0)
+    {
+        $parametros = " WHERE END_COD='{$this->codigo}'";
+        $campos = "*";
+        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        if ($resultado) {
+            return $resultado[0];
+        } else {
+            return false;
+        }
+    }
     public function checarEnderecoUsuario()
     {
         $parametros = " WHERE USU_COD='{$this->codUsuario}'";
@@ -75,7 +86,7 @@ class Enderecos extends Model
     }
     public function checarEnderecoFornecedor()
     {
-        $parametros = " WHERE FOR_COD='{$this->codEmpresa}'";
+        $parametros = " WHERE FOR_COD='{$this->codFornecedor}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
