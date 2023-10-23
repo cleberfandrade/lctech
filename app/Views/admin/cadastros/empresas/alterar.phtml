@@ -13,20 +13,20 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
             <header class="py-3">
                 <section class="container px-3">
                     <div class="row gx-3 align-items-center justify-content-center">
-                        <div class="col-lg-10 col-xl-10 col-xxl-10">
-                            <div class="my-3 text-center text-xl-start">
+                        <div class="col-lg-9 col-xl-9 col-xxl-9">
+                            <div class="my-1 px-4 mx-auto">
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/alterar_empresas/<?=$empresa['EMP_COD'].'/'.$_SESSION['USU_COD']; ?>">
-                                <h3 class="display-5 text-center fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-plus-square"></i> Alterar Minha <span class="text-success">Empresa/Negócio</span></h3></a>
+                                <h5 class="fs-2 fw-bolder text-uppercase text-dark"><i class="bi bi-plus-square"></i> Alterar Minha <span class="text-success">Empresa/Negócio</span></h5></a>
                             </div>
                         </div>
+                        <?php include_once 'app/Views/admin/inc/saudacao.phtml'; ?> 
                     </div>
                 </section>
+                <section class="container col-12 mx-auto px-5">
+                        <?= $breadcrumb ?>
+                </section>
             </header>
-            <section class="container py-2">
-              <hr>
-              <?= Sessao::alert('OK'); ?>
-              <?= Sessao::alert('ERRO'); ?>
-            </section>
+            <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
             <section class="bg-light py-2">
                 <div class="container px-2 py-2 mx-auto row">
                     <form class="col-12 col-sm-11 col-md-11 col-lg-11 mx-auto py-3 border rounded-3"  action="<?= DIRPAGE; ?>cadastros/alterar_dados_empresa" accept-charset="utf-8" method="post">

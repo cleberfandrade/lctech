@@ -1985,5 +1985,17 @@ class cadastros extends View
         
         $this->render('admin/cadastros/empresas/alterar', $this->dados);
     }
-   
+    public function cargos_salarios()
+    {
+        $this->dados['title'] .= 'CARGOS E SALÁRIOS';
+        $Check = new Check;
+        $Usuarios = new Usuarios;
+        $Fornecedores = new Fornecedores;
+        $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
+        $this->dados['carg_sal'] = $Fornecedores->listarTodos(0);
+        $this->link[2] = ['link'=> 'cadastros/fornecedores','nome' => 'LISTAGEM DE CARGOS E SALÁRIOS'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
+        $this->render('admin/cadastros/cargos/listar', $this->dados);
+    }
 }

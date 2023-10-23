@@ -27,50 +27,67 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                 </section>
             </header>
             <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
-            <section class="container bg-light mx-auto col-12 py-2 mb-5">
-                <div class="px-2 py-2 row">
-                    <div class="card text-center m-2" style="width: 20rem;">
+            <section class="container bg-light mx-auto py-2 mb-5">
+                <div class="col-12 row">
+                    <div class="col-4 text-bg-success text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">CARGOS/SALÁRIOS</h5>
+                            <p class="card-text">Cadastre/Altere os dados dos cargos/salários da sua Empresa/negócio</p>
+                            <a href="<?= DIRPAGE ?>cadastros/cargos_salarios" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="col-4 text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">CATEGORIAS</h5>
+                            <p class="card-text">Cadastre/Altere os dados das suas categorias</p>
+                            <a href="<?= DIRPAGE ?>cadastros/categorias" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="col-4 text-bg-success text-center">
                         <div class="card-body">
                             <h5 class="card-title">CLIENTES</h5>
                             <p class="card-text">Cadastre/Altere os dados dos seus clientes</p>
                             <a href="<?= DIRPAGE ?>cadastros/clientes" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
-                    <div class="card text-bg-success text-center m-2" style="width: 20rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">FORNECEDORES</h5>
-                            <p class="card-text">Cadastre/Altere os dados dos seus fornecedores</p>
-                            <a href="<?= DIRPAGE ?>cadastros/fornecedores" class="btn btn-dark">ACESSAR</a>
-                        </div>
-                    </div>
-                    <div class="card text-center m-2" style="width: 20rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">USUÁRIOS</h5>
-                            <p class="card-text">Cadastre/Altere os dados dos seus usuários do sistema</p>
-                            <a href="<?= DIRPAGE ?>cadastros/usuarios" class="btn btn-dark">ACESSAR</a>
-                        </div>
-                    </div>
-                    <div class="card text-bg-success text-center m-2" style="width: 20rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">ESTOQUES</h5>
-                            <p class="card-text">Cadastre/Altere os dados do seu estoque</p>
-                            <a href="<?= DIRPAGE ?>cadastros/estoques" class="btn btn-dark">ACESSAR</a>
-                        </div>
-                    </div>
-                    <div class="card text-center m-2" style="width: 20rem;">
+                    <div class="col-4 text-center" >
                         <div class="card-body">
                             <h5 class="card-title">EMPRESAS</h5>
                             <p class="card-text">Cadastre/Altere os dados da sua Empresa/Negócio</p>
                             <a href="<?= DIRPAGE ?>cadastros/empresas" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
-                    <div class="card text-bg-success text-center m-2" style="width: 20rem;">
+                    <div class="col-4 text-bg-success text-center" >
+                        <div class="card-body">
+                            <h5 class="card-title">ESTOQUES</h5>
+                            <p class="card-text">Cadastre/Altere os dados do seu estoque</p>
+                            <a href="<?= DIRPAGE ?>cadastros/estoques" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="col-4 text-center" >
+                        <div class="card-body">
+                            <h5 class="card-title">FORNECEDORES</h5>
+                            <p class="card-text">Cadastre/Altere os dados dos seus fornecedores</p>
+                            <a href="<?= DIRPAGE ?>cadastros/fornecedores" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                    <div class="col-6 text-bg-success text-center">
                         <div class="card-body">
                             <h5 class="card-title">FUNCIONÁRIOS/VENDEDORES</h5>
                             <p class="card-text">Cadastre/Altere os dados dos seus funcionários/vendedores</p>
                             <a href="<?= DIRPAGE ?>cadastros/vendedores" class="btn btn-dark">ACESSAR</a>
                         </div>
                     </div>
+                    <div class="col-6  text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">USUÁRIOS</h5>
+                            <p class="card-text">Cadastre/Altere os dados dos seus usuários do sistema</p>
+                            <a href="<?= DIRPAGE ?>cadastros/usuarios" class="btn btn-dark">ACESSAR</a>
+                        </div>
+                    </div>
+                   
+                   
+                    
                     <!--
                     <div class="card text-center m-3" style="width: 18rem;">
                         <div class="card-body">
