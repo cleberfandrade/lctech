@@ -18,29 +18,19 @@ $qtdE = (is_array($empresas) ? count($empresas) : 0);
                 <section class="container px-3">
                     <div class="row gx-5 align-items-center justify-content-center">
                         <div class="col-lg-9 col-xl-9 col-xxl-9">
-                            <div class="my-3">
+                            <div class="my-1 px-4 mx-auto">
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>estoques/gerenciar/<?= $estoque['EMP_COD']?>/<?= $estoque['EST_COD']?>">
-                                <h3 class="display-5 fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-box"></i> Gerenciar <span class="text-success">Estoque</span></h3></a>
+                                <h3 class="fs-2 fw-bolder text-uppercase text-dark"><i class="bi bi-box"></i> Gerenciar <span class="text-success">Estoque</span></h3></a>
                             </div>
-                            <h5><div class="frase"></div> <?= $usuario['USU_NOME'].' '.$usuario['USU_SOBRENOME'] ?></h5>
                         </div>
-                        <div class="col-lg-3 col-xl-3 col-xxl-3 border-start">
-                            <span class=""></span>
-                            <h4><b>HOJE</b> <?= date("d/m/Y");
-                                include_once 'app/Views/admin/inc/hora.phtml'; ?>
-                            </h4>
-                        </div>
+                        <?php include_once 'app/Views/admin/inc/saudacao.phtml'; ?> 
                     </div>
                 </section>
                 <section class="container col-12 mx-auto px-5">
                     <?= $breadcrumb ?>
                 </section>
             </header>
-            <section class="container py-2">
-              <hr>
-              <?= Sessao::alert('OK'); ?>
-              <?= Sessao::alert('ERRO'); ?>
-            </section>
+            <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
             <section class="bg-light py-2">
                     <div class="card bg-success mx-auto text-center col-6 py-2 mb-4">
                         <div class="card-body text-white">

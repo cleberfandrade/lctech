@@ -15,9 +15,9 @@ $qtd = (is_array($produtos) ? count($produtos) : 0);
                 <section class="container px-3">
                     <div class="row gx-3 align-items-center justify-content-center">
                         <div class="col-lg-9 col-xl-9 col-xxl-9">
-                            <div class="my-3">
+                            <div class="my-1 px-4 mx-auto">
                                 <a class="text-decoration-none" href="<?= DIRPAGE; ?>estoques/produtos/<?= $estoque['EMP_COD']?>/<?= $estoque['EST_COD']?>">
-                                    <h3 class="display-5 fw-bolder text-uppercase text-dark mb-2"><i class="bi bi-box2-fill"></i> Listagem de <span class="text-success">Produtos</span></h3>
+                                    <h3 class="fs-2 fw-bolder text-uppercase text-dark"><i class="bi bi-box2-fill"></i> Listagem de <span class="text-success">Produtos</span></h3>
                                 </a>
                             </div>
                         </div>
@@ -31,7 +31,7 @@ $qtd = (is_array($produtos) ? count($produtos) : 0);
             <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
             <section class="bg-light text-dark">
                 <div class="container mx-auto col-12 px-2 py-2 row ">
-                    <div class="card bg-success mx-auto text-center col-6 py-2 mb-4">
+                    <div class="card bg-success mx-auto text-center col-12 py-1 mb-2">
                         <div class="card-body text-white">
                             <h5 class="card-title">PRODUTOS</h5>
                             <p class="card-text">Cadastre seus produtos</p>
@@ -44,7 +44,8 @@ $qtd = (is_array($produtos) ? count($produtos) : 0);
                             <th class="text-dark">#</th>
                             <th class="text-dark">ESTOQUE</th>
                             <th class="text-dark">TIPO</th>
-                            <th class="text-dark">CÓDIGO/REFERÊNCIA</th>
+                            <th class="text-dark">CÓDIGO</th>
+                            <th class="text-dark">REFERÊNCIA</th>
                             <th class="text-dark">NOME</th>
                             <th class="text-dark">QTD</th>
                             <th class="text-dark">PREÇO UNITÁRIO</th>
@@ -61,7 +62,8 @@ $qtd = (is_array($produtos) ? count($produtos) : 0);
                                 <td class="text-center align-middle"><?= $b; ?></td>
                                 <td class="text-center align-middle"><?= $produtos[$i]['EST_DESCRICAO']; ?></td>
                                 <td class="text-center align-middle"><?= ($produtos[$i]['PRO_TIPO'] == 1)? 'PRODUTO': (($produtos[$i]['PRO_TIPO'] == 2) ? 'SERVIÇO' : 'N.I.'); ?></td>
-                                <td class="text-center align-middle"><?= $produtos[$i]['PRO_CODIGO'].'/'.$produtos[$i]['PRO_REFERENCIA']; ?></td>
+                                <td class="text-center align-middle"><?= $produtos[$i]['PRO_CODIGO']; ?></td>
+                                <td class="text-center align-middle"><?= $produtos[$i]['PRO_REFERENCIA']; ?></td>
                                 <td class="text-center align-middle"><?= $produtos[$i]['PRO_NOME']; ?></td>
                                 <td class="text-center align-middle"><?= $produtos[$i]['PRO_QUANTIDADE']; ?></td>
                                 <td class="text-center align-middle"><?= number_format($produtos[$i]['PRO_PRECO_UNITARIO'],2,',','.'); ?></td>

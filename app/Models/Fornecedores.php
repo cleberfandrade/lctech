@@ -38,7 +38,7 @@ class Fornecedores extends Model
     {
         $parametros = "F INNER JOIN tb_enderecos ED ON F.FOR_COD=ED.FOR_COD WHERE F.EMP_COD='{$this->codEmpresa}' AND F.FOR_COD='{$this->codigo}'";
         $campos = "*";
-        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
             return $resultado[0];
         } else {
@@ -47,9 +47,9 @@ class Fornecedores extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND FOR_STATUS=1";
+        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND FOR_STATUS='1'";
         $campos = "*";
-        $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
+        $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
             return $resultado;
         } else {

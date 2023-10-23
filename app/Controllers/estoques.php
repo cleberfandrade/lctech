@@ -220,8 +220,10 @@ class estoques extends View
                 $Estoques->setCodEmpresa($dados[2]);
                 $Estoques->setCodigo($dados[3]);
                 $this->dados['estoque'] = $Estoques->listar(0);
+
                 $Fornecedores->setCodEmpresa($dados[2]);
-                $this->$dados['fornecedores'] = $Fornecedores->listarTodos(0);
+                $this->dados['fornecedores'] = $Fornecedores->listarTodos(0);
+                
                 $this->link[2] = ['link'=> 'estoques/gerenciar/'.$dados[2].'/'.$dados[3],'nome' => 'GERENCIAR ESTOQUE'];
                 $this->link[3] = ['link'=> 'estoques/produtos/'.$dados[2].'/'.$dados[3],'nome' => 'GERENCIAR PRODUTOS'];
                 $this->link[4] = ['link'=> 'estoques/cadastro_produtos'.$dados[2].'/'.$dados[3],'nome' => 'CADASTRAR PRODUTOS'];

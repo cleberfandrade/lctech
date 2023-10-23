@@ -844,6 +844,12 @@ class cadastros extends View
         $Empresa = new Empresas;
         $Enderecos = new Enderecos;
         $UsuariosEmpresa = new UsuariosEmpresa;
+        
+        $this->link[2] = ['link'=> 'cadastros/usuarios','nome' => 'LISTAGEM DE USUÁRIOS'];
+        $this->link[3] = ['link'=> 'cadastros/cadastro_usuarios','nome' => 'CADASTRAR USUÁRIOS'];
+        $Check->setLink($this->link);
+        $this->dados['breadcrumb'] = $Check->breadcrumb();
+
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
         $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
@@ -869,29 +875,61 @@ class cadastros extends View
 
                         $db = array(
                             'EMP_COD' => 0,
-                            'CRG_COD' => 0,
                             'USU_DT_CADASTRO'   => date('Y-m-d H:i:s'),
                             'USU_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),
-                            'USU_NOME'      => $dados['nome_usuario'],
-                            'USU_SOBRENOME' => $dados['sobrenome_usuario'],
-                            'USU_SEXO'  => $dados['sexo_usuario'],
-                            'USU_EMAIL' => $dados['email_usuario'],
+                            'USU_NOME'      => $dados['USU_NOME'],
+                            'USU_SOBRENOME' => $dados['USU_SOBRENOME'],
+                            'USU_SEXO'  => $dados['USU_SEXO'],
+                            'USU_EMAIL' => $dados['USU_EMAIL'],
                             'USU_SENHA' => $Check->codificarSenha('123456'),
-                            'USU_NIVEL' => $dados['email_usuario'],
+                            'USU_NIVEL' => $dados['USU_NIVEL'],
                             'USU_STATUS'=> 1
                         );
-                    }
-                }else {
-                    Sessao::alert('ERRO','3- Email do usuário ja utilizado, altere o cadastro, ou entre em contato com o suporte!','fs-4 alert alert-warning');
-                }
+                        $id = $Usuarios->cadastrar($db,0);
+                        if($id){
+                            $Enderecos->setCodUsuario($id);
+                            $endr = $Enderecos->checarEnderecoUsuario();
+                            if(!$endr){
 
+                                $db_endereco = array(
+                                    'USU_COD' => $id,
+                                    'END_DT_CADASTRO' => date('Y-m-d H:i:s'),
+                                    'END_DT_ATUALIZACAO' => date('0000-00-00 00:00:00'),
+                                    'END_STATUS' => 1
+                                );
+                           
+                                if ($Enderecos->cadastrar($db_endereco,0)) {
+                                    Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                                }else {
+                                    Sessao::alert('OK','Cadastro efetuado com sucesso, atualize o endereço após acesso','fs-4 alert alert-warning');
+                                }
+                            }else {
+                                $Enderecos->setCodigo($endr[0]['END_COD']);
+                                $db_endereco = array(
+                                    'END_DT_ATUALIZACAO' => date('Y-m-d H:i:s'),
+                                    'END_STATUS' => 1
+                                );
+                                if ($Enderecos->alterar($db_endereco,0)) {
+                                    Sessao::alert('OK','Cadastro efetuado com sucesso!','fs-4 alert alert-success');
+                                }else {
+                                    Sessao::alert('OK','Cadastro efetuado com sucesso, atualize o endereço após acesso','fs-4 alert alert-warning');
+                                }
+                            }
+                        }else{
+                            Sessao::alert('ERRO',' 5- Erro ao cadastrar novo usuário, contate o suporte!','fs-4 alert alert-danger');
+                        }
+                    }else {
+                        Sessao::alert('ERRO','4- Email do usuário ja utilizado, altere o cadastro, ou entre em contato com o suporte!','fs-4 alert alert-warning');
+                    }
+                }else{
+                    Sessao::alert('ERRO',' 3- Email informado é inválido, informe um email válido!','alert alert-danger');
+                }
             }else {
-                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
+                Sessao::alert('ERRO',' 2- Dados inválido(s)!','fs-4 alert alert-danger');
             }
         }else {
-            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
+            Sessao::alert('ERRO',' 1- Acesso inválido!','fs-4 alert alert-danger');
         }
-
         $this->render('admin/cadastros/clientes/cadastrar', $this->dados);
     }
     public function alterar_usuarios()
