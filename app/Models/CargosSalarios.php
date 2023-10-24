@@ -70,7 +70,7 @@ class CargosSalarios extends Model
     }
     public function excluir(array $dados, $ver = 0)
     {
-        $parametros = " WHERE EMP_COD={$this->codEmpresa} CGS_COD=";
+        $parametros = " WHERE EMP_COD={$this->codEmpresa} AND CGS_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;

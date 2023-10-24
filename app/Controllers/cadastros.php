@@ -1996,10 +1996,10 @@ class cadastros extends View
     public function cargos_salarios()
     {
         $this->dados['title'] .= ' CARGOS E SALÁRIOS';
-        $this->link[2] = ['link'=> 'listar','nome' => 'LISTAGEM DE CARGOS E SALÁRIOS'];
+        $this->link[2] = ['link'=> 'listar','nome' => 'GERENCIAR CARGOS E SALÁRIOS'];
 
         $this->dados['usuario'] = $this->Usuarios->setCodUsuario($_SESSION['USU_COD'])->listar(0);
-        $this->dados['carg_sal'] = $this->CargosSalarios->setCodEmpresa($_SESSION['EMP_COD'])->listarTodos(0);
+        $this->dados['cargos_salarios'] = $this->CargosSalarios->setCodEmpresa($_SESSION['EMP_COD'])->listarTodos(0);
        
         $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
         $this->render('admin/cadastros/cargos_salarios/listar', $this->dados);
