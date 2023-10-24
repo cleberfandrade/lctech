@@ -63,7 +63,7 @@ $qtd = (is_array($empresas) ? count($empresas) : 0);
                                         <td class="text-center align-middle"><?= $b; ?></td>
                                         <td class="text-center align-middle"><?= $empresas[$i]['EMP_NOME_FANTASIA']; ?></td>
                                         <td class="text-center align-middle"><?= $empresas[$i]['EMP_REGULAMENTACAO']; ?></td>
-                                        <td class="text-center align-middle"><?= $empresas[$i]['EMP_TIPO']; ?></td>
+                                        <td class="text-center align-middle"><?= ($empresas[$i]['EMP_TIPO'] != '0')? (($empresas[$i]['EMP_TIPO'] == "PF")? 'PESSOA FÍSICA' : 'PESSOA JURÍDICA') : 'NÃO INFORMADO'; ?></td>
                                         <td class="text-center align-middle"><?= ($empresas[$i]['EMP_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                         <td class="text-center align-middle">
                                             <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_empresas/'.$empresas[$i]['EMP_COD'].'/'.$_SESSION['USU_COD']; ?>" title="Alterar empresa"><i class="fa fa-edit"></i></a>

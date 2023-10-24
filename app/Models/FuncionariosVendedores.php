@@ -3,9 +3,9 @@ namespace App\Models;
 
 use Core\Model;
 
-class Vendedores extends Model
+class FuncionariosVendedores extends Model
 { 
-    private $tabela = 'tb_vendedores';
+    private $tabela = 'tb_colaboradores';
     private $Model = '';
     private $codigo,$email,$senha, $codEmpresa,$codVenda, $codProduto;
 

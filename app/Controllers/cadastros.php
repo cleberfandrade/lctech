@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\CargosSalarios;
 use App\Models\Clientes;
 use Core\View;
 use App\Models\Empresas;
@@ -11,7 +12,7 @@ use App\Models\Fornecedores;
 use App\Models\ModulosEmpresa;
 use App\Models\Usuarios;
 use App\Models\UsuariosEmpresa;
-use App\Models\Vendedores;
+use App\Models\FuncionariosVendedores;
 use Libraries\Check;
 use Libraries\Url;
 use Libraries\Sessao;
@@ -19,15 +20,22 @@ use Libraries\Sessao;
 class cadastros extends View
 {
     private $dados = [];
-    private $link;
+    private $link,$Enderecos,$Usuarios,$Empresa,$UsuariosEmpresa,$Check,$CargosSalarios;
     public function __construct()
     {
         Sessao::naoLogado();
         $this->dados['title'] = 'MÓDULO | CADASTROS >>';
+        $this->Usuarios = new Usuarios;
+        $this->Empresa = new Empresas;
+        $this->UsuariosEmpresa = new UsuariosEmpresa;
+        $this->CargosSalarios= new CargosSalarios;
+        $this->Check = new Check;
+
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $ModulosEmpresa = new ModulosEmpresa;
+        $this->CargosSalarios = new CargosSalarios;
         $Check = new Check;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
@@ -1144,7 +1152,7 @@ class cadastros extends View
         $this->dados['title'] .= 'USUÁRIOS';
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
-        $Vendedores = new Vendedores;
+        $Vendedores = new FuncionariosVendedores;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);  
@@ -1167,7 +1175,7 @@ class cadastros extends View
         $this->dados['title'] .= 'VENDEDORES';
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
-        $Vendedores = new Vendedores;
+        $Vendedores = new FuncionariosVendedores;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);  
@@ -1188,7 +1196,7 @@ class cadastros extends View
         $Check = new Check();
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
-        $Vendedores = new Vendedores;
+        $Vendedores = new FuncionariosVendedores;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);  
@@ -1241,7 +1249,7 @@ class cadastros extends View
         $this->dados['title'] .= 'VENDEDORES';
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
-        $Vendedores = new Vendedores;
+        $Vendedores = new FuncionariosVendedores;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);  
@@ -1286,7 +1294,7 @@ class cadastros extends View
         $Check = new Check();
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
-        $Vendedores = new Vendedores;
+        $Vendedores = new FuncionariosVendedores;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);  
@@ -1338,7 +1346,7 @@ class cadastros extends View
         $this->dados['title'] .= 'VENDEDORES';
         $Usuarios = new Usuarios;
         $Empresa = new Empresas;
-        $Vendedores = new Vendedores;
+        $Vendedores = new FuncionariosVendedores;
         $UsuariosEmpresa = new UsuariosEmpresa;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);  
@@ -1987,15 +1995,13 @@ class cadastros extends View
     }
     public function cargos_salarios()
     {
-        $this->dados['title'] .= 'CARGOS E SALÁRIOS';
-        $Check = new Check;
-        $Usuarios = new Usuarios;
-        $Fornecedores = new Fornecedores;
-        $Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
-        $this->dados['carg_sal'] = $Fornecedores->listarTodos(0);
-        $this->link[2] = ['link'=> 'cadastros/fornecedores','nome' => 'LISTAGEM DE CARGOS E SALÁRIOS'];
-        $Check->setLink($this->link);
-        $this->dados['breadcrumb'] = $Check->breadcrumb();
-        $this->render('admin/cadastros/cargos/listar', $this->dados);
+        $this->dados['title'] .= ' CARGOS E SALÁRIOS';
+        $this->link[2] = ['link'=> 'listar','nome' => 'LISTAGEM DE CARGOS E SALÁRIOS'];
+
+        $this->dados['usuario'] = $this->Usuarios->setCodUsuario($_SESSION['USU_COD'])->listar(0);
+        $this->dados['carg_sal'] = $this->CargosSalarios->setCodEmpresa($_SESSION['EMP_COD'])->listarTodos(0);
+       
+        $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
+        $this->render('admin/cadastros/cargos_salarios/listar', $this->dados);
     }
 }
