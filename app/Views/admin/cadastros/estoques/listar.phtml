@@ -31,11 +31,11 @@ $qtd = (is_array($estoques) ? count($estoques) : 0);
             <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
             <section class="bg-light text-dark">
                 <div class="container mx-auto col-12 px-2 py-2 row ">
-                    <div class="card bg-success mx-auto text-center col-6 py-2 mb-4">
+                    <div class="card bg-success mx-auto text-center col-12 py-2 mb-2">
                         <div class="card-body text-white">
                             <h5 class="card-title">ESTOQUES</h5>
                             <p class="card-text">Cadastre/Altere os dados dos seus estoques</p>
-                            <a href="<?= DIRPAGE ?>cadastros/cadastro_estoques" class="btn btn-dark">ACESSAR</a>
+                            <a href="<?= DIRPAGE ?>cadastros/cadastro_estoques" class="btn btn-dark">NOVO ESTOQUE</a>
                         </div>
                     </div>
                     <?php
@@ -45,6 +45,7 @@ $qtd = (is_array($estoques) ? count($estoques) : 0);
                             <th class="text-dark">#</th>
                             <th class="text-dark">Nome</th>
                             <th class="text-dark">Empresa</th>
+                            <th class="text-dark">Criação</th>
                             <th class="text-dark">Tipo</th>
                             <th class="text-dark">Status</th>
                             <th class="text-dark">Ações</th>
@@ -52,18 +53,19 @@ $qtd = (is_array($estoques) ? count($estoques) : 0);
                         <tbody>
                         <?php
                             $b = 1;
-                            for ($i= 0; $i < $qtd; $i++) { ?>
+                            for ($i= 0; $i < $qtd; $i++) { $data = new DateTime($estoques[$i]['EST_DT_CADASTRO']);?>
                             <tr class="">
                                 <td class="text-center align-middle"><?= $b; ?></td>
                                 <td class="text-center align-middle"><?= $estoques[$i]['EST_DESCRICAO']; ?></td>
                                 <td class="text-center align-middle"><?= $estoques[$i]['EMP_NOME_FANTASIA']; ?></td>
+                                <td class="text-center align-middle"><?= $data->format('d/m/Y'); ?></td>
                                 <td class="text-center align-middle"><?= $estoques[$i]['EST_TIPO']; ?></td>
                                 <td class="text-center align-middle"><?= ($estoques[$i]['EST_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                 <td class="text-center align-middle">
-                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_estoques/'.$estoques[$i]['EMP_COD'].'/'.$estoques[$i]['EST_COD']; ?>" title="Alterar empresa"><i class="fa fa-edit"></i></a>
+                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alteracao_estoques/'.$estoques[$i]['EMP_COD'].'/'.$estoques[$i]['EST_COD']; ?>" title="Alterar estoque da empresa"><i class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
-                        <?php $b++; } ?>
+                        <?php $b++; } ?> 
                         </tbody>
                     </table>
                     <?php }else { ?>
@@ -71,7 +73,7 @@ $qtd = (is_array($estoques) ? count($estoques) : 0);
                     <?php } ?>
                 </div>
             </section>
-            <?php include_once 'inc/rodape.phtml';?>
+            <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
         </div>
     </div>
 </body>

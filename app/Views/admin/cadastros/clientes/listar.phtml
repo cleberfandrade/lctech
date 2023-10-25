@@ -16,7 +16,7 @@ $qtd = (is_array($clientes) ? count($clientes) : 0);
                     <div class="row gx-5 align-items-center justify-content-center">
                         <div class="col-lg-9 col-xl-9 col-xxl-9">
                             <div class="my-1 px-4 mx-auto">
-                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/clientes">
+                                <a class="text-decoration-none" href="<?= DIRPAGE; ?>clientes">
                                 <h5 class="fs-2 fw-bolder text-uppercase text-dark"><i class="bi bi-people"></i> Gerenciar <span class="text-success">Seus Clientes</span></h5></a>
                             </div>
                         </div>
@@ -34,7 +34,7 @@ $qtd = (is_array($clientes) ? count($clientes) : 0);
                         <div class="card-body text-white">
                             <h5 class="card-title">CLIENTES</h5>
                             <p class="card-text">Cadastre seus clientes</p>
-                            <a href="<?= DIRPAGE ?>cadastros/cadastro_clientes" class="btn btn-dark">ACESSAR</a>
+                            <a href="<?= DIRPAGE ?>cadastros/cadastro_clientes" class="btn btn-dark">NOVO CADASTRO</a>
                         </div>
                     </div>
                     <?php
@@ -44,6 +44,8 @@ $qtd = (is_array($clientes) ? count($clientes) : 0);
                             <th class="text-dark">#</th>
                             <th class="text-dark">Nome</th>
                             <th class="text-dark">Cadastro</th>
+                            <th class="text-dark">Tel./Cel. 1</th>
+                            <th class="text-dark">DT. NASC.</th>
                             <th class="text-dark">Tipo</th>
                             <th class="text-dark">Status</th>
                             <th class="text-dark">Ações</th>
@@ -51,20 +53,40 @@ $qtd = (is_array($clientes) ? count($clientes) : 0);
                         <tbody>
                         <?php
                             $b = 1;
-                            for ($i= 0; $i < $qtd; $i++) { 
+                            for ($i= 0; $i < $qtd; $i++) { ?>
+                            
+                                <?php 
                                 $data = new DateTime($clientes[$i]['CLI_DT_CADASTRO']);
-                                ?>
-                            <tr class="">
-                                <td class="text-center align-middle"><?= $b; ?></td>
-                                <td class="text-center align-middle"><?= $clientes[$i]['CLI_NOME']; ?></td>
-                                <td class="text-center align-middle"><?= $data->format('d/m/Y h:i:s'); ?></td>
-                                <td class="text-center align-middle"><?= ($clientes[$i]['CLI_TIPO'] != '0')? (($clientes[$i]['CLI_TIPO'] == "PF")? 'PESSOA FÍSICA' : 'PESSOA JURÍDICA') : 'NÃO INFORMADO'; ?></td>
-                                <td class="text-center align-middle"><?= ($clientes[$i]['CLI_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
-                                <td class="text-center align-middle">
-                                    <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_clientes/'.$clientes[$i]['EMP_COD'].'/'.$clientes[$i]['USU_COD']; ?>" title="Alterar cliente"><i class="fa fa-edit"></i></a>
-                                    <button type="button" class="btn btn-dark btn-sm d-print-none" data-bs-toggle='modal'  data-bs-target="#excluir" title="Desativar cliente" data-codigo="<?= $clientes[$i]['CLI_COD']; ?>" data-nome="<?= $clientes[$i]['CLI_NOME']; ?>" title="Deseja desativar?" ><i class="fa fa-ban"></i></button>
-                                </td>
-                            </tr>
+                                $dt_nascimento = new DateTime($clientes[$i]['CLI_DT_NASCIMENTO']);
+                                if ($clientes[$i]['CLI_STATUS'] == 0 && $_SESSION['USU_NIVEL'] >= 8) { ?>
+                                 <tr class="bg-secondary">
+                                    <td class="text-center align-middle"><?= $b; ?></td>
+                                    <td class="text-center align-middle"><?= $clientes[$i]['CLI_NOME']; ?></td>
+                                    <td class="text-center align-middle"><?= $data->format('d/m/Y h:i:s'); ?></td>
+                                    <td class="text-center align-middle"><?= $clientes[$i]['CLI_TEL_1']; ?></td>
+                                    <td class="text-center align-middle"><?= $dt_nascimento->format('d/m/Y'); ?></td>
+                                    <td class="text-center align-middle"><?= ($clientes[$i]['CLI_TIPO'] != '0')? (($clientes[$i]['CLI_TIPO'] == "PF")? 'PESSOA FÍSICA' : 'PESSOA JURÍDICA') : 'NÃO INFORMADO'; ?></td>
+                                    <td class="text-center align-middle"><?= ($clientes[$i]['CLI_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
+                                    <td class="text-center align-middle">
+                                        <button type="button" class="btn btn-primary btn-sm d-print-none" data-bs-toggle='modal'  data-bs-target="#status" title="Ativar cliente" data-codigo="<?= $clientes[$i]['CLI_COD']; ?>" data-nome="<?= $clientes[$i]['CLI_NOME']; ?>" data-status="<?= $clientes[$i]['CLI_STATUS']; ?>" title="Deseja ativar?" ><i class="fa-regular fa-circle-check"></i></button>
+                                    </td>
+                                </tr>
+                                <?php }else { ?>
+                                <tr class="">
+                                    <td class="text-center align-middle"><?= $b; ?></td>
+                                    <td class="text-center align-middle"><?= $clientes[$i]['CLI_NOME']; ?></td>
+                                    <td class="text-center align-middle"><?= $data->format('d/m/Y h:i:s'); ?></td>
+                                    <td class="text-center align-middle"><?= $clientes[$i]['CLI_TEL_1']; ?></td>
+                                    <td class="text-center align-middle"><?= $dt_nascimento->format('d/m/Y'); ?></td>
+                                    <td class="text-center align-middle"><?= ($clientes[$i]['CLI_TIPO'] != '0')? (($clientes[$i]['CLI_TIPO'] == "PF")? 'PESSOA FÍSICA' : 'PESSOA JURÍDICA') : 'NÃO INFORMADO'; ?></td>
+                                    <td class="text-center align-middle"><?= ($clientes[$i]['CLI_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
+                                    <td class="text-center align-middle">
+                                        <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'clientes/alteracao/'.$clientes[$i]['EMP_COD'].'/'.$clientes[$i]['CLI_COD']; ?>" title="Alterar cliente"><i class="fa fa-edit"></i></a>
+                                        <button type="button" class="btn btn-dark btn-sm d-print-none" data-bs-toggle='modal'  data-bs-target="#status" title="Desativar cliente" data-codigo="<?= $clientes[$i]['CLI_COD']; ?>" data-nome="<?= $clientes[$i]['CLI_NOME']; ?>" data-status="<?= $clientes[$i]['CLI_STATUS']; ?>" title="Deseja desativar?" ><i class="fa fa-ban"></i></button>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                          
                         <?php $b++; } ?>
                         </tbody>
                     </table>
@@ -76,46 +98,58 @@ $qtd = (is_array($clientes) ? count($clientes) : 0);
             <?php include_once 'app/Views/admin/inc/rodape.phtml';?>
         </div>
     </div>
-    <div class="modal" id="excluir" tabindex="-1" role="dialog" data-bs-backdrop="true" aria-labelledby="excluir" aria-hidden="true">
+    <div class="modal" id="status" tabindex="-1" role="dialog" data-bs-backdrop="true" aria-labelledby="status" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header text-center text-uppercase">
+                <div id="title" class="modal-header text-center text-uppercase">
                     Deseja desativar o Cliente?
                 </div>
                 <div class="modal-body text-center">
-                    <p class="text-center text-uppercase mx-auto">Confirma desativação deste registro?</p>
+                    <p class="text-center text-uppercase mx-auto">Confirma mudança de status deste registro?</p>
                     <span id="CLI_NOME" class="mt-3 text-center h5"></span>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" id="CLI_STATUS" name="CLI_STATUS" value="" />
                     <input type="hidden" id="CLI_COD" name="CLI_COD" value="" />
                     <input type="hidden" id="EMP_COD" name="EMP_COD" value="<?= $empresa['EMP_COD'] ?>" />
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
-                    <button id="deletar" type="button" class="btn btn-dark" value=""><i class="fa fa-ban"></i> CONFIRMAR</button>
+                    <button id="sts" type="button" class="btn btn-dark" value=""></button>
                 </div>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#excluir').on('show.bs.modal', function(event) {
+            $('#status').on('show.bs.modal', function(event) {
                 var button = null;
                 var button = $(event.relatedTarget); // Button that triggered the modal
                 var codigo = null;
                 var codigo = button.data('codigo'); // Extract info from data-* attributes
                 var nome = button.data('nome');
+                var status = button.data('status');
                 var modal = $(this);
                 modal.find('#CLI_COD').val(codigo);
-                modal.find('#deletar').val(codigo);
+                modal.find('#CLI_STATUS').val(status);
+                modal.find('#sts').val(codigo);
                 modal.find('#CLI_NOME').html(nome);
+
+                if (status === 1) {
+                    modal.find('#sts').html('<i class="fa fa-ban"></i> CONFIRMAR');
+                    modal.find('#title').html('Deseja desativar o Cliente?');
+                }else{
+                    modal.find('#sts').html('<i class="fa fa-circle-check"></i> CONFIRMAR');
+                    modal.find('#title').html('Deseja ativar o Cliente?');
+                }
             });
         });
-        $("#deletar").click(function(){
-            var data = $('#deletar').val();
+        $("#sts").click(function(){
+            var CLI_COD = $('#sts').val();
             var EMP_COD = $('#EMP_COD').val();
+            var CLI_STATUS = $('#CLI_STATUS').val();
             setTimeout(function () {
-                    $('#excluir').modal('hide');
+                    $('#status').modal('hide');
             }, 100);
-            $.post('<?= DIRPAGE; ?>cadastros/desativar_clientes', {CLI_COD: data,EXCLUIR_CLIENTE: true,EMP_COD: EMP_COD,cache: false}, function(retorno) {
+            $.post('<?= DIRPAGE; ?>clientes/status', {CLI_COD: CLI_COD,STATUS_CLIENTE: true,EMP_COD: EMP_COD,CLI_STATUS: CLI_STATUS,cache: false}, function(retorno) {
                 var resposta = JSON.parse(retorno);
                 if (resposta['COD'] !== 'ERRO') {
                     $('#resposta').addClass('alert alert-success');
@@ -123,7 +157,7 @@ $qtd = (is_array($clientes) ? count($clientes) : 0);
                     $('#resposta').addClass('alert alert-warning');
                 }
                 $('#resposta').html(resposta['MENSAGEM']);
-                setTimeout( () => { window.location.href="<?= DIRPAGE ?>cadastros/clientes"}, 5000);
+                setTimeout( () => { window.location.href="<?= DIRPAGE ?>clientes"}, 100);
             });
 
         });

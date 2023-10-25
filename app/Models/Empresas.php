@@ -61,7 +61,6 @@ class Empresas extends Model
             return false;
         }
     }
-   
     public function listarTodos($ver = 0)
     {
         $parametros = "ORDER BY EMP_FANTASIA";
@@ -73,6 +72,7 @@ class Empresas extends Model
             return false;
         }
     }
+    
     public function alterar(array $dados, $ver = 0)
     {
         $parametros = " WHERE EMP_COD=";

@@ -1,9 +1,13 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\Clientes;
 use App\Models\Empresas;
+use App\Models\Enderecos;
 use App\Models\Estoques as ModelsEstoques;
+use App\Models\Financas;
 use App\Models\Fornecedores;
+use App\Models\ModulosEmpresa;
 use App\Models\Produtos;
 use Libraries\Util;
 use Core\View;
@@ -16,12 +20,21 @@ use Libraries\Sessao;
 class estoques extends View
 {
     private $dados = [];
-    private $link;
+    private $link,$Enderecos,$Clientes,$Usuarios,$Empresa,$UsuariosEmpresa,$Check,$CargosSalarios,$ModulosEmpresa,$Financas,$Estoques;
     public function __construct()
     {
         Sessao::naoLogado();
         $this->dados['title'] = 'MÓDULO | ESTOQUES >>';
-        $this->link[0] = ['link'=> 'admin','nome' => 'PAINEL'];
+        $this->Clientes= new Clientes;
+        $this->Usuarios = new Usuarios;
+        $this->Empresa = new Empresas;
+        $this->UsuariosEmpresa = new UsuariosEmpresa;
+        $this->Enderecos = new Enderecos;
+        $this->Check = new Check;
+        $this->ModulosEmpresa = new ModulosEmpresa;
+        $this->Estoques = new ModelsEstoques;
+        $this->Financas = new Financas;
+        $this->link[0] = ['link'=> 'admin','nome' => 'PAINEL ADMINISTRATIVO'];
         $this->link[1] = ['link'=> 'estoques','nome' => 'ESTOQUES'];
     }
     public function index()

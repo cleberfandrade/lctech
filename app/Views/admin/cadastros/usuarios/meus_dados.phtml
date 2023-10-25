@@ -35,11 +35,15 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                     <div class="container col-10 px-2 py-2 mx-auto row">
                         <form class="p-4 p-md-6 border rounded-3 bg-3" action="<?= DIRPAGE ?>cadastros/alterar_dados_usuarios" method="POST">
                             <div class="row">    
-                                <div class="col-5 form-floating mb-3">
+                                <div class="col-2 form-floating mb-3">
+                                    <input type="text" class="form-control " disabled value="<?= isset($_SESSION['USU_NIVEL']) ? $_SESSION['USU_NIVEL'] : '0'; ?>">
+                                    <label class="px-3" for="1">NÍVEL DO USUÁRIO</label>
+                                </div>   
+                                <div class="col-4 form-floating mb-3">
                                     <input type="text" class="form-control maiusculo" id="1" name="USU_NOME" placeholder="Informe seu nome" value="<?= isset($_POST['USU_NOME']) ? $_POST['USU_NOME'] : $_SESSION['USU_NOME']; ?>">
                                     <label class="px-3" for="1">Seu nome</label>
                                 </div>    
-                                <div class="col-7 form-floating mb-3">
+                                <div class="col-6 form-floating mb-3">
                                     <input type="text" class="form-control maiusculo" id="2" name="USU_SOBRENOME" placeholder="Informe seu nome" value="<?= isset($_POST['USU_SOBRENOME']) ? $_POST['USU_SOBRENOME'] : $_SESSION['USU_SOBRENOME']; ?>">
                                     <label class="px-3" for="2">Seu sobrenome</label>
                                 </div> 

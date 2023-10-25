@@ -26,7 +26,7 @@ class CargosSalarios extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = "C INNER JOIN tb_empresas E ON C.EMP_COD=E.EMP_COD WHERE C.EMP_COD={$this->codEmpresa} AND C.CGS_COD={$this->codigo} AND C.CGS_STATUS=1";
+        $parametros = "C INNER JOIN tb_empresas E ON C.EMP_COD=E.EMP_COD WHERE C.EMP_COD={$this->codEmpresa} AND C.CGS_COD={$this->codigo}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
@@ -37,7 +37,7 @@ class CargosSalarios extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = "C INNER JOIN tb_empresas E ON C.EMP_COD=E.EMP_COD WHERE C.EMP_COD={$this->codEmpresa} AND C.CGS_STATUS=1 ORDER BY C.CGS_NOME";
+        $parametros = "C INNER JOIN tb_empresas E ON C.EMP_COD=E.EMP_COD WHERE C.EMP_COD={$this->codEmpresa} ORDER BY C.CGS_NOME";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {

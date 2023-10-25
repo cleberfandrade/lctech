@@ -25,7 +25,7 @@ class cargos_salarios extends View
         $this->CargosSalarios= new CargosSalarios;
         $this->dados['cargos_salarios'] = $this->CargosSalarios->setCodEmpresa($_SESSION['EMP_COD'])->listarTodos(0);
         $this->Check = new Check;
-        $this->link[0] = ['link'=> 'admin','nome' => 'PAINEL'];
+        $this->link[0] = ['link'=> 'admin','nome' => 'PAINEL ADMINISTRATIVO'];
         $this->link[1] = ['link'=> 'cadastros','nome' => 'MÓDULO DE CADASTROS'];
         $this->link[2] = ['link'=> 'cargos_salarios','nome' => 'GERENCIAR CARGOS E SALÁRIOS'];
     }
@@ -152,32 +152,32 @@ class cargos_salarios extends View
             $this->render('admin/cadastros/cargos_salarios/alterar', $this->dados);
         }
     }
-    public function desativar()
+    public function status()
     {
          //Recupera os dados enviados
          $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-         if (isset($_POST) && isset($dados['EXCLUIR_CARGO'])) {
+         if (isset($_POST) && isset($dados['STATUS_CARGO'])) {
  
             if($this->dados['empresa']['USU_COD'] == $_SESSION['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados['EMP_COD']){
                 //Verifica se os campos foram todos preenchidos
-                unset($dados['EXCLUIR_CARGO']);
+                unset($dados['STATUS_CARGO']);
                 $this->CargosSalarios->setCodEmpresa($dados['EMP_COD'])->setCodigo($dados['CGS_COD']);
-                unset($dados['CGS_COD']);
-                unset($dados['EMP_COD']);
-
+                ($dados['CGS_STATUS'] == 1)? $dados['CGS_STATUS'] = 0 : $dados['CGS_STATUS'] = 1;
+                
                 $db = array(
                     'CGS_DT_ATUALIZACAO'=> date('Y-m-d H:i:s'),
-                    'CGS_STATUS' => 2
+                    'CGS_STATUS' => $dados['CGS_STATUS']
                 );
+
                 if($this->CargosSalarios->alterar($db,0)){
                     $respota = array(
                         'COD'=>'OK',
-                        'MENSAGEM' => 'Desativação efetuada com sucesso!'
+                        'MENSAGEM' => 'Status alterado com sucesso!'
                     );
                 }else{
                     $respota = array(
                         'COD'=>'ERRO',
-                        'MENSAGEM'=> 'ERRO 2- Erro ao desativar cargo, entre em contato com o suporte!'
+                        'MENSAGEM'=> 'ERRO 2- Erro ao mudar status do cargo, entre em contato com o suporte!'
                     );
                 }
             }else {

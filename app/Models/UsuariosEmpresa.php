@@ -66,7 +66,7 @@ class UsuariosEmpresa extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = "UE INNER JOIN tb_usuarios U ON U.USU_COD=UE.USU_COD WHERE UE.EMP_COD='{$this->codEmpresa}' AND UE.USU_COD<>'{$this->codUsuario}'  ORDER BY U.USU_NOME ASC";
+        $parametros = "UE INNER JOIN tb_usuarios U ON U.USU_COD=UE.USU_COD WHERE UE.EMP_COD='{$this->codEmpresa}' AND UE.USU_COD<>'{$this->codUsuario}' ORDER BY U.USU_NOME ASC";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
@@ -75,12 +75,12 @@ class UsuariosEmpresa extends Model
             return false;
         }
     }
-    public function listar($ver = 1)
+    public function listar($ver = 0)
     {
         $parametros = "UE 
         INNER JOIN tb_usuarios U ON UE.USU_COD=U.USU_COD 
         INNER JOIN tb_empresas EMP ON UE.EMP_COD=EMP.EMP_COD 
-        WHERE UE.EMP_COD='{$this->codEmpresa}'AND UE.USU_COD='{$this->codUsuario}' IS NOT NULL";
+        WHERE UE.EMP_COD='{$this->codEmpresa}'AND UE.USU_COD='{$this->codUsuario}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
