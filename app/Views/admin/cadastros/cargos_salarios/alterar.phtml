@@ -76,7 +76,7 @@ $qtd = (is_array($cargo_salario) ? count($cargo_salario) : 0);
                                     </datalist>
                                 </div>  
                                 <div class="col-4 form-floating mb-3">
-                                    <input type="text" class="form-control real" id="moeda" name="CGS_SALARIO" placeholder="EX. 1.500,00" value="<?= isset($_POST['CGS_SALARIO']) ? $_POST['CGS_SALARIO'] :  (isset($cargo_salario['CGS_SALARIO'])? $cargo_salario['CGS_SALARIO'] : '0,00'); ?>">
+                                    <input type="text" class="form-control real" id="moeda" name="CGS_SALARIO" data-thousands="." data-decimal=","  placeholder="EX. 1.500,00" value="<?= isset($_POST['CGS_SALARIO']) ? number_format($_POST['CGS_SALARIO'],2,',','.'):  (isset($cargo_salario['CGS_SALARIO'])? number_format($cargo_salario['CGS_SALARIO'],2,',','.'): '0,00'); ?>">
                                     <label>SALÁRIO</label>
                                 </div>
                                 <hr class="my-4 text-dark">
@@ -84,7 +84,6 @@ $qtd = (is_array($cargo_salario) ? count($cargo_salario) : 0);
                                 <input type="hidden" class="form-control" name="USU_COD" value="<?= isset($_SESSION['USU_COD']) ? $_SESSION['USU_COD'] : 0; ?>">
                                 <input type="hidden" class="form-control" name="CGS_COD" value="<?= isset($cargo_salario['CGS_COD']) ? $cargo_salario['CGS_COD'] : 0; ?>">
                                 <button class="w-100 btn btn-lg text-uppercase btn-warning" name="ALTERAR_CARGO_SALARIO" type="submit"><i class="fa fa-edit"></i> Alterar</button>
-                               
                             </div> 
                         </form>
                     </div>
@@ -102,18 +101,6 @@ $qtd = (is_array($cargo_salario) ? count($cargo_salario) : 0);
            thousands:'.', decimal:',',
            affixesStay: true
         });
-        
-        function teste() {
-
-            $('.real').maskMoney({
-                prefix:'',
-                allowNegative: true,
-                thousands:'.', decimal:',',
-                affixesStay: true
-            });
-
-        }
-        setInterval(teste, 4000);
     });
     </script>
 </body>
