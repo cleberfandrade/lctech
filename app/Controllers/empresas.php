@@ -291,6 +291,7 @@ class empresas extends View
                 );
 
                 unset($dados['USU_COD']);
+                
                 $this->Empresa->setCodigo($dados['EMP_COD']);
                     $db_endereco = array(
                         'EMP_COD' => $dados['EMP_COD'],

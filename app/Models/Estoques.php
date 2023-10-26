@@ -78,11 +78,24 @@ class Estoques extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD=";
+        $parametros = " WHERE EMP_COD={$this->codEmpresa} AND EST_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;
         $ok = $this->Model->alterar($dados, $ver);
+        if ($ok) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function excluir(array $dados, $ver = 0)
+    {
+        $parametros = " WHERE EMP_COD={$this->codEmpresa} AND EST_COD=";
+        $this->Model->setParametros($parametros);
+        $this->Model->setCodigo($this->codigo);
+        $ok = false;
+        $ok = $this->Model->deletar($dados, $ver);
         if ($ok) {
             return true;
         } else {

@@ -15,18 +15,22 @@ class Model extends Connection
     public function setTabela($tabela)
     {
         $this->tabela = $tabela;
+        return $this;
     }
     public function setCodigo($cod)
     {
         $this->codigoId = $cod;
+        return $this;
     }
     public function setParametros($parametros)
     {
         $this->parametros = $parametros;
+        return $this;
     }
     public function setCampos($campos)
     {
         $this->campos = $campos;
+        return $this;
     }
     public function criarCampos($campos)
     {

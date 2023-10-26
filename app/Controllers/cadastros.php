@@ -1117,13 +1117,14 @@ class cadastros extends View
         $dados = explode("/",$dados['url']);
         $ok = false;
         if (isset($dados[1]) && $dados[1] == 'alteracao_estoques' && isset($dados[2]) && isset($dados[3])) {
-            $this->link[3] = ['link'=> 'cadastros/estoques/alterar/'.$_SESSION['EMP_COD'].'/'.$dados[3],'nome' => 'ALTERAR CLIENTES'];
+            
+            $this->link[3] = ['link'=> 'cadastros/estoques/alteracao_estoques/'.$_SESSION['EMP_COD'].'/'.$dados[3],'nome' => 'ALTERAR ESTOQUES'];
             $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
             //verificar se o usuario que vai efetuar a acao é da empresa e se está correto(pertence) a empresa para os dados a serem alterados
             if($this->dados['empresa']['USU_COD'] == $_SESSION['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados[2]){
-             
+                
                 $this->dados['estoque'] = $this->Estoques->setCodEmpresa($dados[2])->setCodigo($dados[3])->listar(0);
-                if ($this->dados['cliente'] != 0) {
+                if ($this->dados['estoque'] != 0) {
                     $ok = true;
                 }
             }else{
@@ -1133,76 +1134,66 @@ class cadastros extends View
             Sessao::alert('ERRO',' ERRO: EST21 - Acesso inválido(s)!','alert alert-danger');
         }      
         if($ok){
-                $this->render('admin/cadastros/clientes/alterar', $this->dados);
+                $this->render('admin/cadastros/estoques/alterar', $this->dados);
         }else{
             $this->dados['estoques'] = $this->Estoques->setCodEmpresa($_SESSION['EMP_COD'])->listarTodos(0);
-            $this->render('admin/cadastros/clientes/listar', $this->dados);
+            $this->render('admin/cadastros/estoques/listar', $this->dados);
         }
     }
-    public function alterar_estoques_empresa()
+    public function alterar_estoques()
     {
-        $Usuarios = new Usuarios;
-        $Empresa = new Empresas;
-        $Enderecos = new Enderecos;
-        $Estoques = new Estoques;
-        $UsuariosEmpresa = new UsuariosEmpresa;
-        $Usuarios->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuario'] = $Usuarios->listar(0);
-        //verificar se o usuario tem uma empresa, e retornar os dados
-        $UsuariosEmpresa->setCodUsuario($_SESSION['USU_COD']);
-        $this->dados['usuarios_empresa'] = $UsuariosEmpresa->checarUsuario();
-        if (isset($this->dados['usuarios_empresa']['UMP_COD'])) {
-            $qtd = (is_array($this->dados['usuarios_empresa']['UMP_COD']) ? count($this->dados['usuarios_empresa']['UMP_COD']) : 0);
-            if($qtd == 1) {
-                $_SESSION['EMP_COD'] = $this->dados['usuarios_empresa']['EMP_COD'];
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $this->dados['empresas'] = $Empresa->listar(0);
-            }else {
-                $Empresa->setCodigo($_SESSION['EMP_COD']);
-                $Empresa->setCodUsuario($_SESSION['USU_COD']);
-                $this->dados['empresas'] = $Empresa->listarEmpresaUsuario(0);
-            }
-
-            $Estoques->setCodEmpresa($_SESSION['EMP_COD']);
-            $this->dados['estoques'] = $Estoques->listarTodos(0);
-        }
-
+        $this->dados['title'] .= ' ESTOQUES';
+        $this->link[2] = ['link'=> 'cadastros/estoques','nome' => 'GERENCIAR ESTOQUES'];
+        $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
+        $this->dados['empresa'] = $this->UsuariosEmpresa->setCodEmpresa($_SESSION['EMP_COD'])->setCodUsuario($_SESSION['USU_COD'])->listar(0);
+        $ok = false;
+        
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-
+        
         if (isset($_POST) && isset($dados['ALTERAR_ESTOQUE'])) {
+
+            $this->link[3] = ['link'=> 'cadastros/estoques/alteracao_estoques/'.$_SESSION['EMP_COD'].'/'.$dados['EST_COD'],'nome' => 'ALTERAR ESTOQUES'];
+            $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
+            
             unset($dados['ALTERAR_ESTOQUE']);
-           
+            
             if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
 
-                $Estoques->setCodigo($dados['EST_COD']);
-                $Estoques->setCodEmpresa($dados['EMP_COD']);
-                unset($dados['EST_COD']);
-                unset($dados['EMP_COD']);
-                $dados += array(
-                    'EST_DT_ATUALIZACAO'=> date('Y-m-d H:i:s')             
-                );
-
-                if($Estoques->alterar($dados,0)){
-                    Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
-                }else{
-                    Sessao::alert('ERRO',' 3- Erro ao alterar o estoque da empresa, entre em contato com o suporte!','fs-4 alert alert-danger');
+                //Verifica se tem algum valor proibido
+                foreach ($dados as $key => $value) {
+                    $dados[$key] = $this->Check->checarString($value);
                 }
 
-            }else{
-                Sessao::alert('ERRO',' 2- Acesso inválido!','fs-4 alert alert-danger');
-            }
+                $this->Estoques->setCodEmpresa($dados['EMP_COD']);
+                $this->Estoques->setCodigo($dados['EST_COD']);
 
+                unset($dados['EST_COD']);
+                unset($dados['EMP_COD']);
+
+                $dados += array(
+                    'EST_DT_ATUALIZACAO' => date('Y-m-d H:i:s'),
+                    'EST_STATUS' => 1
+                );
+                if($this->Estoques->alterar($dados,0)){
+                    $ok = true;
+                    Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');
+                }else{
+                    Sessao::alert('ERRO',' EST33- Erro ao alterar o estoque da empresa, entre em contato com o suporte!','fs-4 alert alert-danger');
+                }
+            }else{
+                Sessao::alert('ERRO',' EST32- Acesso inválido!','fs-4 alert alert-danger');
+            }
         }else {
-            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
+            Sessao::alert('ERRO',' EST31- Dados inválido(s)!','fs-4 alert alert-danger');
         }
 
-        
-
-        $Estoques->setCodigo($dados['EST_COD']);
-        $Estoques->setCodEmpresa($dados['EMP_COD']);
-        $this->dados['estoque'] = $Estoques->listar(0);
-
-        $this->render('admin/cadastros/estoques/alterar', $this->dados);
+        if($ok) {
+            $this->dados['estoque'] = $this->Estoques->setCodEmpresa($_SESSION['EMP_COD'])->setCodigo($dados['EST_COD'])->listar(0);
+            $this->render('admin/cadastros/estoques/alteracao_estoques', $this->dados);
+        }else{
+            $this->dados['estoques'] = $this->Estoques->setCodEmpresa($_SESSION['EMP_COD'])->listarTodos(0);
+            $this->render('admin/cadastros/estoques/listar', $this->dados);
+        }
 
     }
     //CADASTRO - EMPRESAS
