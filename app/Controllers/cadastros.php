@@ -1160,9 +1160,9 @@ class cadastros extends View
             if($_SESSION['USU_COD'] == $dados['USU_COD'] && $_SESSION['EMP_COD'] == $dados['EMP_COD']){
 
                 //Verifica se tem algum valor proibido
-                foreach ($dados as $key => $value) {
-                    $dados[$key] = $this->Check->checarString($value);
-                }
+                //foreach ($dados as $key => $value) {
+                  //  $dados[$key] = $this->Check->checarString($value);
+                //}
 
                 $this->Estoques->setCodEmpresa($dados['EMP_COD']);
                 $this->Estoques->setCodigo($dados['EST_COD']);
@@ -1170,10 +1170,10 @@ class cadastros extends View
                 unset($dados['EST_COD']);
                 unset($dados['EMP_COD']);
 
-                $dados += array(
-                    'EST_DT_ATUALIZACAO' => date('Y-m-d H:i:s'),
-                    'EST_STATUS' => 1
-                );
+                //$dados += array(
+                //    'EST_DT_ATUALIZACAO' => date('Y-m-d H:i:s'),
+                 //   'EST_STATUS' => 1
+                //);
                 if($this->Estoques->alterar($dados,0)){
                     $ok = true;
                     Sessao::alert('OK','Cadastro alterado com sucesso!','fs-4 alert alert-success');

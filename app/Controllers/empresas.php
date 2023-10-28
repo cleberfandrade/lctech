@@ -243,7 +243,7 @@ class empresas extends View
         $dados = explode("/",$dados['url']);
         $ok = false;
         if (isset($dados[1]) && $dados[1] == 'alteracao' && isset($dados[2]) && isset($dados[3])) {
-            $this->link[3] = ['link'=> 'cadastros/clientes/alterar/'.$_SESSION['EMP_COD'].'/'.$_SESSION['USU_COD'],'nome' => 'ALTERAR SUA EMPRESA/NEGÓCIO'];
+            $this->link[3] = ['link'=> 'cadastros/empresas/alterar/'.$_SESSION['EMP_COD'].'/'.$_SESSION['USU_COD'],'nome' => 'ALTERAR SUA EMPRESA/NEGÓCIO'];
             $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
             //verificar se o usuario que vai efetuar a acao é da empresa e se está correto(pertence) a empresa para os dados a serem alterados
             if($this->dados['empresa']['USU_COD'] == $_SESSION['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados[2]){

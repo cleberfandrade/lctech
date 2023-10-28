@@ -19,9 +19,9 @@ $qtd = (is_array($fornecedores) ? count($fornecedores) : 0);
                             <div class="row gx-5 align-items-center justify-content-center">
                                 <div class="col-lg-9 col-xl-9 col-xxl-9">
                                     <div class="my-1 px-4 mx-auto">
-                                        <a class="text-decoration-none" href="<?= DIRPAGE; ?>cadastros/fornecedores">
+                                        <a class="text-decoration-none" href="<?= DIRPAGE; ?>fornecedores">
                                             <h5 class="fs-2 fw-bolder text-uppercase text-dark">
-                                            <i class="bi bi-boxes"></i> Listagem de <span class="text-success">Fornecedores</span>
+                                            <i class="bi bi-boxes"></i> Gerenciar <span class="text-success">Fornecedores</span>
                                             </h5>
                                         </a>
                                     </div>
@@ -39,8 +39,8 @@ $qtd = (is_array($fornecedores) ? count($fornecedores) : 0);
                             <div class="card bg-success text-center py-2 mb-4">
                                 <div class="card-body  text-white">
                                     <h5 class="card-title">FORNECEDORES</h5>
-                                    <p class="card-text">Cadastre/Altere os dados dos seus fornecedores</p>
-                                    <a href="<?= DIRPAGE ?>cadastros/cadastro_fornecedores" class="btn btn-dark">ACESSAR</a>
+                                    <p class="card-text">Cadastre os dados dos seus fornecedores</p>
+                                    <a href="<?= DIRPAGE ?>fornecedores/cadastro" class="btn btn-dark">NOVO CADASTRO</a>
                                 </div>
                             </div>
                             <?php if ($qtd != 0) { ?>
@@ -68,7 +68,7 @@ $qtd = (is_array($fornecedores) ? count($fornecedores) : 0);
                                         <td class="text-center align-middle"><?= $fornecedores[$i]['FOR_RESPONSAVEL']; ?></td>
                                         <td class="text-center align-middle"><?= ($fornecedores[$i]['FOR_STATUS'] == 1)? 'ATIVO' : 'DESATIVADO'; ?></td>
                                         <td class="text-center align-middle">
-                                            <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'cadastros/alterar_fornecedores/'.$fornecedores[$i]['EMP_COD'].'/'.$fornecedores[$i]['USU_COD']; ?>" title="Alterar fornecedores"><i class="fa fa-edit"></i></a>
+                                            <a type="button" class="btn btn-warning btn-sm d-print-none" href="<?= DIRPAGE.'fornecedores/alteracao/'.$fornecedores[$i]['EMP_COD'].'/'.$fornecedores[$i]['USU_COD']; ?>" title="Alterar fornecedores"><i class="fa fa-edit"></i></a>
                                             <button type="button" class="btn btn-dark btn-sm d-print-none" data-bs-toggle='modal'  data-bs-target="#excluir" title="Desativar fornecedor" data-codigo="<?= $fornecedores[$i]['FOR_COD']; ?>" data-nome="<?= $fornecedores[$i]['FOR_NOME_FANTASIA']; ?>" title="Deseja desativar?" ><i class="fa fa-ban"></i></button>
                                         </td>
                                     </tr>
