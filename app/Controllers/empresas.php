@@ -105,6 +105,7 @@ class empresas extends View
                 $ok = true;
                 $id = $emp['EMP_COD'];
             }
+            //CHECAR CADASTRO DO ENDEREÇO DA EMPRESA
             $endr = $this->Enderecos->setCodEmpresa($id)->checarEnderecoEmpresa();
             if(!$endr){
                 $db_endereco = array(

@@ -14,11 +14,12 @@ use Libraries\Url;
 class financeiro extends View
 {
     private $dados = [];
-    private $link;
+    private $link,$Financas;
     public function __construct()
     {
         Sessao::naoLogado();
-        $this->dados['title'] = 'MÓDULO | FINANCEIRO >>';   
+        $this->dados['title'] = 'MÓDULO | FINANCEIRO >>'; 
+        $this->Financas = new Financas;  
         $this->link[0] = ['link'=> 'admin','nome' => 'PAINEL'];
         $this->link[1] = ['link'=> 'financeiro','nome' => 'MÓDULO DE FINANÇAS'];
     }

@@ -81,4 +81,59 @@ class fornecedores extends View
             $this->render('admin/cadastros/fornecedores/listar', $this->dados);
         }
     }
+    public function alterar():void
+    {
+        $this->dados['title'] .= ' ALTERAR FORNECEDORES';
+        $this->link[2] = ['link'=> 'cadastros/fornecedores','nome' => 'LISTAGEM DE FORNECEDORES'];
+        $this->link[3] = ['link'=> 'fornecedores/cadastrar','nome' => 'CADASTRAR SEUS FORNECEDORES'];
+        $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
+        $ok = false;
+
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+         
+       
+       
+        $this->Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
+        $this->dados['fornecedores'] = $this->Fornecedores->listarTodos(0);
+        if (isset($_POST) && isset($dados['ALTERAR_CLIENTE'])) {
+            
+            if($_SESSION['EMP_COD'] == $dados[2] && isset($dados[3]) && $dados[3] !=''){
+                $this->Fornecedores->setCodEmpresa($dados[2]);
+                $this->Fornecedores->setCodigo($dados[3]);
+                $this->Enderecos->setCodFornecedor($dados[3]);
+                $this->dados['fornecedor'] = $this->Fornecedores->listar(0);
+    
+                if ($this->dados['fornecedor'] != 0) {
+                    $this->link[3] = ['link'=> 'fornecedores/alteracao/'.$_SESSION['EMP_COD'].'/'.$dados['FOR_COD'],'nome' => 'ALTERAR FORNECEDORES'];
+                    $this->dados['breadcrumb'] = $Check->setLink($this->link)->breadcrumb();
+                    $this->render('admin/cadastros/fornecedores/alterar', $this->dados);
+                }else {
+                    $Check->setLink($this->link);
+                    $this->dados['breadcrumb'] = $Check->breadcrumb();
+                    Sessao::alert('ERRO',' 3- Fornecedor não foi encontrado!','fs-4 alert alert-danger');
+                    $this->render('admin/cadastros/fornecedores/listar', $this->dados);
+                }
+                
+            }else{
+                $Check->setLink($this->link);
+                $this->dados['breadcrumb'] = $Check->breadcrumb();
+                Sessao::alert('ERRO',' 2- Acesso inválido(s)!','fs-4 alert alert-danger');
+                $this->render('admin/cadastros/clientes/listar', $this->dados);
+            }
+        }else {
+            $Check->setLink($this->link);
+            $this->dados['breadcrumb'] = $Check->breadcrumb();
+            Sessao::alert('ERRO',' 1- Dados inválido(s)!','fs-4 alert alert-danger');
+            $this->render('admin/cadastros/clientes/listar', $this->dados);
+        }
+
+        $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
+    }
+    public function status():void
+    {
+        $this->dados['title'] .= ' CADASTRAR SEUS FORNECEDORES';
+        $this->link[3] = ['link'=> 'fornecedores/cadastrar','nome' => 'CADASTRAR SEUS FORNECEDORES'];
+        $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
+        $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
+    }
 }

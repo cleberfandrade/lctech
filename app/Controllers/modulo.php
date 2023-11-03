@@ -11,6 +11,7 @@ use App\Models\Modulos;
 class modulo extends View
 {
     private $dados = [];
+    private $Modulos;
     public function __construct()
     {
         Sessao::naoLogado();
@@ -20,6 +21,7 @@ class modulo extends View
         $Usuarios = new Usuarios;
         $Usuarios->setCodUsuario($_SESSION['USU_COD']);
         $this->dados['usuario'] = $Usuarios->listar(0);
+        $this->Modulos = new Modulos;
         $this->render('admin/configuracoes/modulos', $this->dados);
     }
     public function alterar()

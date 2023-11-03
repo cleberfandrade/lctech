@@ -191,15 +191,18 @@ class clientes extends View
     }
     public function alterar()
     {
-        $this->dados['title'] .= ' CADASTRAR CARGOS E SALÁRIOS';
-        $this->link[3] = ['link'=> 'clientes/alterar','nome' => 'CADASTRO DE CARGOS E SALÁRIOS'];
-        $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
+        $this->dados['title'] .= ' ALTERAR CLIENTES';
+    
         $ok = false;
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);       
 
         if (isset($_POST) && isset($dados['ALTERAR_CLIENTE'])) {
 
             if($this->dados['empresa']['USU_COD'] == $dados['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados['EMP_COD']){
+
+                $this->link[3] = ['link'=> 'clientes/alteracao/'.$_SESSION['EMP_COD'].'/','nome' => 'ALTERAR CLIENTES'];
+                $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
+
                 unset($dados['ALTERAR_CLIENTE']);
                 //Verifica se tem algum valor proibido
                 foreach ($dados as $key => $value) {

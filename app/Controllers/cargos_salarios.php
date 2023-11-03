@@ -83,13 +83,13 @@ class cargos_salarios extends View
     public function alteracao():void
     {
         $this->dados['title'] .= ' ALTERAR CARGOS E SALÁRIOS';
-        $this->link[3] = ['link'=> 'cargos_salarios/cadastrar','nome' => 'ALTERAR DE CARGOS E SALÁRIOS'];
-        $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
+       
         $dados = filter_input_array(INPUT_GET, FILTER_SANITIZE_URL);
         $dados = explode("/",$dados['url']);
         $ok = false;
         if (isset($dados[1]) && $dados[1] == 'alteracao' && isset($dados[2]) && isset($dados[3])) {
-
+            $this->link[3] = ['link'=> 'cargos_salarios/alteracao','nome' => 'ALTERAR DE CARGOS E SALÁRIOS'];
+            $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
             //verificar se o usuario que vai efetuar a acao é da empresa e se está correto(pertence) a empresa para os dados a serem alterados
             if($this->dados['empresa']['USU_COD'] == $_SESSION['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados[2]){
              
