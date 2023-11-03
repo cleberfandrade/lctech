@@ -55,7 +55,7 @@ class fornecedores extends View
         $dados = explode("/",$dados['url']);
         $ok = false;
         if (isset($dados[1]) && $dados[1] == 'alteracao' && isset($dados[2]) && isset($dados[3])) {
-            $this->link[3] = ['link'=> 'cadastros/fornecedores/alterar/'.$_SESSION['EMP_COD'].'/'.$dados[3],'nome' => 'ALTERAR FORNECEDORES'];
+            $this->link[3] = ['link'=> 'fornecedores/alterar/'.$_SESSION['EMP_COD'].'/'.$dados[3],'nome' => 'ALTERAR FORNECEDORES'];
             $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
             //verificar se o usuario que vai efetuar a acao é da empresa e se está correto(pertence) a empresa para os dados a serem alterados
             if($this->dados['empresa']['USU_COD'] == $_SESSION['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados[2]){
@@ -84,13 +84,10 @@ class fornecedores extends View
     public function alterar():void
     {
         $this->dados['title'] .= ' ALTERAR FORNECEDORES';
-        $this->link[2] = ['link'=> 'cadastros/fornecedores','nome' => 'LISTAGEM DE FORNECEDORES'];
-        $this->link[3] = ['link'=> 'fornecedores/cadastrar','nome' => 'CADASTRAR SEUS FORNECEDORES'];
+        $this->link[3] = ['link'=> 'fornecedores/alteracao','nome' => 'CADASTRAR SEUS FORNECEDORES'];
         $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
         $ok = false;
-
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-         
        
        
         $this->Fornecedores->setCodEmpresa($_SESSION['EMP_COD']);
@@ -131,9 +128,45 @@ class fornecedores extends View
     }
     public function status():void
     {
-        $this->dados['title'] .= ' CADASTRAR SEUS FORNECEDORES';
-        $this->link[3] = ['link'=> 'fornecedores/cadastrar','nome' => 'CADASTRAR SEUS FORNECEDORES'];
-        $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
-        $this->render('admin/cadastros/fornecedores/cadastrar', $this->dados);
+       //Recupera os dados enviados
+       $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+       if (isset($_POST) && isset($dados['STATUS_CARGO'])) {
+
+          if($this->dados['empresa']['USU_COD'] == $_SESSION['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados['EMP_COD']){
+              //Verifica se os campos foram todos preenchidos
+              unset($dados['STATUS_FORNECEDOR']);
+              $this->Fornecedores->setCodEmpresa($dados['EMP_COD'])->setCodigo($dados['FOR_COD']);
+              ($dados['FOR_STATUS'] == 1)? $dados['FOR_STATUS'] = 0 : $dados['FOR_STATUS'] = 1;
+              
+              $db = array(
+                  'FOR_DT_ATUALIZACAO'=> date('Y-m-d H:i:s'),
+                  'FOR_STATUS' => $dados['FOR_STATUS']
+              );
+
+              if($this->Fornecedores->alterar($db,0)){
+                  $respota = array(
+                      'COD'=>'OK',
+                      'MENSAGEM' => 'Status alterado com sucesso!'
+                  );
+              }else{
+                  $respota = array(
+                      'COD'=>'ERRO',
+                      'MENSAGEM'=> 'ERRO 2- Erro ao mudar status do fornecedor, entre em contato com o suporte!'
+                  );
+              }
+          }else {
+              $respota = array(
+                  'COD'=>'ERRO',
+                  'MENSAGEM'=> 'ERRO 2- Dados inválido(s)!'
+              );
+          }
+      }else {
+          $respota = array(
+              'COD'=>'ERRO',
+              'MENSAGEM'=> 'ERRO 1- Acesso inválido!'
+          );
+      }
+      echo json_encode($respota);
+  }
     }
 }
