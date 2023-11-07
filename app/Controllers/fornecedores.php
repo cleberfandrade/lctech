@@ -167,6 +167,5 @@ class fornecedores extends View
           );
       }
       echo json_encode($respota);
-  }
     }
 }

@@ -38,7 +38,7 @@ class empresas extends View
     }
     public function index()
     { 
-        $this->dados['title'] .= ' EMPRESAS';
+        $this->dados['title'] .= ' EMPRESA/NEGÓCIO';
         $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
         $this->render('admin/cadastros/empresas/listar', $this->dados);
     }
@@ -272,8 +272,8 @@ class empresas extends View
     }
     public function alterar()
     {
-        $this->dados['title'] .= ' CADASTRAR CARGOS E SALÁRIOS';
-        $this->link[3] = ['link'=> 'clientes/alterar','nome' => 'CADASTRO DE CARGOS E SALÁRIOS'];
+        $this->dados['title'] .= ' CADASTRAR EMPRESA/NEGÓCIO';
+        $this->link[3] = ['link'=> 'clientes/alterar','nome' => 'CADASTRO DE EMPRESA/NEGÓCIO'];
         $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
         $ok = false;
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);       

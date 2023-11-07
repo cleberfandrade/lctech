@@ -50,15 +50,15 @@ class colaboradores extends View
         $ok = false;
         $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
                 
-        if (isset($_POST) && isset($dados['CADASTRAR_NOVO_CARGO_SALARIO'])) {
+        if (isset($_POST) && isset($dados['CADASTRAR_NOVO_COLABORADOR'])) {
             if( $this->dados['empresa']['USU_COD'] == $dados['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados['EMP_COD']){
                 //Verifica se os campos foram todos preenchidos
                 unset($dados['CADASTRAR_NOVO_CARGO_SALARIO']);
                     $dados['CGS_SALARIO'] = number_format(str_replace(",",".",str_replace(".","",$dados['CGS_SALARIO'])), 2, '.', '');
                     $dados += array(
-                        'CGS_DT_CADASTRO'=> date('Y-m-d H:i:s'),
-                        'CGS_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),             
-                        'CGS_STATUS'=> 1
+                        'COL_DT_CADASTRO'=> date('Y-m-d H:i:s'),
+                        'COL_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),             
+                        'COL_STATUS'=> 1
                     );
 
                     if($this->Colaboradores->cadastrar($dados,0)){
@@ -93,7 +93,7 @@ class colaboradores extends View
             //verificar se o usuario que vai efetuar a acao é da empresa e se está correto(pertence) a empresa para os dados a serem alterados
             if($this->dados['empresa']['USU_COD'] == $_SESSION['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados[2]){
              
-                $this->dados['cargo_salario'] = $this->Colaboradores->setCodEmpresa($dados[2])->setCodigo($dados[3])->listar(0);
+                $this->dados['colaboradores'] = $this->Colaboradores->setCodEmpresa($dados[2])->setCodigo($dados[3])->listar(0);
                 if ($this->dados['cargo_salario'] != 0) {
                     $ok = true;
                 }
