@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Core\Model;
 
-class FuncionariosVendedores extends Model
+class Colaboradores extends Model
 { 
     private $tabela = 'tb_colaboradores';
     private $Model = '';
@@ -46,7 +46,7 @@ class FuncionariosVendedores extends Model
     }
     public function listar($ver = 0)
     {
-        $parametros = "VD INNER JOIN tb_empresas E ON E.EMP_COD=VD.EMP_COD WHERE VD.EMP_COD={$this->codEmpresa} AND VD.VDD_COD={$this->codigo}";
+        $parametros = "CL INNER JOIN tb_empresas E ON E.EMP_COD=CL.EMP_COD WHERE CL.EMP_COD={$this->codEmpresa} AND CL.COL_COD={$this->codigo}";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -57,7 +57,7 @@ class FuncionariosVendedores extends Model
     }
     public function listarTodos($ver = 0)
     {
-        $parametros = "VD INNER JOIN tb_empresas E ON E.EMP_COD=VD.EMP_COD WHERE VD.EMP_COD={$this->codEmpresa} ORDER BY VD.VDD_COD";
+        $parametros = "CL INNER JOIN tb_empresas E ON E.EMP_COD=CL.EMP_COD WHERE CL.EMP_COD={$this->codEmpresa} ORDER BY CL.COL_COD";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -77,7 +77,7 @@ class FuncionariosVendedores extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND VDD_COD=";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND COL_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;
@@ -90,7 +90,7 @@ class FuncionariosVendedores extends Model
     }
     public function excluir($ver = 0)
     {
-        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND VDD_COD=";
+        $parametros = "WHERE EMP_COD='{$this->codEmpresa}' AND COL_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;
@@ -103,7 +103,7 @@ class FuncionariosVendedores extends Model
     }
     public function checarVendedorEmpresa()
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND VDD_EMAIL='{$this->email}'";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND COL_EMAIL='{$this->email}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -116,7 +116,7 @@ class FuncionariosVendedores extends Model
     }
     public function checarEmailVendedor()
     {
-        $parametros = "WHERE VDD_EMAIL='{$this->email}'";
+        $parametros = "WHERE COL_EMAIL='{$this->email}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver = 0, $id = false);
         if ($resultado) {
@@ -129,11 +129,11 @@ class FuncionariosVendedores extends Model
     }
     public function acessarPDV($ver = 0)
     {
-        $parametros = " V INNER JOIN tb_empresas E ON E.EMP_COD=V.EMP_COD WHERE V.VDD_EMAIL='{$this->email}'";
+        $parametros = " CL INNER JOIN tb_empresas E ON E.EMP_COD=CL.EMP_COD WHERE CL.COL_EMAIL='{$this->email}'";
         $campos = "*";
         $resultado = $this->Model->exibir($parametros, $campos, $ver, $id = false);
         if ($resultado) {
-            if(self::checarSenhaAcesso($this->senha, $resultado[0]['VDD_SENHA'])){
+            if(self::checarSenhaAcesso($this->senha, $resultado[0]['COL_SENHA'])){
                 return $resultado[0];
             }else{
                 return false;

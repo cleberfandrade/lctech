@@ -11,10 +11,13 @@ use App\Models\Enderecos;
 class login extends View
 {
     private $dados = [];
+    public $link,$Enderecos,$Usuarios,$Empresa,$UsuariosEmpresa,$Check,$Clientes, $Fornecedores;
     public function __construct()
     {
         Sessao::logado();
         $this->dados['title'] = 'Login | Acesso Administrativo';
+        $this->Check = new Check; 
+        $this->Usuarios = new Usuarios;
     }
     public function index()
     { 

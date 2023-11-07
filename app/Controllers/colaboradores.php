@@ -53,8 +53,7 @@ class colaboradores extends View
         if (isset($_POST) && isset($dados['CADASTRAR_NOVO_COLABORADOR'])) {
             if( $this->dados['empresa']['USU_COD'] == $dados['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados['EMP_COD']){
                 //Verifica se os campos foram todos preenchidos
-                unset($dados['CADASTRAR_NOVO_CARGO_SALARIO']);
-                    $dados['CGS_SALARIO'] = number_format(str_replace(",",".",str_replace(".","",$dados['CGS_SALARIO'])), 2, '.', '');
+                unset($dados['CADASTRAR_NOVO_COLABORADOR']);
                     $dados += array(
                         'COL_DT_CADASTRO'=> date('Y-m-d H:i:s'),
                         'COL_DT_ATUALIZACAO'=> date('0000-00-00 00:00:00'),             
