@@ -67,7 +67,7 @@ class Financas extends Model
     }
     public function alterar(array $dados, $ver = 0)
     {
-        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD={$this->codConta} CTA_COD=";
+        $parametros = "WHERE EMP_COD={$this->codEmpresa} AND EST_COD={$this->codConta} AND CTA_COD=";
         $this->Model->setParametros($parametros);
         $this->Model->setCodigo($this->codigo);
         $ok = false;
