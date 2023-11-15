@@ -1,7 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Vendedores;
+use App\Models\Colaboradores;
+use App\Models\Clientes;
 use Core\View;
 use Libraries\Check;
 use Libraries\Sessao;
@@ -10,14 +11,21 @@ use Libraries\Url;
 class pdv extends View
 {
     private $dados = [];
+    public $link,$Enderecos,$Usuarios,$Empresa,$UsuariosEmpresa,$Check,$Clientes,$Colaboradores;
     public function __construct()
     {
         Sessao::naoLogado();
         $this->dados['title'] = 'MÓDULO | PDV >>';   
+        $this->Check = new Check;
+        $this->Clientes= new Clientes;
+      
+        $this->link[0] = ['link'=> 'admin/financeiro','nome' => 'FINANCEIRO'];
+        $this->link[1] = ['link'=> 'pdv','nome' => 'PDV'];
     }
     public function acesso()
     {
         $this->dados['title'] = 'ACESSO | LC-TEC';
+        $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
         $this->render('site/acesso', $this->dados);
     }
     public function auth()
@@ -67,5 +75,24 @@ class pdv extends View
             Sessao::alert('ERRO',' 1- Dados inválido(s)!','alert alert-danger');
         }
         $this->render('site/acesso', $this->dados);
+    }
+    public function pdv()
+    {
+        Sessao::naoLogado();
+        $this->dados['empresa'] = $this->Colaboradores->setCodEmpresa($_SESSION['EMP_COD'])->setCodigo($_SESSION['COL_COD'])->listar(0);
+
+        $this->dados['title'] .= $this->dados['empresa']['EMP_NOME_FANTASIA'];
+        
+        $this->dados['breadcrumb'] = $this->Check->setLink($this->link)->breadcrumb();
+        $this->render('admin/financeiro/pdv', $this->dados);
+    }
+    public function produtos()
+    {
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        if (isset($_POST) && isset($dados['PESQUISA_PRODUTO'])) {
+            if($this->dados['empresa']['USU_COD'] == $_SESSION['USU_COD'] && $this->dados['empresa']['EMP_COD'] == $dados['EMP_COD']){
+
+            }
+        }
     }
 }
