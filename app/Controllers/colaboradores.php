@@ -109,7 +109,6 @@ class colaboradores extends View
             $this->render('admin/cadastros/colaboradores/listar', $this->dados);
        }
     }
-    
     public function alterar()
     {
         $this->dados['title'] .= ' CADASTRAR COLABORADORES';
