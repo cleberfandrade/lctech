@@ -11,10 +11,15 @@ use App\Models\Modulos;
 class modulo extends View
 {
     private $dados = [];
-    private $Modulos;
+    private $link,$Modulos,$Usuarios,$Empresa,$UsuariosEmpresa,$Check;
     public function __construct()
     {
         Sessao::naoLogado();
+        $this->Usuarios = new Usuarios;
+        $this->Empresa = new Empresas;
+        $this->UsuariosEmpresa = new UsuariosEmpresa;
+        $this->Check = new Check;
+        $this->Modulos = new Modulos;
     }
     public function index()
     {

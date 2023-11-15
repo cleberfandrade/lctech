@@ -78,4 +78,10 @@ class site extends View
     { 
         echo "error";
     }
+    public function administrador()
+    {
+        Sessao::logado();
+        $this->dados['title'] = 'ACESSO ADMINISTRATIVO | LC-TEC';
+        $this->render('site/login_admin', $this->dados);
+    }
 }
