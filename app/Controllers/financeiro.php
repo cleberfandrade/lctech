@@ -90,13 +90,24 @@ class financeiro extends View
 
         $this->render('admin/financeiro/contas/detalhar', $this->dados);
     }
-    public function alterar_contas()
+    public function alteracao()
     {
         $this->dados['title'] .= 'ALTERAR CONTA'; 
 
         $this->render('admin/financeiro/contas/alterar', $this->dados);
     }
-    public function cadastro_conta()
+    public function alterar()
+    {
+        $this->dados['title'] .= 'ALTERAR CONTA'; 
+
+        $this->render('admin/financeiro/contas/alterar', $this->dados);
+    }
+    public function cadastro()
+    {
+        $this->dados['title'] .= 'GERENCIAR CONTA DA EMPRESA/NEGÓCIO';   
+        $this->render('admin/financeiro/contas/cadastrar', $this->dados);
+    }
+    public function cadastrar()
     {
         $this->dados['title'] .= 'GERENCIAR CONTA DA EMPRESA/NEGÓCIO';   
         $this->render('admin/financeiro/contas/cadastrar', $this->dados);
