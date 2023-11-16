@@ -2,7 +2,8 @@
 use Libraries\Sessao;
 session_start();
 include_once 'app/Views/admin/inc/cabecalho.phtml'; 
-
+$qtd = (is_array($cargos_salarios) ? count($cargos_salarios) : 0);
+$qtdS = (is_array($setores) ? count($setores) : 0);
 ?>
 <body class="">
     <div class="d-flex" id="wrapper">
@@ -33,28 +34,39 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                 <?php include_once 'app/Views/admin/inc/alertas.phtml'; ?>  
                 <section class="bg-light py-2">
                     <div class="container col-10 px-2 py-2 mx-auto row">
-                        <form class="p-4 p-md-6 border text-uppercase rounded-3 bg-3" action="<?= DIRPAGE ?>cadastros/cadastrar_colaboradores" method="POST">
+                        <form class="p-4 p-md-6 border text-uppercase rounded-3 bg-3" action="<?= DIRPAGE ?>colaboradores/cadastrar" method="POST">
                             <div class="row ">    
-                                <div class="col-3 mb-3 form-floating ">
+                                <div class="col-2 mb-3 form-floating ">
                                     <select class="form-select" name="COL_NIVEL">                                        
                                         <?php for ($i=1; $i <= 10; $i++) { ?>
                                             <option value="<?= $i?>" <?= (isset($_POST['COL_NIVEL']) &&  $_POST['COL_NIVEL']  == $i)? 'selected' : '' ?>><?= $i ?></option>
                                         <?php } ?>
                                     </select>
-                                    <label class="form-floating mb-3">NÍVEL DO VENDEDOR(A)</label>
+                                    <label class="form-floating mb-3">NÍVEL DO COL.</label>
+                                </div>
+                                <div class="col-2 text-center mb-3">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select text-uppercase mb-3 form-floating" name="SET_COD">
+                                            <option value="0" <?= (isset($_POST['SET_COD']) &&  $_POST['SET_COD']  == "0")? 'selected' : '' ?>>---</option>
+                                            <?php for ($i= 0; $i < $qtdS; $i++) { ?> 
+                                                <option value="<?= $setores[$i]['SET_COD']; ?>" <?= (isset($_POST['SET_COD']) &&  $_POST['SET_COD']  == $setores[$i]['SET_COD'] )? 'selected' : '' ?>><?= $setores[$i]['SET_DESCRICAO'] ?></option>
+                                            <?php } ?> 
+                                        </select>
+                                        <label class="form-floating mb-3">SETOR</label>
+                                    </div>
                                 </div>
                                 <div class="col-4 form-floating mb-3">
                                     <input type="text" class="form-control maiusculo" id="1" name="COL_NOME" placeholder="Informe seu nome" value="<?= isset($_POST['COL_NOME']) ? $_POST['COL_NOME'] :''; ?>">
                                     <label class="px-3" for="1">Seu nome</label>
                                 </div>    
-                                <div class="col-5 form-floating mb-3">
+                                <div class="col-4 form-floating mb-3">
                                     <input type="text" class="form-control maiusculo" id="2" name="COL_SOBRENOME" placeholder="Informe seu nome" value="<?= isset($_POST['COL_SOBRENOME']) ? $_POST['COL_SOBRENOME'] : ''; ?>">
                                     <label class="px-3" for="2">Seu sobrenome</label>
                                 </div> 
                             </div> 
                             <div class="row">
                                 <hr>
-                                <div class="col-6 text-center mb-3">
+                                <div class="col-3 text-center mb-3">
                                     <label for="inputPassword6" class="col-form-label">Seu Sexo</label>
                                     <div class="mx-auto text-center">   
                                         <div class="form-check form-check-inline">
@@ -71,6 +83,18 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                         </div>
                                     </div>
                                 </div> 
+                                <div class="col-3 text-center mb-3">
+                                    <label class="col-form-label">CARGO</label>
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select text-uppercase mb-3 form-floating" name="CGS_COD">
+                                            <option value="0" <?= (isset($_POST['CGS_COD']) &&  $_POST['CGS_COD']  == "0")? 'selected' : '' ?>>---</option>
+                                            <?php for ($i= 0; $i < $qtd; $i++) { ?> 
+                                                <option value="<?= $cargos_salarios[$i]['CGS_COD']; ?>" <?= (isset($_POST['CGS_COD']) &&  $_POST['CGS_COD']  == $cargos_salarios[$i]['CGS_COD'] )? 'selected' : '' ?>><?= $cargos_salarios[$i]['CGS_NOME'] ?></option>
+                                            <?php } ?> 
+                                        </select>
+                                        <label class="form-floating mb-3">CARGO</label>
+                                    </div>
+                                </div>
                                 <div class="col-3 text-center mb-3">
                                     <label for="inputPassword6" class="col-form-label">Código de Venda</label>
                                     <div class="form-floating mb-3">
@@ -94,14 +118,14 @@ include_once 'app/Views/admin/inc/cabecalho.phtml';
                                     </div>
                                 </div>
                                 <div class="col-3 text-center mb-3">
-                                    <label for="inputPassword6" class="col-form-label">Telefone/Celular 1</label>
+                                    <label for="inputPassword6" class="col-form-label">1º Telefone/Celular</label>
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="text" name="COL_TEL_1" onkeyup="handlePhone(event)" maxlength="15" value="<?= isset($_POST['COL_TEL_1']) ? $_POST['COL_TEL_1'] : ''; ?>">
                                         <label for="text">Seu tel.</label>
                                     </div>
                                 </div>
                                 <div class="col-3 text-center mb-3">
-                                    <label for="inputPassword6" class="col-form-label">Telefone /Celular 2</label>
+                                    <label for="inputPassword6" class="col-form-label">2º Telefone /Celular</label>
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" id="text" name="COL_TEL_2" onkeyup="handlePhone(event)" maxlength="15"  placeholder="" value="<?= isset($_POST['COL_TEL_2']) ? $_POST['COL_TEL_2'] : ''; ?>">
                                         <label for="text">Seu tel.</label>
